@@ -1,0 +1,105 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.LeptonXLiteTheme": {
+      "version": "4.0.4",
+      "isInstalled": true
+    },
+    "Volo.Abp.Account": {
+      "version": "9.0.3",
+      "isInstalled": true
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "9.0.3",
+      "isInstalled": true
+    },
+    "Volo.Abp.Identity": {
+      "version": "9.0.3",
+      "isInstalled": true
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "9.0.3",
+      "isInstalled": true
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "9.0.3",
+      "isInstalled": true
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "9.0.3",
+      "isInstalled": true
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "9.0.3",
+      "isInstalled": true
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "Abp.eCommerce.Application": {
+      "path": "src/Abp.eCommerce.Application/Abp.eCommerce.Application.abppkg",
+      "folder": "src"
+    },
+    "Abp.eCommerce.Application.Tests": {
+      "path": "test/Abp.eCommerce.Application.Tests/Abp.eCommerce.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Abp.eCommerce.MongoDB": {
+      "path": "src/Abp.eCommerce.MongoDB/Abp.eCommerce.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Abp.eCommerce.MongoDB.Tests": {
+      "path": "test/Abp.eCommerce.MongoDB.Tests/Abp.eCommerce.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Abp.eCommerce.Domain.Shared": {
+      "path": "src/Abp.eCommerce.Domain.Shared/Abp.eCommerce.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Abp.eCommerce.Application.Contracts": {
+      "path": "src/Abp.eCommerce.Application.Contracts/Abp.eCommerce.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Abp.eCommerce.HttpApi": {
+      "path": "src/Abp.eCommerce.HttpApi/Abp.eCommerce.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Abp.eCommerce.HttpApi.Client": {
+      "path": "src/Abp.eCommerce.HttpApi.Client/Abp.eCommerce.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Abp.eCommerce.Web": {
+      "path": "src/Abp.eCommerce.Web/Abp.eCommerce.Web.abppkg",
+      "folder": "src"
+    },
+    "Abp.eCommerce.Web.Tests": {
+      "path": "test/Abp.eCommerce.Web.Tests/Abp.eCommerce.Web.Tests.abppkg",
+      "folder": "test"
+    },
+    "Abp.eCommerce.TestBase": {
+      "path": "test/Abp.eCommerce.TestBase/Abp.eCommerce.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Abp.eCommerce.Domain.Tests": {
+      "path": "test/Abp.eCommerce.Domain.Tests/Abp.eCommerce.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Abp.eCommerce.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/Abp.eCommerce.HttpApi.Client.ConsoleTestApp/Abp.eCommerce.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "Abp.eCommerce.DbMigrator": {
+      "path": "src/Abp.eCommerce.DbMigrator/Abp.eCommerce.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "Abp.eCommerce.Domain": {
+      "path": "src/Abp.eCommerce.Domain/Abp.eCommerce.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}
