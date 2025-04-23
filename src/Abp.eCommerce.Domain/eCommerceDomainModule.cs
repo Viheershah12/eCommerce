@@ -17,6 +17,7 @@ using Volo.Abp.Emailing;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
 using Volo.Abp.TenantManagement;
+using Product;
 
 namespace Abp.eCommerce;
 
@@ -35,7 +36,8 @@ namespace Abp.eCommerce;
     typeof(AbpTenantManagementDomainModule),
     typeof(BlobStoringDatabaseDomainModule)
     )]
-public class eCommerceDomainModule : AbpModule
+[DependsOn(typeof(ProductDomainModule))]
+    public class eCommerceDomainModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {

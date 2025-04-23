@@ -49,6 +49,7 @@ using Volo.Abp.OpenIddict;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.SettingManagement.Web;
 using Volo.Abp.Studio.Client.AspNetCore;
+using Product.Web;
 
 namespace Abp.eCommerce.Web;
 
@@ -66,7 +67,8 @@ namespace Abp.eCommerce.Web;
     typeof(AbpSwashbuckleModule),
     typeof(AbpAspNetCoreSerilogModule)
 )]
-public class eCommerceWebModule : AbpModule
+[DependsOn(typeof(ProductWebModule))]
+    public class eCommerceWebModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\common.props" />
 
@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abp.eCommerce.Domain\Abp.eCommerce.Domain.csproj" />
-  </ItemGroup>
+  <ProjectReference Include="..\..\modules\Product\src\Product.MongoDB\Product.MongoDB.csproj" /></ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.PermissionManagement.MongoDB" Version="9.0.3" />

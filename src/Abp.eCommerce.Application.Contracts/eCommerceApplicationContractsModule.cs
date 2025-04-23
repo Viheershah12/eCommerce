@@ -1,10 +1,11 @@
-﻿using Volo.Abp.Account;
+using Volo.Abp.Account;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
 using Volo.Abp.TenantManagement;
+using Product;
 
 namespace Abp.eCommerce;
 
@@ -17,7 +18,8 @@ namespace Abp.eCommerce;
     typeof(AbpTenantManagementApplicationContractsModule),
     typeof(AbpPermissionManagementApplicationContractsModule)
 )]
-public class eCommerceApplicationContractsModule : AbpModule
+[DependsOn(typeof(ProductApplicationContractsModule))]
+    public class eCommerceApplicationContractsModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {

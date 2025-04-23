@@ -13,6 +13,7 @@ using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.BlobStoring.Database;
 using Volo.Abp.TenantManagement;
+using Product;
 
 namespace Abp.eCommerce;
 
@@ -27,7 +28,8 @@ namespace Abp.eCommerce;
     typeof(AbpTenantManagementDomainSharedModule),
     typeof(BlobStoringDatabaseDomainSharedModule)
     )]
-public class eCommerceDomainSharedModule : AbpModule
+[DependsOn(typeof(ProductDomainSharedModule))]
+    public class eCommerceDomainSharedModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {

@@ -1,7 +1,7 @@
 ﻿using Abp.eCommerce.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.RazorPages;
 
-namespace Abp.eCommerce.Web.Pages;
+namespace Abp.eCommerce.Web.Models.Common;
 
 public abstract class eCommercePageModel : AbpPageModel
 {

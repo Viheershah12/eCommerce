@@ -1,4 +1,4 @@
-﻿using Localization.Resources.AbpUi;
+using Localization.Resources.AbpUi;
 using Abp.eCommerce.Localization;
 using Volo.Abp.Account;
 using Volo.Abp.SettingManagement;
@@ -8,6 +8,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.HttpApi;
 using Volo.Abp.Localization;
 using Volo.Abp.TenantManagement;
+using Product;
 
 namespace Abp.eCommerce;
 
@@ -20,7 +21,8 @@ namespace Abp.eCommerce;
     typeof(AbpTenantManagementHttpApiModule),
     typeof(AbpFeatureManagementHttpApiModule)
     )]
-public class eCommerceHttpApiModule : AbpModule
+[DependsOn(typeof(ProductHttpApiModule))]
+    public class eCommerceHttpApiModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
