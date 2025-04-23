@@ -11,6 +11,7 @@ using Volo.Abp.BlobStoring.Database.MongoDB;
 using Volo.Abp.Uow;
 using Volo.Abp.TenantManagement.MongoDB;
 using Product.MongoDB;
+using Management.MongoDB;
 
 namespace Abp.eCommerce.MongoDB;
 

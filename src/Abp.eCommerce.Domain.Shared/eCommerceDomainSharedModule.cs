@@ -14,6 +14,7 @@ using Volo.Abp.OpenIddict;
 using Volo.Abp.BlobStoring.Database;
 using Volo.Abp.TenantManagement;
 using Product;
+using Management;
 
 namespace Abp.eCommerce;
 

@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Abp.eCommerce.Application.Contracts\Abp.eCommerce.Application.Contracts.csproj" /></ItemGroup>
+    <ProjectReference Include="..\Abp.eCommerce.Application.Contracts\Abp.eCommerce.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.HttpApi.Client\Management.HttpApi.Client.csproj" /></ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi.Client" Version="9.0.3" />

@@ -18,6 +18,7 @@ using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
 using Volo.Abp.TenantManagement;
 using Product;
+using Management;
 
 namespace Abp.eCommerce;
 

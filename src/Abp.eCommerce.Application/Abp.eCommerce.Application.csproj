@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Abp.eCommerce.Domain\Abp.eCommerce.Domain.csproj" />
     <ProjectReference Include="..\Abp.eCommerce.Application.Contracts\Abp.eCommerce.Application.Contracts.csproj" />
-  <ProjectReference Include="..\..\modules\Product\src\Product.Application\Product.Application.csproj" /></ItemGroup>
+  <ProjectReference Include="..\..\modules\Product\src\Product.Application\Product.Application.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.Application\Management.Application.csproj" /></ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="9.0.3" />

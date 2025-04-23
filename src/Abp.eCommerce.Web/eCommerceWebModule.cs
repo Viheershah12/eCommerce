@@ -50,6 +50,7 @@ using Volo.Abp.Security.Claims;
 using Volo.Abp.SettingManagement.Web;
 using Volo.Abp.Studio.Client.AspNetCore;
 using Product.Web;
+using Management.Web;
 
 namespace Abp.eCommerce.Web;
 
@@ -68,6 +69,7 @@ namespace Abp.eCommerce.Web;
     typeof(AbpAspNetCoreSerilogModule)
 )]
 [DependsOn(typeof(ProductWebModule))]
+[DependsOn(typeof(ManagementWebModule))]
     public class eCommerceWebModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
