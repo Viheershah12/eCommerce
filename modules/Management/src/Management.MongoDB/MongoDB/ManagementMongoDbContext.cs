@@ -1,4 +1,6 @@
-﻿using Volo.Abp.Data;
+﻿using Management.Models;
+using MongoDB.Driver;
+using Volo.Abp.Data;
 using Volo.Abp.MongoDB;
 
 namespace Management.MongoDB;
@@ -9,6 +11,8 @@ public class ManagementMongoDbContext : AbpMongoDbContext, IManagementMongoDbCon
     /* Add mongo collections here. Example:
      * public IMongoCollection<Question> Questions => Collection<Question>();
      */
+
+    public IMongoCollection<File> File => Collection<File>();   
 
     protected override void CreateModel(IMongoModelBuilder modelBuilder)
     {
