@@ -20,6 +20,7 @@ namespace Abp.eCommerce;
     typeof(AbpPermissionManagementApplicationContractsModule)
 )]
 [DependsOn(typeof(ProductApplicationContractsModule))]
+[DependsOn(typeof(ManagementApplicationContractsModule))]
     public class eCommerceApplicationContractsModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)

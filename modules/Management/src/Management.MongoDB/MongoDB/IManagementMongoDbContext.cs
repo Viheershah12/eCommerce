@@ -13,4 +13,6 @@ public interface IManagementMongoDbContext : IAbpMongoDbContext
      */
 
     IMongoCollection<File> File { get; }    
+
+    IMongoCollection<Content> Content { get; }  
 }

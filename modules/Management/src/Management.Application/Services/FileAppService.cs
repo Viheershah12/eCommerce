@@ -1,5 +1,4 @@
-﻿using Management.Dtos;
-using Management.Files;
+﻿using Management.Files;
 using Management.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp;
 using Management.Models;
+using Management.Dtos.File;
 
 namespace Management.Services
 {

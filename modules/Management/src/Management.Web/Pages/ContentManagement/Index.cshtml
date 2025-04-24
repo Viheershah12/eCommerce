@@ -1,0 +1,43 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Management.Web.Menus
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IAuthorizationService AuthorizationService
+@inject PageLayout PageLayout
+
+@model Management.Web.Pages.ContentManagement.IndexModel
+
+@{
+    PageLayout.Content.MenuItemName = ManagementMenus.ContentManagement;
+    PageLayout.Content.Title = L["Menu:ContentManagement"];
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/ContentManagement/js/Index.js" />
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Title:ContentManagement"]</abp-card-title>
+            </abp-column>
+
+            @* @if (await AuthorizationService.IsGrantedAsync(SetupPermissions.GenderSetup.Create))
+            { *@
+                <abp-column size-md="_6" class="text-end">
+                    <a abp-button="Primary" asp-page="Create"><i class="fa-solid fa-plus"></i> @L["AddNew"]</a>
+                </abp-column>
+            @* } *@
+        </abp-row>
+    </abp-card-header>
+
+    <abp-card-body>
+        <abp-table striped-rows="true" id="contentManagementTable"></abp-table>
+    </abp-card-body>
+</abp-card>

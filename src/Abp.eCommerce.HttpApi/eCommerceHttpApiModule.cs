@@ -23,6 +23,7 @@ namespace Abp.eCommerce;
     typeof(AbpFeatureManagementHttpApiModule)
     )]
 [DependsOn(typeof(ProductHttpApiModule))]
+[DependsOn(typeof(ManagementHttpApiModule))]
     public class eCommerceHttpApiModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

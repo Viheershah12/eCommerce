@@ -1,7 +1,7 @@
 ﻿using Management.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.RazorPages;
 
-namespace Management.Web.Pages;
+namespace Management.Web.Models.Common;
 
 /* Inherit your PageModel classes from this class.
  */

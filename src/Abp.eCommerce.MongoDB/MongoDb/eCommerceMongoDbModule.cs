@@ -28,6 +28,7 @@ namespace Abp.eCommerce.MongoDB;
     typeof(BlobStoringDatabaseMongoDbModule)
 )]
 [DependsOn(typeof(ProductMongoDbModule))]
+[DependsOn(typeof(ManagementMongoDbModule))]
     public class eCommerceMongoDbModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

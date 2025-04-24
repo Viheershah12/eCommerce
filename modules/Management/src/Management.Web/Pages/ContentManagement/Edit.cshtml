@@ -1,0 +1,62 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Management.Web.Menus
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IAuthorizationService AuthorizationService
+@inject PageLayout PageLayout
+
+@model Management.Web.Pages.ContentManagement.EditModel
+
+@{
+    PageLayout.Content.MenuItemName = ManagementMenus.ContentManagement;
+    PageLayout.Content.Title = L["Menu:EditContent"];
+
+    PageLayout.Content.BreadCrumb.Add(L["Menu:ContentManagement"], "/ContentManagement/");
+}
+
+<form asp-page="/ContentManagement/Edit">
+    <abp-input asp-for="Content.Id" type="hidden" />
+
+    <abp-column class="text-end pb-3">
+        <abp-button type="submit" text="@L["Save"].Value" button-type="Primary" />
+    </abp-column>
+
+    <abp-card>
+        <abp-card-header>
+            <abp-row>
+                <abp-card-title>@L["Title:EditContent"]</abp-card-title>
+            </abp-row>
+        </abp-card-header>
+
+        <abp-card-body>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-input asp-for="Content.Title" />
+                </abp-column>
+
+                <abp-column>
+                    <abp-select asp-for="Content.ContentType" asp-items="Model.ContentTypeDropdown" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column>
+                    <abp-input asp-for="Content.Body" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" asp-for="Content.IsPublished">
+                        <label class="form-check-label" asp-for="Content.IsPublished">@L["IsPublished"]</label>
+                    </div>
+                </abp-column>
+            </abp-row>
+        </abp-card-body>
+    </abp-card>
+</form>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
-namespace Management.Dtos
+namespace Management.Dtos.File
 {
     public class FileDto : EntityDto<Guid>
     {

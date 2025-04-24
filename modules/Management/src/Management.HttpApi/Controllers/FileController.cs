@@ -1,4 +1,4 @@
-﻿using Management.Dtos;
+﻿using Management.Dtos.File;
 using Management.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;

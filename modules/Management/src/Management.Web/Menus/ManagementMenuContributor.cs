@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Abp.eCommerce.Localization;
+using System.Threading.Tasks;
 using Volo.Abp.UI.Navigation;
 
 namespace Management.Web.Menus;
@@ -15,13 +16,22 @@ public class ManagementMenuContributor : IMenuContributor
 
     private Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
+        var l = context.GetLocalizer<eCommerceResource>();
+
         //Add main menu items.
         context.Menu.AddItem(
             new ApplicationMenuItem(
                 ManagementMenus.Prefix, 
-                displayName: "Management", 
+                displayName: l["Menu:Management"], 
                 "~/Management", 
                 icon: "fa fa-gear"
+            )
+            .AddItem(
+                new ApplicationMenuItem(
+                    ManagementMenus.ContentManagement,
+                    displayName: l["Menu:ContentManagement"],
+                    "~/ContentManagement"
+                )
             )
         );
 

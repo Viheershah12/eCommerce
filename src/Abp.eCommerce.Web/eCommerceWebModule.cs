@@ -51,6 +51,8 @@ using Volo.Abp.SettingManagement.Web;
 using Volo.Abp.Studio.Client.AspNetCore;
 using Product.Web;
 using Management.Web;
+using Volo.Abp.Ui.LayoutHooks;
+using Abp.eCommerce.Web.Common;
 
 namespace Abp.eCommerce.Web;
 
@@ -70,7 +72,8 @@ namespace Abp.eCommerce.Web;
 )]
 [DependsOn(typeof(ProductWebModule))]
 [DependsOn(typeof(ManagementWebModule))]
-    public class eCommerceWebModule : AbpModule
+[DependsOn(typeof(eCommerceWebCommonModule))]
+public class eCommerceWebModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
@@ -146,6 +149,7 @@ namespace Abp.eCommerce.Web;
         ConfigureNavigationServices();
         ConfigureAutoApiControllers();
         ConfigureSwaggerServices(context.Services);
+        ConfigureCustom();
 
         Configure<PermissionManagementOptions>(options =>
         {
@@ -169,7 +173,18 @@ namespace Abp.eCommerce.Web;
         });
     }
 
-    private void ConfigureUrls(IConfiguration configuration)
+    private void ConfigureCustom()
+    {
+        Configure<AbpLayoutHookOptions>(options =>
+        {
+            options.Add(
+                LayoutHooks.Body.Last,
+                    typeof(NotifyViewComponent)
+            );
+        });
+    }
+
+private void ConfigureUrls(IConfiguration configuration)
     {
         Configure<AppUrlOptions>(options =>
         {

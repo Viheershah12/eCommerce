@@ -1,4 +1,4 @@
-﻿using Management.Dtos;
+﻿using Management.Dtos.File;
 using Management.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;

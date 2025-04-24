@@ -14,6 +14,8 @@ public class ManagementMongoDbContext : AbpMongoDbContext, IManagementMongoDbCon
 
     public IMongoCollection<File> File => Collection<File>();   
 
+    public IMongoCollection<Content> Content => Collection<Content>();  
+
     protected override void CreateModel(IMongoModelBuilder modelBuilder)
     {
         base.CreateModel(modelBuilder);

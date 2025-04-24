@@ -30,6 +30,7 @@ namespace Abp.eCommerce;
     typeof(BlobStoringDatabaseDomainSharedModule)
     )]
 [DependsOn(typeof(ProductDomainSharedModule))]
+[DependsOn(typeof(ManagementDomainSharedModule))]
     public class eCommerceDomainSharedModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)

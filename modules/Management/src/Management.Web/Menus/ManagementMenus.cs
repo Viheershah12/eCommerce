@@ -4,7 +4,6 @@ public class ManagementMenus
 {
     public const string Prefix = "Management";
 
-    //Add your menu items here...
-    //public const string Home = Prefix + ".MyNewMenuItem";
+    public const string ContentManagement = "Content Management";
 
 }

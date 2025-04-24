@@ -21,7 +21,6 @@ namespace Abp.eCommerce;
     typeof(AbpTenantManagementHttpApiClientModule),
     typeof(AbpSettingManagementHttpApiClientModule)
 )]
-[DependsOn(typeof(ProductHttpApiClientModule))]
     public class eCommerceHttpApiClientModule : AbpModule
 {
     public const string RemoteServiceName = "Default";

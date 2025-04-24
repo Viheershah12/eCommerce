@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Management.Dtos.Content;
 
 namespace Management.Web;
 
@@ -6,8 +7,9 @@ public class ManagementWebAutoMapperProfile : Profile
 {
     public ManagementWebAutoMapperProfile()
     {
-        /* You can configure your AutoMapper mapping configuration here.
-         * Alternatively, you can split your mapping configurations
-         * into multiple profile classes for a better organization. */
+        // Content Management
+        CreateMap<Pages.ContentManagement.CreateModel.CreateViewModel, CreateUpdateContentDto>();
+        CreateMap<Pages.ContentManagement.EditModel.EditViewModel, CreateUpdateContentDto>()
+            .ReverseMap();
     }
 }

@@ -22,6 +22,7 @@ namespace Abp.eCommerce;
     typeof(AbpSettingManagementApplicationModule)
     )]
 [DependsOn(typeof(ProductApplicationModule))]
+[DependsOn(typeof(ManagementApplicationModule))]
     public class eCommerceApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
