@@ -3,9 +3,9 @@ using Volo.Abp.AspNetCore.Mvc;
 
 namespace Product;
 
-public abstract class ProductController : AbpControllerBase
+public abstract class ProductsController : AbpControllerBase
 {
-    protected ProductController()
+    protected ProductsController()
     {
         LocalizationResource = typeof(ProductResource);
     }

@@ -27,7 +27,7 @@ public class Program
 
         try
         {
-            Log.Information("Starting Seesharp.GigEconomy.AuthServer.");
+            Log.Information("Starting Abp.eCommerce.AuthServer.");
             var builder = WebApplication.CreateBuilder(args);
             builder.Host.AddAppSettingsSecretsJson()
                 .UseAutofac()

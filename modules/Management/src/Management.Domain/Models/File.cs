@@ -20,6 +20,6 @@ namespace Management.Models
 
         public string Extension { get; set; } = string.Empty;
 
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Abp.eCommerce.Enums;
 using AutoMapper;
 using Management.Dtos.Content;
+using Management.Dtos.File;
 using Management.Models;
 using Volo.Abp.AutoMapper;
 
@@ -20,5 +21,8 @@ public class ManagementApplicationAutoMapperProfile : Profile
             .IgnoreFullAuditedObjectProperties()
             .Ignore(x => x.ExtraProperties)
             .Ignore(x => x.ConcurrencyStamp);
+
+        // File
+        CreateMap<File, FileDto>();
     }
 }

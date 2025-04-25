@@ -27,7 +27,7 @@ public class Program
 
         try
         {
-            Log.Information("Starting Seesharp.GigEconomy.HttpApi.Host.");
+            Log.Information("Starting Abp.eCommerce.HttpApi.Host.");
             var builder = WebApplication.CreateBuilder(args);
             builder.Host.AddAppSettingsSecretsJson()
                 .UseAutofac()

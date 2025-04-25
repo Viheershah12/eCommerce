@@ -3,9 +3,9 @@ using Volo.Abp.Application.Services;
 
 namespace Product;
 
-public abstract class ProductAppService : ApplicationService
+public abstract class ProductsAppService : ApplicationService
 {
-    protected ProductAppService()
+    protected ProductsAppService()
     {
         LocalizationResource = typeof(ProductResource);
         ObjectMapperContext = typeof(ProductApplicationModule);

@@ -1,0 +1,44 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Product.Web.Menus
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IAuthorizationService AuthorizationService
+@inject PageLayout PageLayout
+
+@model Product.Web.Pages.ProductCategory.IndexModel
+
+@{
+    PageLayout.Content.MenuItemName = ProductMenus.ProductCategory;
+    PageLayout.Content.Title = L["Menu:ProductCategory"];
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/ProductCategory/js/Index.js" />
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Title:ProductCategory"]</abp-card-title>
+            </abp-column>
+
+            @* @if (await AuthorizationService.IsGrantedAsync(SetupPermissions.GenderSetup.Create))
+            { *@
+            <abp-column size-md="_6" class="text-end">
+                <a abp-button="Primary" asp-page="Create"><i class="fa-solid fa-plus"></i> @L["AddNew"]</a>
+            </abp-column>
+            @* } *@
+        </abp-row>
+    </abp-card-header>
+
+    <abp-card-body>
+        <abp-table striped-rows="true" id="productCategoryTable"></abp-table>
+    </abp-card-body>
+</abp-card>
+

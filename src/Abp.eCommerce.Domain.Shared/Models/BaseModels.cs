@@ -129,5 +129,23 @@ namespace Abp.eCommerce.Models
 
         public object? Data { get; set; } = null;
     }
-    #endregion 
+    #endregion
+
+    public class Media : BaseIdModel
+    {
+        public string Name { get; set; }
+    }
+
+    public class UserFileDto
+    {
+        public byte[]? DownloadBinary { get; set; }
+
+        public string DownloadObjectId { get; set; } = string.Empty;
+
+        public string ContentType { get; set; } = string.Empty;
+
+        public string Filename { get; set; } = string.Empty;
+
+        public string Extension { get; set; } = string.Empty;
+    }
 }

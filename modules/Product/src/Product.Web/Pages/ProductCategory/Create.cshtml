@@ -1,0 +1,71 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Product.Web.Menus
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IAuthorizationService AuthorizationService
+@inject PageLayout PageLayout
+
+@model Product.Web.Pages.ProductCategory.CreateModel
+
+@{
+    PageLayout.Content.MenuItemName = ProductMenus.ProductCategory;
+    PageLayout.Content.Title = L["Menu:CreateProductCategory"];
+
+    PageLayout.Content.BreadCrumb.Add(L["Menu:ProductCategory"], "/ProductCategory/");
+}
+
+<form asp-page="/ProductCategory/Create" enctype="multipart/form-data">
+    <abp-column class="text-end pb-3">
+        <abp-button type="submit" text="@L["Save"].Value" button-type="Primary" />
+    </abp-column>
+
+    <abp-card>
+        <abp-card-header>
+            <abp-row>
+                <abp-card-title>@L["Title:CreateProductCategory"]</abp-card-title>
+            </abp-row>
+        </abp-card-header>
+
+        <abp-card-body>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-input asp-for="ProductCategory.Name" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="ProductCategory.Description" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="ProductCategory.Icon" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <div class="mb-3">
+                        <label class="form-label">@L["CategoryMedia"]</label>
+                        <input class="form-control" asp-for="ProductCategory.CategoryMedia" type="file" />
+                    </div>
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="ProductCategory.DisplayOrder" label="@L["DisplayOrder"]" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <div class="form-check form-switch mt-3">
+                        <input class="form-check-input" type="checkbox" asp-for="ProductCategory.IsActive">
+                        <label class="form-check-label" asp-for="ProductCategory.IsActive">@L["IsActive"]</label>
+                    </div>
+                </abp-column>
+            </abp-row>
+        </abp-card-body>
+    </abp-card>
+</form>

@@ -39,7 +39,7 @@ namespace Management.Services
                 var listing = items.Select(x => new FileDto
                 {
                     Id = x.Id,
-                    UserId = x.UserId,
+                    UserId = CurrentUser.Id,
                     Filename = x.Filename,
                     DownloadBinary = x.DownloadBinary,
                     DownloadObjectId = x.DownloadObjectId,
@@ -69,7 +69,7 @@ namespace Management.Services
                 {
                     DownloadBinary = fileDto.DownloadBinary,
                     Filename = fileDto.Filename,
-                    UserId = fileDto.UserId,
+                    UserId = CurrentUser.Id,
                     ContentType = fileDto.ContentType,
                     Extension = fileDto.Extension
                 };
@@ -102,7 +102,7 @@ namespace Management.Services
                     {
                         DownloadBinary = fileDto.DownloadBinary,
                         Filename = fileDto.Filename,
-                        UserId = fileDto.UserId,
+                        UserId = CurrentUser.Id,
                         ContentType = fileDto.ContentType,
                         Extension = fileDto.Extension
                     };

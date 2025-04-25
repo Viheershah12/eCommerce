@@ -1,7 +1,7 @@
 ﻿$(function () {
     var l = abp.localization.getResource('eCommerce');
 
-    var dataTable = $('#contentManagementTable').DataTable(
+    var dataTable = $('#productCategoryTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
             paging: true,
@@ -9,7 +9,7 @@
             scrollX: true,
             searching: true,
             processing: true,
-            ajax: abp.libs.datatables.createAjax(management.controllers.content.getList),
+            ajax: abp.libs.datatables.createAjax(product.controllers.productCategory.getList),
             columnDefs:
                 [
                     {
@@ -21,7 +21,7 @@
                                         text: l('Edit'),
                                         //visible: abp.auth.isGranted('Setup.TaskSetup.Edit') || abp.auth.isGranted('Setup.TaskSetup.View'),
                                         action: function (data) {
-                                            var link = abp.appPath + 'ContentManagement/Edit?id=' + data.record.id
+                                            var link = abp.appPath + 'ProductCategory/Edit?id=' + data.record.id
                                             window.location.href = link
                                         }
                                     },
@@ -30,12 +30,12 @@
                                         //visible: abp.auth.isGranted('Setup.TaskSetup.Delete'),
                                         confirmMessage: function (data) {
                                             return l(
-                                                'ContentDeletionConfirmationMessage',
-                                                data.record.title
+                                                'ProductCategoryDeletionConfirmationMessage',
+                                                data.record.name
                                             );
                                         },
                                         action: function (data) {
-                                            management.controllers.content
+                                            product.controllers.productCategory
                                                 .delete(data.record.id)
                                                 .then(function () {
                                                     abp.notify.info(l('SuccessfullyDeleted'));
@@ -47,19 +47,20 @@
                         }
                     },
                     {
-                        title: l('Title'),
-                        data: 'title'
+                        title: l('Name'),
+                        data: 'name'
                     },
                     {
-                        title: l('ContentType'),
-                        data: 'contentType',
-                        render: function (data) {
-                            return l(data);
-                        }
+                        title: l('Description'),
+                        data: 'description'
                     },
                     {
-                        title: l('IsPublished'),
-                        data: 'isPublished',
+                        title: l('DisplayOrder'),
+                        data: 'displayOrder'
+                    },
+                    {
+                        title: l('IsActive'),
+                        data: 'isActive',
                         render: function (data, type, row) {
                             return data ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>';
                         }

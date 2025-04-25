@@ -6,23 +6,43 @@
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information visit",
     "Welcome": "Welcome",
 
-    //Menu
+    //menu
     "Menu:Management": "Management",
     "Menu:ContentManagement": "Content Management",
     "Menu:EditContent": "Edit Content",
     "Menu:CreateContent": "Edit Content",
+    "Menu:Catalog": "Catalog",
+    "Menu:Product": "Product",
+    "Menu:ProductCategory": "Product Category",
+    "Menu:CreateProductCategory": "Create Product Category",
+    "Menu:EditProductCategory": "Edit Product Category",
 
     //title
     "Title:ContentManagement": "Content Management",
     "Title:CreateContent": "Create Content",
     "Title:EditContent": "Edit Content",
+    "Title:ProductCategory": "Product Category",
+    "Title:CreateProductCategory": "Create Product Category",
+    "Title:EditProductCategory": "Edit Product Category",
 
-    //Labels
+    //notification
+    "SuccessfullyAdded": "Successfully Added!",
+    "SuccessfullyUpdated": "Successfully Updated!",
+    "SuccessfullyDeleted": "Successfully Deleted!",
+
+    //delete confirmation
+    "ContentDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Content!",
+    "ProductCategoryDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Product Category!",
+
+    //labels
     "ContentType": "Content Type",
     "IsPublished": "Published",
     "PleaseSelect": "Please Select",
     "AboutUs": "About Us",
     "Terms": "Terms & Conditions",
-    "Privacy": "Privacy Statement"
+    "Privacy": "Privacy Statement",
+    "CategoryMedia": "Category Media",
+    "DisplayOrder": "Display Order",
+    "IsActive": "Active"
   }
 }
