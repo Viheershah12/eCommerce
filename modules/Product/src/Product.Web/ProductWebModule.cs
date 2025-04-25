@@ -52,7 +52,15 @@ public class ProductWebModule : AbpModule
 
         Configure<RazorPagesOptions>(options =>
         {
-                //Configure authorization.
-            });
+            // Product 
+            options.Conventions.AuthorizePage("/Product/Index", ProductPermissions.Product.Default);
+            options.Conventions.AuthorizePage("/Product/Create", ProductPermissions.Product.Create);
+            options.Conventions.AuthorizePage("/Product/Edit", ProductPermissions.Product.View);
+
+            // Product Category
+            options.Conventions.AuthorizePage("/ProductCategory/Index", ProductPermissions.ProductCategory.Default);
+            options.Conventions.AuthorizePage("/ProductCategory/Create", ProductPermissions.ProductCategory.Create);
+            options.Conventions.AuthorizePage("/ProductCategory/Edit", ProductPermissions.ProductCategory.View);
+        });
     }
 }

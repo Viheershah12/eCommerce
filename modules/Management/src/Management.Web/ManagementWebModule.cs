@@ -52,7 +52,9 @@ public class ManagementWebModule : AbpModule
 
         Configure<RazorPagesOptions>(options =>
         {
-                //Configure authorization.
-            });
+            options.Conventions.AuthorizePage("/ContentManagement/Index", ManagementPermissions.ContentManagement.Default);
+            options.Conventions.AuthorizePage("/ContentManagement/Create", ManagementPermissions.ContentManagement.Create);
+            options.Conventions.AuthorizePage("/ContentManagement/Edit", ManagementPermissions.ContentManagement.View);
+        });
     }
 }

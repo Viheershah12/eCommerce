@@ -1,5 +1,6 @@
 ﻿@page
 @using Abp.eCommerce.Localization
+@using Management.Permissions
 @using Management.Web.Menus
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
@@ -28,12 +29,12 @@
                 <abp-card-title>@L["Title:ContentManagement"]</abp-card-title>
             </abp-column>
 
-            @* @if (await AuthorizationService.IsGrantedAsync(SetupPermissions.GenderSetup.Create))
-            { *@
+            @if (await AuthorizationService.IsGrantedAsync(ManagementPermissions.ContentManagement.Create))
+            {
                 <abp-column size-md="_6" class="text-end">
                     <a abp-button="Primary" asp-page="Create"><i class="fa-solid fa-plus"></i> @L["AddNew"]</a>
                 </abp-column>
-            @* } *@
+            }
         </abp-row>
     </abp-card-header>
 

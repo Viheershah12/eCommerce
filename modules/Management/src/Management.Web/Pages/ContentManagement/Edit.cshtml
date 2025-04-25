@@ -1,5 +1,6 @@
 ﻿@page
 @using Abp.eCommerce.Localization
+@using Management.Permissions
 @using Management.Web.Menus
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
@@ -21,9 +22,12 @@
 <form asp-page="/ContentManagement/Edit">
     <abp-input asp-for="Content.Id" type="hidden" />
 
-    <abp-column class="text-end pb-3">
-        <abp-button type="submit" text="@L["Save"].Value" button-type="Primary" />
-    </abp-column>
+    @if (await AuthorizationService.IsGrantedAsync(ManagementPermissions.ContentManagement.Edit))
+    {
+        <abp-column class="text-end pb-3">
+            <abp-button type="submit" text="@L["Save"].Value" button-type="Primary" />
+        </abp-column>
+    }
 
     <abp-card>
         <abp-card-header>

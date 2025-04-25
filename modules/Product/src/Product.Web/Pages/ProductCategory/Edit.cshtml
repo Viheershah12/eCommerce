@@ -2,6 +2,7 @@
 @using Abp.eCommerce.Localization
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
+@using Product.Permissions
 @using Product.Web.Menus
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
 
@@ -26,9 +27,12 @@
 <form asp-page="/ProductCategory/Edit" enctype="multipart/form-data">
     <abp-input asp-for="ProductCategory.Id" type="hidden" />
 
-    <abp-column class="text-end pb-3">
-        <abp-button type="submit" text="@L["Save"].Value" button-type="Primary" />
-    </abp-column>
+    @if (await AuthorizationService.IsGrantedAsync(ProductPermissions.ProductCategory.Edit))
+    {
+        <abp-column class="text-end pb-3">
+            <abp-button type="submit" text="@L["Save"].Value" button-type="Primary" />
+        </abp-column>
+    }
 
     <abp-card>
         <abp-card-header>

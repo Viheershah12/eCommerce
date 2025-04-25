@@ -19,7 +19,7 @@
                                 [
                                     {
                                         text: l('Edit'),
-                                        //visible: abp.auth.isGranted('Setup.TaskSetup.Edit') || abp.auth.isGranted('Setup.TaskSetup.View'),
+                                        visible: abp.auth.isGranted('Product.ProductCategory.Edit') || abp.auth.isGranted('Product.ProductCategory.View'),
                                         action: function (data) {
                                             var link = abp.appPath + 'ProductCategory/Edit?id=' + data.record.id
                                             window.location.href = link
@@ -27,7 +27,7 @@
                                     },
                                     {
                                         text: l('Delete'),
-                                        //visible: abp.auth.isGranted('Setup.TaskSetup.Delete'),
+                                        visible: abp.auth.isGranted('Product.ProductCategory.Delete'),
                                         confirmMessage: function (data) {
                                             return l(
                                                 'ProductCategoryDeletionConfirmationMessage',

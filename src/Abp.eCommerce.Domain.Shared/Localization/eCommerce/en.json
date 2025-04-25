@@ -43,6 +43,30 @@
     "Privacy": "Privacy Statement",
     "CategoryMedia": "Category Media",
     "DisplayOrder": "Display Order",
-    "IsActive": "Active"
+    "IsActive": "Active",
+
+    //permissions
+    "Permission:Management": "Management",
+    "Permissions:ContentManagement": "Content Management",
+    "Permissions:ContentManagement.List": "List Content Management",
+    "Permissions:ContentManagement.View": "View Content Management",
+    "Permissions:ContentManagement.Create": "Create Content Management",
+    "Permissions:ContentManagement.Edit": "Edit Content Management",
+    "Permissions:ContentManagement.Delete": "Delete Content Management",
+
+    "Permission:Product": "Product",
+    "Permissions:Product": "Product",
+    "Permissions:Product.List": "List Product",
+    "Permissions:Product.View": "View Product",
+    "Permissions:Product.Create": "Create Product",
+    "Permissions:Product.Edit": "Edit Product",
+    "Permissions:Product.Delete": "Delete Product",
+
+    "Permissions:ProductCategory": "Product Category",
+    "Permissions:ProductCategory.List": "List Product Category",
+    "Permissions:ProductCategory.View": "View Product Category",
+    "Permissions:ProductCategory.Create": "Create Product Category",
+    "Permissions:ProductCategory.Edit": "Edit Product Category",
+    "Permissions:ProductCategory.Delete": "Delete Product Category"
   }
 }

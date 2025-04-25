@@ -2,6 +2,7 @@
 @using Abp.eCommerce.Localization
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
+@using Product.Permissions
 @using Product.Web.Menus
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
 
@@ -28,12 +29,12 @@
                 <abp-card-title>@L["Title:ProductCategory"]</abp-card-title>
             </abp-column>
 
-            @* @if (await AuthorizationService.IsGrantedAsync(SetupPermissions.GenderSetup.Create))
-            { *@
-            <abp-column size-md="_6" class="text-end">
-                <a abp-button="Primary" asp-page="Create"><i class="fa-solid fa-plus"></i> @L["AddNew"]</a>
-            </abp-column>
-            @* } *@
+            @if (await AuthorizationService.IsGrantedAsync(ProductPermissions.ProductCategory.Create))
+            {
+                <abp-column size-md="_6" class="text-end">
+                    <a abp-button="Primary" asp-page="Create"><i class="fa-solid fa-plus"></i> @L["AddNew"]</a>
+                </abp-column>
+            }
         </abp-row>
     </abp-card-header>
 
