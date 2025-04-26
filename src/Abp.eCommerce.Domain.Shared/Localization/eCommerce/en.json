@@ -24,6 +24,8 @@
     "Menu:Customer": "Customer",
     "Menu:CustomerList": "Customer List",
     "Menu:CustomerGroup": "Customer Group",
+    "Menu:CreateCustomerGroup": "Create Customer Group",
+    "Menu:EditCustomerGroup": "Edit Customer Group",
 
     //title
     "Title:ContentManagement": "Content Management",
@@ -38,6 +40,9 @@
     "Title:EditProductTag": "Edit Product Tag",
     "Title:CreateProduct": "Create Product",
     "Title:EditProduct": "Edit Product",
+    "Title:CustomerGroup": "Customer Group",
+    "Title:CreateCustomerGroup": "Create Customer Group",
+    "Title:EditCustomerGroup": "Edit Customer Group",
 
     //notification
     "SuccessfullyAdded": "Successfully Added!",
@@ -47,6 +52,9 @@
     //delete confirmation
     "ContentDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Content!",
     "ProductCategoryDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Product Category!",
+    "ProductDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Product!",
+    "ProductTagDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Product Tag!",
+    "CustomerGroupDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Customer Group!",
 
     //labels
     "ContentType": "Content Type",

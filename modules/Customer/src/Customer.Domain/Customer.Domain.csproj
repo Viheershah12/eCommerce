@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\common.props" />
 
@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="9.0.3" />
+    <ProjectReference Include="..\..\..\..\src\Abp.eCommerce.Domain.Shared\Abp.eCommerce.Domain.Shared.csproj" />
+    <ProjectReference Include="..\Customer.Application.Contracts\Customer.Application.Contracts.csproj" />
     <ProjectReference Include="..\Customer.Domain.Shared\Customer.Domain.Shared.csproj" />
   </ItemGroup>
 

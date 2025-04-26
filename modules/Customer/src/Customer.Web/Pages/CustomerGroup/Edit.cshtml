@@ -1,0 +1,64 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Customer.Permissions
+@using Customer.Web.Menus
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IAuthorizationService AuthorizationService
+@inject PageLayout PageLayout
+
+@model Customer.Web.Pages.CustomerGroup.EditModel
+
+@{
+    PageLayout.Content.MenuItemName = CustomerMenus.CustomerGroup;
+    PageLayout.Content.Title = L["Menu:EditCustomerGroup"];
+
+    PageLayout.Content.BreadCrumb.Add(L["Menu:CustomerGroup"], "/CustomerGroup/");
+}
+
+<form asp-page="/CustomerGroup/Edit">
+    <abp-input asp-for="CustomerGroup.Id" type="hidden" />
+
+    @if (await AuthorizationService.IsGrantedAsync(CustomerPermissions.CustomerGroup.Edit))
+    {
+        <abp-column class="text-end pb-3">
+            <abp-button type="submit" text="@L["Save"].Value" button-type="Primary" />
+        </abp-column>
+    }
+
+    <abp-card>
+        <abp-card-header>
+            <abp-row>
+                <abp-card-title>@L["Title:EditCustomerGroup"]</abp-card-title>
+            </abp-row>
+        </abp-card-header>
+
+        <abp-card-body>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-input asp-for="CustomerGroup.Name" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="CustomerGroup.Description" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="CustomerGroup.DisplayOrder" label="@L["DisplayOrder"]" type="number" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <div class="form-check form-switch mt-4 mb-3">
+                        <input class="form-check-input" type="checkbox" asp-for="CustomerGroup.IsActive">
+                        <label class="form-check-label" asp-for="CustomerGroup.IsActive">@L["IsActive"]</label>
+                    </div>
+                </abp-column>
+            </abp-row>
+        </abp-card-body>
+    </abp-card>
+</form>
