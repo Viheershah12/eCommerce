@@ -61,6 +61,11 @@ public class ProductWebModule : AbpModule
             options.Conventions.AuthorizePage("/ProductCategory/Index", ProductPermissions.ProductCategory.Default);
             options.Conventions.AuthorizePage("/ProductCategory/Create", ProductPermissions.ProductCategory.Create);
             options.Conventions.AuthorizePage("/ProductCategory/Edit", ProductPermissions.ProductCategory.View);
+
+            // Product Tag
+            options.Conventions.AuthorizePage("/ProductTag/Index", ProductPermissions.ProductTag.Default);
+            options.Conventions.AuthorizePage("/ProductTag/Create", ProductPermissions.ProductTag.Create);
+            options.Conventions.AuthorizePage("/ProductTag/Edit", ProductPermissions.ProductTag.View);
         });
     }
 }

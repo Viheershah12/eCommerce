@@ -19,6 +19,7 @@ using Volo.Abp.Identity;
 using Volo.Abp.TenantManagement;
 using Product;
 using Management;
+using Customer;
 
 namespace Abp.eCommerce;
 
@@ -39,6 +40,7 @@ namespace Abp.eCommerce;
     )]
 [DependsOn(typeof(ProductDomainModule))]
 [DependsOn(typeof(ManagementDomainModule))]
+    [DependsOn(typeof(CustomerDomainModule))]
     public class eCommerceDomainModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

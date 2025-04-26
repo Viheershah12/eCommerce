@@ -21,6 +21,9 @@
     "Menu:EditProductTag": "Edit Product Tag",
     "Menu:CreateProduct": "Create Product",
     "Menu:EditProduct": "Edit Product",
+    "Menu:Customer": "Customer",
+    "Menu:CustomerList": "Customer List",
+    "Menu:CustomerGroup": "Customer Group",
 
     //title
     "Title:ContentManagement": "Content Management",
@@ -91,6 +94,21 @@
     "Permissions:ProductTag.View": "View Product Tag",
     "Permissions:ProductTag.Create": "Create Product Tag",
     "Permissions:ProductTag.Edit": "Edit Product Tag",
-    "Permissions:ProductTag.Delete": "Delete Product Tag"
+    "Permissions:ProductTag.Delete": "Delete Product Tag",
+
+    "Permission:Customer": "Customer",
+    "Permissions:CustomerList": "Customer",
+    "Permissions:CustomerList.List": "List Customer",
+    "Permissions:CustomerList.View": "View Customer",
+    "Permissions:CustomerList.Create": "Create Customer",
+    "Permissions:CustomerList.Edit": "Edit Customer",
+    "Permissions:CustomerList.Delete": "Delete Customer",
+
+    "Permissions:CustomerGroup": "Customer Group",
+    "Permissions:CustomerGroup.List": "List Customer Group",
+    "Permissions:CustomerGroup.View": "View Customer Group",
+    "Permissions:CustomerGroup.Create": "Create Customer Group",
+    "Permissions:CustomerGroup.Edit": "Edit Customer Group",
+    "Permissions:CustomerGroup.Delete": "Delete Customer Group"
   }
 }

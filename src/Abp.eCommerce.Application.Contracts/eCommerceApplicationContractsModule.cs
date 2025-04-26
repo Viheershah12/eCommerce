@@ -7,6 +7,7 @@ using Volo.Abp.Identity;
 using Volo.Abp.TenantManagement;
 using Product;
 using Management;
+using Customer;
 
 namespace Abp.eCommerce;
 
@@ -21,6 +22,7 @@ namespace Abp.eCommerce;
 )]
 [DependsOn(typeof(ProductApplicationContractsModule))]
 [DependsOn(typeof(ManagementApplicationContractsModule))]
+    [DependsOn(typeof(CustomerApplicationContractsModule))]
     public class eCommerceApplicationContractsModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)

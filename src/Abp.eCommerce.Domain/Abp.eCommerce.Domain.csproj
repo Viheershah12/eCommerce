@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abp.eCommerce.Domain.Shared\Abp.eCommerce.Domain.Shared.csproj" />
-  <ProjectReference Include="..\..\modules\Product\src\Product.Domain\Product.Domain.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.Domain\Management.Domain.csproj" /></ItemGroup>
+  <ProjectReference Include="..\..\modules\Product\src\Product.Domain\Product.Domain.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.Domain\Management.Domain.csproj" /><ProjectReference Include="..\..\modules\Customer\src\Customer.Domain\Customer.Domain.csproj" /></ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Emailing" Version="9.0.3" />

@@ -9,6 +9,7 @@ using Volo.Abp.Identity;
 using Volo.Abp.TenantManagement;
 using Product;
 using Management;
+using Customer;
 
 namespace Abp.eCommerce;
 
@@ -21,6 +22,7 @@ namespace Abp.eCommerce;
     typeof(AbpTenantManagementHttpApiClientModule),
     typeof(AbpSettingManagementHttpApiClientModule)
 )]
+    [DependsOn(typeof(CustomerHttpApiClientModule))]
     public class eCommerceHttpApiClientModule : AbpModule
 {
     public const string RemoteServiceName = "Default";

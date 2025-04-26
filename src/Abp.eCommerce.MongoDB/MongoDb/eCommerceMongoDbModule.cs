@@ -12,6 +12,7 @@ using Volo.Abp.Uow;
 using Volo.Abp.TenantManagement.MongoDB;
 using Product.MongoDB;
 using Management.MongoDB;
+using Customer.MongoDB;
 
 namespace Abp.eCommerce.MongoDB;
 
@@ -29,19 +30,20 @@ namespace Abp.eCommerce.MongoDB;
 )]
 [DependsOn(typeof(ProductMongoDbModule))]
 [DependsOn(typeof(ManagementMongoDbModule))]
+[DependsOn(typeof(CustomerMongoDbModule))]
     public class eCommerceMongoDbModule : AbpModule
-{
-    public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.AddMongoDbContext<eCommerceMongoDbContext>(options =>
+        public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            options.AddDefaultRepositories();
-        });
+            context.Services.AddMongoDbContext<eCommerceMongoDbContext>(options =>
+            {
+                options.AddDefaultRepositories();
+            });
 
-        context.Services.AddAlwaysDisableUnitOfWorkTransaction();
-        Configure<AbpUnitOfWorkDefaultOptions>(options =>
-        {
-            options.TransactionBehavior = UnitOfWorkTransactionBehavior.Disabled;
-        });
+            context.Services.AddAlwaysDisableUnitOfWorkTransaction();
+            Configure<AbpUnitOfWorkDefaultOptions>(options =>
+            {
+                options.TransactionBehavior = UnitOfWorkTransactionBehavior.Disabled;
+            });
+        }
     }
-}

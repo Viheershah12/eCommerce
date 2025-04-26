@@ -20,7 +20,7 @@
     <EmbeddedResource Include="openiddict.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-  <ProjectReference Include="..\..\modules\Product\src\Product.Web\Product.Web.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.Web\Management.Web.csproj" /></ItemGroup>
+  <ProjectReference Include="..\..\modules\Product\src\Product.Web\Product.Web.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.Web\Management.Web.csproj" /><ProjectReference Include="..\..\modules\Customer\src\Customer.Web\Customer.Web.csproj" /></ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Logs\**" />
@@ -48,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\modules\Customer\src\Customer.Web\Customer.Web.csproj" />
     <ProjectReference Include="..\..\modules\Management\src\Management.Web\Management.Web.csproj" />
     <ProjectReference Include="..\..\modules\Product\src\Product.Web\Product.Web.csproj" />
     <ProjectReference Include="..\Abp.eCommerce.Application\Abp.eCommerce.Application.csproj" />

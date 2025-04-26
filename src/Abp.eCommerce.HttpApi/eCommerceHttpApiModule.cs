@@ -10,6 +10,7 @@ using Volo.Abp.Localization;
 using Volo.Abp.TenantManagement;
 using Product;
 using Management;
+using Customer;
 
 namespace Abp.eCommerce;
 
@@ -24,6 +25,7 @@ namespace Abp.eCommerce;
     )]
 [DependsOn(typeof(ProductHttpApiModule))]
 [DependsOn(typeof(ManagementHttpApiModule))]
+    [DependsOn(typeof(CustomerHttpApiModule))]
     public class eCommerceHttpApiModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

@@ -15,6 +15,7 @@ using Volo.Abp.BlobStoring.Database;
 using Volo.Abp.TenantManagement;
 using Product;
 using Management;
+using Customer;
 
 namespace Abp.eCommerce;
 
@@ -31,6 +32,7 @@ namespace Abp.eCommerce;
     )]
 [DependsOn(typeof(ProductDomainSharedModule))]
 [DependsOn(typeof(ManagementDomainSharedModule))]
+    [DependsOn(typeof(CustomerDomainSharedModule))]
     public class eCommerceDomainSharedModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
