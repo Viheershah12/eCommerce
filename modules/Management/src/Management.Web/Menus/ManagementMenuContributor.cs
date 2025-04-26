@@ -1,5 +1,7 @@
 ﻿using Abp.eCommerce.Localization;
+using Management.Permissions;
 using System.Threading.Tasks;
+using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.UI.Navigation;
 
 namespace Management.Web.Menus;
@@ -26,12 +28,14 @@ public class ManagementMenuContributor : IMenuContributor
                 "~/Management", 
                 icon: "fa fa-gear"
             )
+            .RequirePermissions(false, [ManagementPermissions.ContentManagement.Default])
             .AddItem(
                 new ApplicationMenuItem(
                     ManagementMenus.ContentManagement,
                     displayName: l["Menu:ContentManagement"],
                     "~/ContentManagement"
                 )
+                .RequirePermissions(ManagementPermissions.ContentManagement.Default)
             )
         );
 

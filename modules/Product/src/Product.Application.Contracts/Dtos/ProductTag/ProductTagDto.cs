@@ -6,25 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
-namespace Product.Dtos.Product
+namespace Product.Dtos.ProductTag
 {
-    public class GetProductListDto : PagedResultRequestDto
+    public class GetProductTagListDto : PagedResultRequestDto
     {
         public string? Filter { get; set; }
 
         public string? Sorting { get; set; }
     }
 
-    public class ProductDto : BaseIdModel   
+    public class ProductTagDto : BaseIdModel
     {
         public string Name { get; set; }
 
-        public string? SKU { get; set; }
-
         public string? Description { get; set; }
-
-        public bool IsPublished { get; set; }
-
-        public bool IsNew { get; set; }
     }
 }

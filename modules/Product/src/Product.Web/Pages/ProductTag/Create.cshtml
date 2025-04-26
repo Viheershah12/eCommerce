@@ -1,0 +1,52 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Product.Localization
+@using Product.Permissions
+@using Product.Web.Menus
+@using Product.Web.Pages.Product
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IAuthorizationService AuthorizationService
+@inject PageLayout PageLayout
+
+@model Product.Web.Pages.ProductTag.CreateModel
+
+@{
+    PageLayout.Content.MenuItemName = ProductMenus.ProductTag;
+    PageLayout.Content.Title = L["Menu:CreateProductTag"];
+
+    PageLayout.Content.BreadCrumb.Add(L["Menu:ProductTag"], "/ProductTag/");
+}
+
+<form asp-page="/ProductTag/Create">
+    @if (await AuthorizationService.IsGrantedAsync(ProductPermissions.ProductTag.Create))
+    {
+        <abp-column class="text-end pb-3">
+            <abp-button type="submit" text="@L["Save"].Value" button-type="Primary" />
+        </abp-column>
+    }
+
+    <abp-card>
+        <abp-card-header>
+            <abp-row>
+                <abp-card-title>@L["Title:CreateProductTag"]</abp-card-title>
+            </abp-row>
+        </abp-card-header>
+
+        <abp-card-body>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-input asp-for="ProductTag.Name" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="ProductTag.Description" />
+                </abp-column>
+            </abp-row>
+        </abp-card-body>
+    </abp-card>
+</form>
+

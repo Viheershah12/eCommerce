@@ -24,6 +24,13 @@ public class ProductPermissionDefinitionProvider : PermissionDefinitionProvider
         productCategory.AddChild(ProductPermissions.ProductCategory.Create, L("Permissions:ProductCategory.Create"), multiTenancySide: MultiTenancySides.Both);
         productCategory.AddChild(ProductPermissions.ProductCategory.Edit, L("Permissions:ProductCategory.Edit"), multiTenancySide: MultiTenancySides.Both);
         productCategory.AddChild(ProductPermissions.ProductCategory.Delete, L("Permissions:ProductCategory.Delete"), multiTenancySide: MultiTenancySides.Both);
+
+        var productTag = productGroup.AddPermission(ProductPermissions.ProductTag.Default, L("Permissions:ProductTag"), multiTenancySide: MultiTenancySides.Both);
+        productTag.AddChild(ProductPermissions.ProductTag.List, L("Permissions:ProductTag.List"), multiTenancySide: MultiTenancySides.Both);
+        productTag.AddChild(ProductPermissions.ProductTag.View, L("Permissions:ProductTag.View"), multiTenancySide: MultiTenancySides.Both);
+        productTag.AddChild(ProductPermissions.ProductTag.Create, L("Permissions:ProductTag.Create"), multiTenancySide: MultiTenancySides.Both);
+        productTag.AddChild(ProductPermissions.ProductTag.Edit, L("Permissions:ProductTag.Edit"), multiTenancySide: MultiTenancySides.Both);
+        productTag.AddChild(ProductPermissions.ProductTag.Delete, L("Permissions:ProductTag.Delete"), multiTenancySide: MultiTenancySides.Both);
     }
 
     private static LocalizableString L(string name)

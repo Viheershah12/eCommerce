@@ -1,14 +1,16 @@
 ﻿using Abp.eCommerce.Models;
+using Product.Dtos.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Product.Models
+namespace Product.Dtos.Product
 {
-    public class Product : FullAuditedAggregateRoot<Guid>
+    public class CreateUpdateProductDto : BaseIdModel
     {
         public string Name { get; set; }
 
@@ -18,18 +20,20 @@ namespace Product.Models
 
         public string? SKU { get; set; }
 
-        public ProductTag[] ProductTags { get; set; } = [];
+        #region Product Tags 
+        public ProductTagDto[] ProductTags { get; set; } = [];
 
-        public partial class ProductTag : BaseIdModel
+        public partial class ProductTagDto : BaseIdModel
         {
             public string Name { get; set; }
         }
+        #endregion
 
         public string[] LimitedToCustomerGroups { get; set; } = [];
 
         public bool IsPublished { get; set; }
 
-        public bool IsNew { get; set; } 
+        public bool IsNew { get; set; }
 
         public bool IsFeatured { get; set; }
 
@@ -42,9 +46,9 @@ namespace Product.Models
 
         public decimal OldPrice { get; set; } //For Internal Use
 
-        public List<TeirPrice> TeirPrices { get; set; } = [];
+        public List<TeirPriceDto> TeirPrices { get; set; } = [];
 
-        public partial class TeirPrice : BaseIdModel
+        public partial class TeirPriceDto : BaseIdModel
         {
             public Guid CustomerGroupId { get; set; } // e.g., Retail, Wholesale, VIP, etc.
 
@@ -54,6 +58,8 @@ namespace Product.Models
         }
         #endregion
 
-        public List<Media>? Media { get; set; }
+        public List<MediaDto>? Media { get; set; }
+
+        public List<MediaDto>? UploadedMedia { get; set; }
     }
 }

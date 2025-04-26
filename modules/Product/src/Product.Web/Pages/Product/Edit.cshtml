@@ -1,0 +1,139 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Product.Localization
+@using Product.Permissions
+@using Product.Web.Menus
+@using Product.Web.Pages.Product
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IAuthorizationService AuthorizationService
+@inject PageLayout PageLayout
+
+@model Product.Web.Pages.Product.EditModel
+
+@{
+    PageLayout.Content.MenuItemName = ProductMenus.Product;
+    PageLayout.Content.Title = L["Menu:EditProduct"];
+
+    PageLayout.Content.BreadCrumb.Add(L["Menu:Product"], "/Product/");
+}
+
+<form asp-page="/Product/Edit" enctype="multipart/form-data">
+    <abp-input asp-for="Product.Id" type="hidden" />
+
+    <abp-row>
+        <abp-column size-md="_6">
+            <h3 class="title">@L["Title:EditProduct"]</h3>
+        </abp-column>
+
+        @if (await AuthorizationService.IsGrantedAsync(ProductPermissions.Product.Edit))
+        {
+            <abp-column size-md="_6" class="text-end pb-3">
+                <abp-button type="submit" text="@L["Save"].Value" button-type="Primary" />
+            </abp-column>
+        }
+    </abp-row>
+
+    <abp-tabs tab-style="PillVertical" vertical-header-size="_2">
+        <abp-tab active="true" title="@L["General"]">
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-input asp-for="Product.Name" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <abp-select asp-for="Product.Category" asp-items="Model.ProductCategoryDropdown" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="Product.SKU" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="Product.Description" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="Product.AvailableFrom" label="@L["AvailableFrom"]" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="Product.AvailableTo" label="@L["AvailableTo"]" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column size-md="_6">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Product.ProductTagIds">@L["ProductTags"]</label>
+                        <select asp-for="Product.ProductTagIds"
+                                class="auto-complete-select"
+                                multiple="multiple"
+                                data-autocomplete-api-url="/api/product/producttag/getList?MaxResultCount=1000"
+                                data-autocomplete-display-property="name"
+                                data-autocomplete-value-property="id"
+                                data-autocomplete-items-property="items"
+                                data-autocomplete-filter-param-name="filter">
+
+                                @if (Model.Product.ProductTags != null)
+                                {
+                                    @foreach (var tag in Model.Product.ProductTags)
+                                    {
+                                        <option value="@tag.Id" selected>@tag.Name</option>
+                                    }
+                                }
+                        </select>
+                    </div>
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column size-md="_4">
+                    <div class="form-check form-switch mt-1 mb-3">
+                        <input class="form-check-input" type="checkbox" asp-for="Product.IsPublished">
+                        <label class="form-check-label" asp-for="Product.IsPublished">@L["IsPublished"]</label>
+                    </div>
+                </abp-column>
+
+                <abp-column size-md="_4">
+                    <div class="form-check form-switch mt-1 mb-3">
+                        <input class="form-check-input" type="checkbox" asp-for="Product.IsNew">
+                        <label class="form-check-label" asp-for="Product.IsNew">@L["IsNew"]</label>
+                    </div>
+                </abp-column>
+
+                <abp-column size-md="_4">
+                    <div class="form-check form-switch mt-1 mb-3">
+                        <input class="form-check-input" type="checkbox" asp-for="Product.IsFeatured">
+                        <label class="form-check-label" asp-for="Product.IsFeatured">@L["IsFeatured"]</label>
+                    </div>
+                </abp-column>
+            </abp-row>
+        </abp-tab>
+
+        <abp-tab title="@L["Prices"]">
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-input asp-for="Product.Price" type="number" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="Product.OldPrice" label="@L["OldPrice"]" type="number" />
+                </abp-column>
+            </abp-row>
+        </abp-tab>
+
+        <abp-tab title="@L["Pictures"]">
+            <abp-row>
+
+            </abp-row>
+        </abp-tab>
+    </abp-tabs>
+</form>

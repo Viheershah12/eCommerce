@@ -16,6 +16,11 @@
     "Menu:ProductCategory": "Product Category",
     "Menu:CreateProductCategory": "Create Product Category",
     "Menu:EditProductCategory": "Edit Product Category",
+    "Menu:ProductTag": "Product Tag",
+    "Menu:CreateProductTag": "Create Product Tag",
+    "Menu:EditProductTag": "Edit Product Tag",
+    "Menu:CreateProduct": "Create Product",
+    "Menu:EditProduct": "Edit Product",
 
     //title
     "Title:ContentManagement": "Content Management",
@@ -24,6 +29,12 @@
     "Title:ProductCategory": "Product Category",
     "Title:CreateProductCategory": "Create Product Category",
     "Title:EditProductCategory": "Edit Product Category",
+    "Title:Product": "Product",
+    "Title:ProductTag": "Product Tag",
+    "Title:CreateProductTag": "Create Product Tag",
+    "Title:EditProductTag": "Edit Product Tag",
+    "Title:CreateProduct": "Create Product",
+    "Title:EditProduct": "Edit Product",
 
     //notification
     "SuccessfullyAdded": "Successfully Added!",
@@ -44,6 +55,12 @@
     "CategoryMedia": "Category Media",
     "DisplayOrder": "Display Order",
     "IsActive": "Active",
+    "AvailableFrom": "Available From",
+    "AvailableTo": "Available To",
+    "ProductTags": "Product Tags",
+    "IsNew": "Mark As New",
+    "IsFeatured": "Featured",
+    "OldPrice": "Old Price",
 
     //permissions
     "Permission:Management": "Management",
@@ -67,6 +84,13 @@
     "Permissions:ProductCategory.View": "View Product Category",
     "Permissions:ProductCategory.Create": "Create Product Category",
     "Permissions:ProductCategory.Edit": "Edit Product Category",
-    "Permissions:ProductCategory.Delete": "Delete Product Category"
+    "Permissions:ProductCategory.Delete": "Delete Product Category",
+
+    "Permissions:ProductTag": "Product Tag",
+    "Permissions:ProductTag.List": "List Product Tag",
+    "Permissions:ProductTag.View": "View Product Tag",
+    "Permissions:ProductTag.Create": "Create Product Tag",
+    "Permissions:ProductTag.Edit": "Edit Product Tag",
+    "Permissions:ProductTag.Delete": "Delete Product Tag"
   }
 }

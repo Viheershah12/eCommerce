@@ -15,6 +15,8 @@ public class ProductMongoDbContext : AbpMongoDbContext, IProductMongoDbContext
 
     public IMongoCollection<Models.ProductCategory> ProductCategory => Collection<Models.ProductCategory>();
 
+    public IMongoCollection<Models.ProductTag> ProductTag => Collection<Models.ProductTag>();
+
     protected override void CreateModel(IMongoModelBuilder modelBuilder)
     {
         base.CreateModel(modelBuilder);

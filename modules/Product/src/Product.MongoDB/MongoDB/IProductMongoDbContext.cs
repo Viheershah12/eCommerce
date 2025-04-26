@@ -14,4 +14,6 @@ public interface IProductMongoDbContext : IAbpMongoDbContext
     IMongoCollection<Models.Product> Product { get; }
 
     IMongoCollection<Models.ProductCategory> ProductCategory { get; }
+
+    IMongoCollection<Models.ProductTag> ProductTag { get; }
 }

@@ -26,6 +26,15 @@ public class ProductPermissions
         public const string Delete = Default + ".Delete";
     }
 
+    public static class ProductTag
+    {
+        public const string Default = GroupName + ".ProductTag";
+        public const string List = Default + ".List";
+        public const string Create = Default + ".Create";
+        public const string View = Default + ".View";
+        public const string Edit = Default + ".Edit";
+        public const string Delete = Default + ".Delete";
+    }
     public static string[] GetAll()
     {
         return ReflectionHelper.GetPublicConstantsRecursively(typeof(ProductPermissions));

@@ -12,35 +12,35 @@
 @inject IAuthorizationService AuthorizationService
 @inject PageLayout PageLayout
 
-@model Product.Web.Pages.Product.IndexModel
+@model Product.Web.Pages.ProductTag.IndexModel
 
 @{
-    PageLayout.Content.MenuItemName = ProductMenus.Product;
-    PageLayout.Content.Title = L["Menu:Product"];
+    PageLayout.Content.MenuItemName = ProductMenus.ProductTag;
+    PageLayout.Content.Title = L["Menu:ProductTag"];
 }
 
 @section scripts
 {
-    <abp-script src="/Pages/Product/js/Index.js" />
+    <abp-script src="/Pages/ProductTag/js/Index.js" />
 }
 
 <abp-card>
     <abp-card-header>
         <abp-row>
             <abp-column size-md="_6">
-                <abp-card-title>@L["Title:Product"]</abp-card-title>
+                <abp-card-title>@L["Title:ProductTag"]</abp-card-title>
             </abp-column>
 
-            @if (await AuthorizationService.IsGrantedAsync(ProductPermissions.Product.Create))
+            @if (await AuthorizationService.IsGrantedAsync(ProductPermissions.ProductTag.Create))
             {
                 <abp-column size-md="_6" class="text-end">
-                    <a abp-button="Primary" asp-page="/Product/Create"><i class="fa-solid fa-plus"></i> @L["AddNew"]</a>
+                    <a abp-button="Primary" asp-page="/ProductTag/Create"><i class="fa-solid fa-plus"></i> @L["AddNew"]</a>
                 </abp-column>
             }
         </abp-row>
     </abp-card-header>
 
     <abp-card-body>
-        <abp-table striped-rows="true" id="productTable"></abp-table>
+        <abp-table striped-rows="true" id="productTagTable"></abp-table>
     </abp-card-body>
 </abp-card>
