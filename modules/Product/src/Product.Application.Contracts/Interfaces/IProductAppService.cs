@@ -11,6 +11,7 @@ namespace Product.Interfaces
 {
     public interface IProductAppService : IApplicationService
     {
+        #region Product
         Task<PagedResultDto<ProductDto>> GetListAsync(GetProductListDto dto);
 
         Task<Guid> CreateAsync(CreateUpdateProductDto dto);
@@ -20,5 +21,20 @@ namespace Product.Interfaces
         Task UpdateAsync(CreateUpdateProductDto dto);
 
         Task DeleteAsync(Guid id);
+        #endregion
+
+        #region Media
+        Task DeleteProductMediaAsync(DeleteProductMedia dto);
+        #endregion
+
+        #region Tier Price
+        Task CreateTierPriceAsync(CreateUpdateProductTierPriceDto dto);
+
+        Task<TierPriceDto> GetTierPriceAsync(GetTierPriceDto dto);
+
+        Task UpdateTierPriceAsync(CreateUpdateProductTierPriceDto dto);
+
+        Task DeleteTierPriceAsync(DeleteTierPriceDto dto);
+        #endregion 
     }
 }

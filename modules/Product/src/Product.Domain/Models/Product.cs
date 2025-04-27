@@ -18,14 +18,23 @@ namespace Product.Models
 
         public string? SKU { get; set; }
 
+        #region Product Tags
         public ProductTag[] ProductTags { get; set; } = [];
 
         public partial class ProductTag : BaseIdModel
         {
             public string Name { get; set; }
         }
+        #endregion
 
-        public string[] LimitedToCustomerGroups { get; set; } = [];
+        #region Limited To Customer Groups
+        public CustomerGroup[] LimitedToCustomerGroups { get; set; } = [];
+
+        public partial class CustomerGroup : BaseIdModel
+        {
+            public string Name { get; set; }
+        }
+        #endregion 
 
         public bool IsPublished { get; set; }
 
@@ -42,11 +51,13 @@ namespace Product.Models
 
         public decimal OldPrice { get; set; } //For Internal Use
 
-        public List<TeirPrice> TeirPrices { get; set; } = [];
+        public List<TeirPrice> TierPrices { get; set; } = [];
 
         public partial class TeirPrice : BaseIdModel
         {
             public Guid CustomerGroupId { get; set; } // e.g., Retail, Wholesale, VIP, etc.
+
+            public string? CustomerGroup { get; set; }
 
             public decimal Price { get; set; }
 

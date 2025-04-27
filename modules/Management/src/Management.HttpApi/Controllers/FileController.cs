@@ -41,6 +41,13 @@ namespace Management.Controllers
             await _appService.DeleteDownload(id);
         }
 
+        [HttpDelete]
+        [Route("deleteFileMany")]
+        public async Task DeleteDownloadMany(List<Guid> ids)
+        {
+            await _appService.DeleteDownloadMany(ids);
+        }
+
         [HttpGet]
         [Route("DownloadFilebyId")]
         public async Task<FileDto> DownloadFileByIdAsync(Guid id)

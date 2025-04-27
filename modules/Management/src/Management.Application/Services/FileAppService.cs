@@ -212,5 +212,17 @@ namespace Management.Services
                 throw new BusinessException(ex.Message);
             }
         }
+
+        public async Task DeleteDownloadMany(List<Guid> ids)
+        {
+            try
+            {
+                await _fileRepository.DeleteManyAsync(ids);
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
     }
 }

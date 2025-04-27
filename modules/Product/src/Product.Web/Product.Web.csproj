@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\Abp.eCommerce.Web.Common\Abp.eCommerce.Web.Common.csproj" />
+    <ProjectReference Include="..\..\..\Customer\src\Customer.Application.Contracts\Customer.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\..\Management\src\Management.Application.Contracts\Management.Application.Contracts.csproj" />
     <ProjectReference Include="..\Product.Application.Contracts\Product.Application.Contracts.csproj" />
   </ItemGroup>

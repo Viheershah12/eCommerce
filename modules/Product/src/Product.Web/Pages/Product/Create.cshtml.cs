@@ -1,5 +1,6 @@
 using Abp.eCommerce.Enums;
 using Abp.eCommerce.Localization;
+using Abp.eCommerce.Models;
 using Abp.eCommerce.Web.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +11,7 @@ using Product.Interfaces;
 using Product.Web.Models.Product;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Validation;
@@ -84,6 +86,27 @@ namespace Product.Web.Pages.Product
             try
             {
                 var dto = ObjectMapper.Map<CreateViewModel, CreateUpdateProductDto>(Product);
+
+                if (Product.Media != null)
+                {
+                    using var memoryStream = new MemoryStream();
+                    dto.Media = []; 
+
+                    foreach(var file in Product.Media)
+                    {
+                        await file.CopyToAsync(memoryStream);
+
+                        var fileDto = new UserFileDto
+                        {
+                            Filename = file.FileName,
+                            ContentType = file.ContentType,
+                            Extension = Path.GetExtension(file.FileName),
+                            DownloadBinary = memoryStream.ToArray()
+                        };
+
+                        dto.Media.Add(fileDto);
+                    }
+                }
 
                 var id = await _productAppService.CreateAsync(dto);
                 _notificationAppService.ShowSuccessToastNotification(TempData, L["SuccessfullyAdded"]);

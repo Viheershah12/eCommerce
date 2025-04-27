@@ -7,3 +7,57 @@
 .title {
     color: #000;
 }
+
+/* Make indicators darker */
+.carousel-indicators [data-bs-target] {
+    background-color: #333 !important; /* Dark grey dots */
+    width: 8px !important;
+    height: 8px !important;
+    border-radius: 50% !important;
+    opacity: 1 !important; /* Fully visible */
+}
+
+/* Active dot */
+.carousel-indicators .active {
+    background-color: #0d6efd !important; /* Bootstrap primary color (blue) for active dot */
+}
+
+/* Optionally push indicators higher if they touch the image bottom */
+.carousel-indicators {
+    bottom: 15px;
+}
+
+/* Style the previous and next buttons */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px !important;
+    height: 50px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background-color: rgba(0, 0, 0, 0.4) !important; /* Default semi-transparent backdrop */
+    border-radius: 50% !important;
+    transition: background-color 0.3s ease, transform 0.3s ease !important;
+}
+
+/* Make icons centered */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 20px !important;
+    height: 20px !important;
+    background-size: 100% 100% !important;
+}
+
+/* On hover, stronger background and scale up a little */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.7) !important; /* Darker backdrop on hover */
+    transform: translateY(-50%) scale(1.1) !important; /* Slight zoom effect */
+}
+
+.carousel-control-prev {
+    margin-left: 15px;
+}
+
+.carousel-control-next {
+    margin-right: 15px;
+}

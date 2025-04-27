@@ -136,7 +136,7 @@ namespace Abp.eCommerce.Models
         public string Name { get; set; }
     }
 
-    public class UserFileDto
+    public class UserFileDto : BaseIdModel
     {
         public byte[]? DownloadBinary { get; set; }
 

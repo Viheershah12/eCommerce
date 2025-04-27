@@ -27,6 +27,7 @@ namespace Product.Web.Models.Product
         [Display(Name = "SKU")]
         public string? SKU { get; set; }
 
+        #region Product Tags
         public string[]? ProductTagIds { get; set; } = [];
 
         public ProductTagViewModel[]? ProductTags { get; set; } = [];
@@ -35,6 +36,18 @@ namespace Product.Web.Models.Product
         {
             public string Name { get; set; }
         }
+        #endregion
+
+        #region Limited To Customer Group
+        public string[]? LimitedToCustomerGroupIds { get; set; } = [];
+
+        public CustomerGroupViewModel[]? LimitedToCustomerGroups { get; set; } = [];
+
+        public partial class CustomerGroupViewModel : BaseIdModel
+        {
+            public string Name { get; set; }
+        }
+        #endregion 
 
         public bool IsPublished { get; set; }
 
@@ -56,6 +69,6 @@ namespace Product.Web.Models.Product
 
         public List<IFormFile>? Media { get; set; } 
 
-        public List<UserFile>? UploadedMedia { get; set; }
+        public List<UserFileDto>? UploadedMedia { get; set; }
     }
 }

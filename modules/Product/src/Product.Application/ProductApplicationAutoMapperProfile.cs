@@ -20,17 +20,22 @@ public class ProductApplicationAutoMapperProfile : Profile
         // Product
         CreateMap<Models.Product, ProductDto>();
         CreateMap<Models.Product, CreateUpdateProductDto>()
+            .Ignore(x => x.Media)
             .Ignore(x => x.UploadedMedia);
 
         CreateMap<CreateUpdateProductDto, Models.Product>()
             .IgnoreFullAuditedObjectProperties()
             .Ignore(x => x.ExtraProperties)
-            .Ignore(x => x.ConcurrencyStamp);
+            .Ignore(x => x.ConcurrencyStamp)
+            .Ignore(x => x.Media);
 
         CreateMap<Models.Product.TeirPrice, CreateUpdateProductDto.TeirPriceDto>()
             .ReverseMap();
 
         CreateMap<Models.Product.ProductTag, CreateUpdateProductDto.ProductTagDto>()
+            .ReverseMap();
+
+        CreateMap<Models.Product.CustomerGroup, CreateUpdateProductDto.CustomerGroupDto>()
             .ReverseMap();
 
         // Product Category

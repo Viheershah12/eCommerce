@@ -29,7 +29,14 @@ namespace Product.Dtos.Product
         }
         #endregion
 
-        public string[] LimitedToCustomerGroups { get; set; } = [];
+        #region Limited To Customer Groups
+        public CustomerGroupDto[] LimitedToCustomerGroups { get; set; } = [];
+
+        public partial class CustomerGroupDto : BaseIdModel
+        {
+            public string Name { get; set; }
+        }
+        #endregion 
 
         public bool IsPublished { get; set; }
 
@@ -46,11 +53,13 @@ namespace Product.Dtos.Product
 
         public decimal OldPrice { get; set; } //For Internal Use
 
-        public List<TeirPriceDto> TeirPrices { get; set; } = [];
+        public List<TeirPriceDto> TierPrices { get; set; } = [];
 
         public partial class TeirPriceDto : BaseIdModel
         {
             public Guid CustomerGroupId { get; set; } // e.g., Retail, Wholesale, VIP, etc.
+
+            public string CustomerGroup { get; set; }
 
             public decimal Price { get; set; }
 
@@ -58,8 +67,8 @@ namespace Product.Dtos.Product
         }
         #endregion
 
-        public List<MediaDto>? Media { get; set; }
+        public List<UserFileDto>? Media { get; set; }
 
-        public List<MediaDto>? UploadedMedia { get; set; }
+        public List<UserFileDto>? UploadedMedia { get; set; }
     }
 }

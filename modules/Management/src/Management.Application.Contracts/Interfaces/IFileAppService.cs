@@ -24,5 +24,7 @@ namespace Management.Interfaces
         Task<FileDto> DownloadFileByNameAsync(string fileName);
 
         Task DeleteDownload(Guid id);
+
+        Task DeleteDownloadMany(List<Guid> ids);
     }
 }

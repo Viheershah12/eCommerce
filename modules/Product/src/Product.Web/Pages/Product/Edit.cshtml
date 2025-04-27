@@ -21,8 +21,24 @@
     PageLayout.Content.BreadCrumb.Add(L["Menu:Product"], "/Product/");
 }
 
+@{
+    var uploadedMediaJson = Model.Product.UploadedMedia != null
+        ? Json.Serialize(Model.Product.UploadedMedia.Select(m => new { DownloadBinary = $"data:{m.ContentType};base64,{Convert.ToBase64String(m.DownloadBinary)}", m.ContentType, m.Id, IsInDb = true })).ToString()
+        : "[]";
+}
+
+@section scripts
+{
+    <script>
+        let uploadedImages = @Html.Raw(uploadedMediaJson);
+    </script>
+
+    <abp-script src="/Pages/Product/js/Edit.js" />
+}
+
 <form asp-page="/Product/Edit" enctype="multipart/form-data">
     <abp-input asp-for="Product.Id" type="hidden" />
+    <abp-input asp-for="TierPrice" type="hidden" />
 
     <abp-row>
         <abp-column size-md="_6">
@@ -38,7 +54,7 @@
     </abp-row>
 
     <abp-tabs tab-style="PillVertical" vertical-header-size="_2">
-        <abp-tab active="true" title="@L["General"]">
+        <abp-tab active="true" name="General" title="@L["General"]">
             <abp-row>
                 <abp-column size-md="_6">
                     <abp-input asp-for="Product.Name" />
@@ -93,6 +109,29 @@
                     </div>
                 </abp-column>
 
+                <abp-column size-md="_6">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Product.LimitedToCustomerGroupIds">@L["LimitedToCustomerGroups"]</label>
+                        <select asp-for="Product.LimitedToCustomerGroupIds"
+                                class="auto-complete-select"
+                                multiple="multiple"
+                                data-autocomplete-api-url="/api/customer/customergroup/getList?MaxResultCount=1000"
+                                data-autocomplete-display-property="name"
+                                data-autocomplete-value-property="id"
+                                data-autocomplete-items-property="items"
+                                data-autocomplete-filter-param-name="filter">
+
+                            @if (Model.Product.LimitedToCustomerGroups != null)
+                            {
+                                @foreach (var customerGroup in Model.Product.LimitedToCustomerGroups)
+                                {
+                                    <option value="@customerGroup.Id" selected>@customerGroup.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </abp-column>
+
                 <abp-column-breaker />
 
                 <abp-column size-md="_4">
@@ -118,7 +157,7 @@
             </abp-row>
         </abp-tab>
 
-        <abp-tab title="@L["Prices"]">
+        <abp-tab name="Prices" title="@L["Prices"]">
             <abp-row>
                 <abp-column size-md="_6">
                     <abp-input asp-for="Product.Price" type="number" />
@@ -128,12 +167,165 @@
                     <abp-input asp-for="Product.OldPrice" label="@L["OldPrice"]" type="number" />
                 </abp-column>
             </abp-row>
+
+            <abp-column-breaker class="py-1" />
+
+            <abp-row>
+                <abp-column size-md="_6">
+                    <h3 class="title">@L["Title:TierPrices"]</h3>
+                </abp-column>
+
+                <abp-column size-md="_6" class="text-end">
+                    <abp-button type="button" text="@L["CreateTierPrice"].Value" button-type="Primary" size="Small" id="createTierPrice"  />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column>
+                    <abp-table striped-rows="true" id="tierPriceTable"></abp-table>
+                </abp-column>
+            </abp-row>
         </abp-tab>
 
-        <abp-tab title="@L["Pictures"]">
+        <abp-tab name="Pictures" title="@L["Pictures"]">
             <abp-row>
+                <abp-column size-md="_6">
+                    <input class="form-control" asp-for="Product.Media" type="file" onchange="previewImages(this)" multiple />
+                </abp-column>
 
+                <abp-column-breaker class="py-2" />
+
+                @if (Model.Product.UploadedMedia != null && Model.Product.UploadedMedia.Any())
+                {
+                    <div id="thumbnail-wrapper">
+                        <div id="image-preview" class="carousel slide mb-3 position-relative" data-bs-ride="carousel" data-bs-interval="3000">
+                            <!-- Indicators -->
+                            <div class="carousel-indicators" id="thumbnail-indicators">
+                                @for (int i = 0; i < Model.Product.UploadedMedia.Count; i++)
+                                {
+                                    var active = i == 0 ? "active" : "";
+                                    <button type="button" data-bs-target="#uploadedCarousel" data-bs-slide-to="@i" class="@active" aria-current="true" aria-label="Slide @(i + 1)"></button>
+                                }
+                            </div>
+
+                            <!-- Inner Images -->
+                            <div class="carousel-inner" id="image-preview-inner">
+                                @for (int i = 0; i < Model.Product.UploadedMedia.Count; i++)
+                                {
+                                    var media = Model.Product.UploadedMedia[i];
+                                    var isActive = i == 0 ? "active" : "";
+
+                                    <!-- Convert the binary data to Base64 -->
+                                    var base64Image = Convert.ToBase64String(media.DownloadBinary);
+                                    var imageSrc = $"data:{media.ContentType};base64,{base64Image}";
+                                    <!-- Assuming JPEG images; change if needed -->
+
+                                    <div class="carousel-item @isActive">
+                                        <div style="position: relative;">
+                                            <img src="@imageSrc"
+                                                 class="d-block w-100 img-fluid rounded"
+                                                 alt="@media.Filename"
+                                                 style="max-height: 400px; object-fit: contain; cursor: pointer;" onclick="openImageModal(@i)" />
+
+                                            <button onclick="deleteImage(@i)" type="button"
+                                                    style="position: absolute; top: 10px; right: 10px; z-index: 10; background: rgba(255,0,0,0.7); border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                                                @L["Delete"]
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#image-preview" data-bs-slide="prev" style="background-color: rgba(0,0,0,0.4); border-radius: 50%; width:50px; height:50px;">
+                                <i class="fa-solid fa-chevron-left text-white fs-3"></i>
+                            </button>
+
+                            <button class="carousel-control-next" type="button" data-bs-target="#image-preview" data-bs-slide="next" style="background-color: rgba(0,0,0,0.4); border-radius: 50%; width:50px; height:50px;">
+                                <i class="fa-solid fa-chevron-right text-white fs-3"></i>
+                            </button>
+
+                            <!-- Counter -->
+                            <div id="thumbnail-counter" class="position-absolute bottom-0 end-0 bg-dark bg-opacity-50 text-white px-2 py-1 rounded m-2 small">
+                                0 / 0
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div id="thumbnail-wrapper" style="display:none;">
+                        <div id="image-preview" class="carousel slide mb-3 position-relative" data-bs-ride="carousel" data-bs-interval="3000">
+
+                            <!-- Indicators -->
+                            <div class="carousel-indicators" id="thumbnail-indicators"></div>
+
+                            <!-- Inner Images -->
+                            <div class="carousel-inner" id="image-preview-inner">
+                                <!-- Slides will be inserted here -->
+                            </div>
+
+                            <!-- Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#image-preview" data-bs-slide="prev" style="background-color: rgba(0,0,0,0.4); border-radius: 50%; width:50px; height:50px;">
+                                <i class="fa-solid fa-chevron-left text-white fs-3"></i>
+                            </button>
+
+                            <button class="carousel-control-next" type="button" data-bs-target="#image-preview" data-bs-slide="next" style="background-color: rgba(0,0,0,0.4); border-radius: 50%; width:50px; height:50px;">
+                                <i class="fa-solid fa-chevron-right text-white fs-3"></i>
+                            </button>
+
+                            <!-- Counter -->
+                            <div id="thumbnail-counter" class="position-absolute bottom-0 end-0 bg-dark bg-opacity-50 text-white px-2 py-1 rounded m-2 small">
+                                0 / 0
+                            </div>
+
+                        </div>
+                    </div>
+                }
             </abp-row>
         </abp-tab>
     </abp-tabs>
 </form>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <!-- Close button -->
+            <div class="d-flex justify-content-end p-2">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-0 position-relative">
+                <div id="imageCarousel" class="carousel slide" data-bs-ride="false">
+
+                    <!-- Indicators -->
+                    <div class="carousel-indicators" id="modal-indicators">
+                        <!-- Dots will be inserted here -->
+                    </div>
+
+                    <div class="carousel-inner" id="carousel-inner">
+                        <!-- Slides will be inserted here -->
+                    </div>
+
+                    <!-- Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev" style="background-color: rgba(0,0,0,0.4); border-radius: 50%; width:50px; height:50px;">
+                        <i class="fa-solid fa-chevron-left text-white fs-3"></i>
+                    </button>
+
+                    <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next" style="background-color: rgba(0,0,0,0.4); border-radius: 50%; width:50px; height:50px;">
+                        <i class="fa-solid fa-chevron-right text-white fs-3"></i>
+                    </button>
+
+                    <!-- Counter -->
+                    <div id="modal-counter" class="position-absolute bottom-0 end-0 bg-dark bg-opacity-50 text-white px-2 py-1 rounded m-2 small">
+                        0 / 0
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

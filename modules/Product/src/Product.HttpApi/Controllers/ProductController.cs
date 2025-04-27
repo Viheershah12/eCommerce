@@ -27,8 +27,9 @@ namespace Product.Controllers
         {
             _productAppService = productAppService;
         }
-        #endregion 
+        #endregion
 
+        #region Product
         [HttpGet]
         [Route("getList")]
         public async Task<PagedResultDto<ProductDto>> GetListAsync(GetProductListDto dto)
@@ -63,5 +64,44 @@ namespace Product.Controllers
         {
             await _productAppService.DeleteAsync(id);
         }
+        #endregion
+
+        #region Media
+        [HttpDelete]
+        [Route("deleteProductMedia")]
+        public async Task DeleteProductMediaAsync(DeleteProductMedia dto)
+        {
+            await _productAppService.DeleteProductMediaAsync(dto);  
+        }
+        #endregion
+
+        #region Tier Price
+        [HttpPost]
+        [Route("createTierPrice")]
+        public async Task CreateTierPriceAsync(CreateUpdateProductTierPriceDto dto)
+        {
+            await _productAppService.CreateTierPriceAsync(dto);
+        }
+
+        [HttpGet]
+        public async Task<TierPriceDto> GetTierPriceAsync(GetTierPriceDto dto)
+        {
+            return await _productAppService.GetTierPriceAsync(dto);
+        }
+
+        [HttpPut]
+        [Route("updateTierPrice")]
+        public async Task UpdateTierPriceAsync(CreateUpdateProductTierPriceDto dto)
+        {
+            await _productAppService.UpdateTierPriceAsync(dto);
+        }
+
+        [HttpPut]
+        [Route("deleteTierPrice")]
+        public async Task DeleteTierPriceAsync(DeleteTierPriceDto dto)
+        {
+            await _productAppService.DeleteTierPriceAsync(dto);
+        }
+        #endregion
     }
 }

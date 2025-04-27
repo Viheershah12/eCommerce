@@ -1,0 +1,45 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IAuthorizationService AuthorizationService
+
+@model Product.Web.Pages.Product.CreateTierPriceModalModel
+
+@{
+    Layout = null;
+}
+
+<form asp-page="/Product/CreateTierPriceModal">
+    <abp-input asp-for="TierPrice.ProductId" type="hidden" />
+
+    <abp-modal>
+        <abp-modal-header title="@L["Title:CreateTierPrice"].Value"></abp-modal-header>
+
+        <abp-modal-body>
+            <abp-row>
+                <abp-column>
+                    <abp-select asp-for="TierPrice.CustomerGroupId" asp-items="Model.CustomerGroupDropdown" label="@L["CustomerGroup"]" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column>
+                    <abp-input asp-for="TierPrice.Price" type="number" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column>
+                    <abp-input asp-for="TierPrice.MinimumQuantity" />
+                </abp-column>
+            </abp-row>
+        </abp-modal-body>
+
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>
+

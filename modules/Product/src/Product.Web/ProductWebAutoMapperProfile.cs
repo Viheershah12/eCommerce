@@ -24,8 +24,12 @@ public class ProductWebAutoMapperProfile : Profile
         CreateMap<Pages.Product.CreateModel.CreateViewModel, CreateUpdateProductDto>()
             .Ignore(x => x.UploadedMedia)
             .Ignore(x => x.Media)
-            .Ignore(x => x.LimitedToCustomerGroups)
-            .Ignore(x => x.TeirPrices)
+            .Ignore(x => x.TierPrices)
+            .ForMember(dest => dest.LimitedToCustomerGroups, opt => opt.MapFrom(x =>
+                x.LimitedToCustomerGroupIds != null
+                    ? x.LimitedToCustomerGroupIds.Select(id => new CreateUpdateProductDto.CustomerGroupDto { Id = id.To<Guid>() }).ToList()
+                    : new List<CreateUpdateProductDto.CustomerGroupDto>()
+            ))
             .ForMember(dest => dest.ProductTags, opt => opt.MapFrom(x =>
                 x.ProductTagIds != null
                     ? x.ProductTagIds.Select(id => new CreateUpdateProductDto.ProductTagDto { Id = id.To<Guid>() }).ToList()
@@ -35,8 +39,12 @@ public class ProductWebAutoMapperProfile : Profile
         CreateMap<Pages.Product.EditModel.EditViewModel, CreateUpdateProductDto>()
             .Ignore(x => x.UploadedMedia)
             .Ignore(x => x.Media)
-            .Ignore(x => x.LimitedToCustomerGroups)
-            .Ignore(x => x.TeirPrices)
+            .Ignore(x => x.TierPrices)
+            .ForMember(dest => dest.LimitedToCustomerGroups, opt => opt.MapFrom(x =>
+                x.LimitedToCustomerGroupIds != null
+                    ? x.LimitedToCustomerGroupIds.Select(id => new CreateUpdateProductDto.CustomerGroupDto { Id = id.To<Guid>() }).ToList()
+                    : new List<CreateUpdateProductDto.CustomerGroupDto>()
+            ))
             .ForMember(dest => dest.ProductTags, opt => opt.MapFrom(x =>
                 x.ProductTagIds != null
                     ? x.ProductTagIds.Select(id => new CreateUpdateProductDto.ProductTagDto { Id = id.To<Guid>() }).ToList()
@@ -45,9 +53,17 @@ public class ProductWebAutoMapperProfile : Profile
 
         CreateMap<CreateUpdateProductDto, Pages.Product.EditModel.EditViewModel>()
             .Ignore(x => x.Media)
-            .Ignore(x => x.ProductTagIds);
+            .Ignore(x => x.ProductTagIds)
+            .Ignore(x => x.LimitedToCustomerGroupIds);
 
         CreateMap<CreateUpdateProductDto.ProductTagDto, Pages.Product.EditModel.EditViewModel.ProductTagViewModel>();
+        CreateMap<CreateUpdateProductDto.CustomerGroupDto, Pages.Product.EditModel.EditViewModel.CustomerGroupViewModel>();
+
+        CreateMap<Pages.Product.CreateTierPriceModalModel.CreateViewModel, CreateUpdateProductTierPriceDto>();
+        CreateMap<Pages.Product.EditTierPriceModalModel.EditViewModel, CreateUpdateProductTierPriceDto>();
+
+        CreateMap<TierPriceDto, Pages.Product.EditTierPriceModalModel.EditViewModel>()
+            .Ignore(x => x.ProductId);
 
         // Product Category
         CreateMap<Pages.ProductCategory.CreateModel.CreateViewModel, CreateUpdateProductCategoryDto>()

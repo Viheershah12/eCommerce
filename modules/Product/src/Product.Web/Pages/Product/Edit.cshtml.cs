@@ -14,6 +14,10 @@ using Volo.Abp.Validation;
 using Abp.eCommerce.Enums;
 using Product.Dtos.Product;
 using Volo.Abp.ObjectMapping;
+using Management.Interfaces;
+using Abp.eCommerce.Models;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Product.Web.Pages.Product
 {
@@ -26,10 +30,14 @@ namespace Product.Web.Pages.Product
         [BindProperty]
         public List<SelectListItem> ProductCategoryDropdown { get; set; } = [];
 
+        [BindProperty]
+        public string TierPrice { get; set; }   
+
         private readonly INotificationAppService _notificationAppService;
         private readonly ICommonAppService _commonAppService;
         private readonly IStringLocalizer<eCommerceResource> _localizer;
         private readonly IProductAppService _productAppService;
+        private readonly IFileAppService _fileAppService;
         #endregion
 
         #region CTOR
@@ -37,13 +45,15 @@ namespace Product.Web.Pages.Product
             INotificationAppService notificationAppService,
             ICommonAppService commonAppService,
             IStringLocalizer<eCommerceResource> localizer,
-            IProductAppService productAppService
+            IProductAppService productAppService,
+            IFileAppService fileAppService
         )
         {
             _notificationAppService = notificationAppService;
             _commonAppService = commonAppService;
             _localizer = localizer;
             _productAppService = productAppService;
+            _fileAppService = fileAppService;
         }
         #endregion
 
@@ -69,6 +79,8 @@ namespace Product.Web.Pages.Product
                 var product = await _productAppService.GetAsync(id);
                 Product = ObjectMapper.Map<CreateUpdateProductDto, EditViewModel>(product);
 
+                TierPrice = JsonConvert.SerializeObject(product.TierPrices);
+
                 return Page();
             }
             catch (AbpValidationException ex)
@@ -88,6 +100,27 @@ namespace Product.Web.Pages.Product
             try
             {
                 var dto = ObjectMapper.Map<EditViewModel, CreateUpdateProductDto>(Product);
+
+                if (Product.Media != null)
+                {
+                    using var memoryStream = new MemoryStream();
+                    dto.Media = [];
+
+                    foreach (var file in Product.Media)
+                    {
+                        await file.CopyToAsync(memoryStream);
+
+                        var fileDto = new UserFileDto
+                        {
+                            Filename = file.FileName,
+                            ContentType = file.ContentType,
+                            Extension = Path.GetExtension(file.FileName),
+                            DownloadBinary = memoryStream.ToArray()
+                        };
+
+                        dto.Media.Add(fileDto);
+                    }
+                }
 
                 await _productAppService.UpdateAsync(dto);
                 _notificationAppService.ShowSuccessToastNotification(TempData, L["SuccessfullyUploaded"]);

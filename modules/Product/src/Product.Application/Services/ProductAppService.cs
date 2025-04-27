@@ -9,6 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
+using Customer.Interfaces;
+using Abp.eCommerce.Models;
+using Management.Dtos.File;
+using Product.Dtos.ProductCategory;
+using Management.Interfaces;
+using Product.Dtos.Common;
+using Volo.Abp.ObjectMapping;
+using static Product.Models.Product;
 
 namespace Product.Services
 {
@@ -18,21 +26,31 @@ namespace Product.Services
         private readonly IProductRepository _productRepository;
         private readonly ProductManager _productManager;
         private readonly IProductTagRepository _productTagRepository;
+        private readonly Customer.Interfaces.ICommonAppService _customerCommonAppService;
+        private readonly IFileAppService _fileAppService;
+        private readonly ICustomerGroupAppService _customerGroupAppService;
         #endregion
 
         #region CTOR
         public ProductAppService(
             IProductRepository productRepository,
             ProductManager productManager,
-            IProductTagRepository productTagRepository
+            IProductTagRepository productTagRepository,
+            Customer.Interfaces.ICommonAppService customerCommonAppService,
+            IFileAppService fileAppService,
+            ICustomerGroupAppService customerGroupAppService
         )
         {
             _productRepository = productRepository;
             _productManager = productManager;   
             _productTagRepository = productTagRepository;   
+            _customerCommonAppService = customerCommonAppService;
+            _fileAppService = fileAppService;
+            _customerGroupAppService = customerGroupAppService;
         }
-        #endregion 
+        #endregion
 
+        #region Product
         public async Task<PagedResultDto<ProductDto>> GetListAsync(GetProductListDto dto)
         {
             try
@@ -64,6 +82,29 @@ namespace Product.Services
                     Name = x.Name
                 }).ToArray();
 
+                // Get Customer Group
+                var groupIds = dto.LimitedToCustomerGroups.Select(x => x.Id).ToList();
+                var groups = await _customerCommonAppService.GetCutomerGroupByIdAsync(groupIds);
+
+                productDto.LimitedToCustomerGroups = groups.Select(x => new Models.Product.CustomerGroup
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToArray();
+
+                // Upload File
+                if (dto.Media != null)
+                {
+                    var files = ObjectMapper.Map<List<UserFileDto>, List<CreateFileDto>>(dto.Media);
+                    var uploadedFiles = await _fileAppService.InsertMultipleFilesAsync(files);
+
+                    productDto.Media = uploadedFiles.Select(x => new Media
+                    {
+                        Id = x.Id,
+                        Name = x.Filename
+                    }).ToList();
+                }
+
                 var product = await _productRepository.InsertAsync(productDto);
 
                 return product.Id;
@@ -81,6 +122,13 @@ namespace Product.Services
                 var product = await _productRepository.GetAsync(id);
                 var res = ObjectMapper.Map<Models.Product, CreateUpdateProductDto>(product);
 
+                // Get File
+                if (product.Media != null)
+                {
+                    var files = await _fileAppService.DownloadMultipleFileByIdAsync(product.Media.Select(x => x.Id).ToList());
+                    res.UploadedMedia = ObjectMapper.Map<List<FileDto>, List<UserFileDto>>(files);
+                }
+
                 return res;
             }
             catch (Exception ex)
@@ -97,6 +145,7 @@ namespace Product.Services
 
                 var updatedProduct = ObjectMapper.Map<CreateUpdateProductDto, Models.Product>(dto);
                 updatedProduct.ConcurrencyStamp = product.ConcurrencyStamp;
+                updatedProduct.TierPrices = product.TierPrices;
 
                 // Get Product Tags
                 var tagIds = dto.ProductTags.Select(x => x.Id).ToList();
@@ -107,6 +156,39 @@ namespace Product.Services
                     Id = x.Id,
                     Name = x.Name
                 }).ToArray();
+
+                // Get Customer Group
+                var groupIds = dto.LimitedToCustomerGroups.Select(x => x.Id).ToList();
+                var groups = await _customerCommonAppService.GetCutomerGroupByIdAsync(groupIds);
+
+                updatedProduct.LimitedToCustomerGroups = groups.Select(x => new Models.Product.CustomerGroup
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToArray();
+
+                // Upload Files
+                if (dto.Media != null)
+                {
+                    var files = ObjectMapper.Map<List<UserFileDto>, List<CreateFileDto>>(dto.Media);
+                    var uploadedFiles = await _fileAppService.InsertMultipleFilesAsync(files);
+
+                    if (product.Media != null)
+                    {
+                        updatedProduct.Media = [];
+                        updatedProduct.Media.AddRange(product.Media);
+                    }
+                    else
+                    {
+                        updatedProduct.Media = [];
+                    }
+
+                    updatedProduct.Media.AddRange(uploadedFiles.Select(x => new Media
+                    {
+                        Id = x.Id,
+                        Name = x.Filename
+                    }).ToList());
+                }
 
                 await _productRepository.UpdateAsync(updatedProduct);
             }
@@ -128,5 +210,131 @@ namespace Product.Services
                 throw new BusinessException(ex.Message);
             }
         }
+        #endregion 
+
+        #region Media
+        public async Task DeleteProductMediaAsync(DeleteProductMedia dto)
+        {
+            try
+            {
+                var product = await _productRepository.GetAsync(dto.Id);    
+
+                if (product.Media != null)
+                {
+                    product.Media.RemoveAll(x => x.Id == dto.FileId);
+
+                    await _fileAppService.DeleteDownload(dto.FileId);
+                    await _productRepository.UpdateAsync(product);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+        #endregion 
+
+        #region Tier Price
+        public async Task CreateTierPriceAsync(CreateUpdateProductTierPriceDto dto)
+        {
+            try
+            {
+                var product = await _productRepository.GetAsync(dto.ProductId);
+                product.TierPrices.RemoveAll(x => x.CustomerGroupId == dto.CustomerGroupId);
+
+                var customerGroup = await _customerGroupAppService.GetAsync(dto.CustomerGroupId);
+                product.TierPrices.Add(new Models.Product.TeirPrice
+                {
+                    Id = Guid.NewGuid(),
+                    CustomerGroupId = dto.CustomerGroupId,
+                    CustomerGroup = customerGroup.Name,
+                    Price = dto.Price,
+                    MinimumQuantity = dto.MinimumQuantity
+                });
+
+                await _productRepository.UpdateAsync(product);
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public async Task<TierPriceDto> GetTierPriceAsync(GetTierPriceDto dto)
+        {
+            try
+            {
+                var product = await _productRepository.GetAsync(dto.ProductId);
+                var tierPrice = product.TierPrices.FirstOrDefault(x => x.Id == dto.Id);
+
+                if (tierPrice == null)
+                    throw new UserFriendlyException("The Error");
+
+                var res = new TierPriceDto
+                {
+                    Id = tierPrice.Id,
+                    CustomerGroupId = tierPrice.CustomerGroupId,
+                    CustomerGroup = tierPrice.CustomerGroup,
+                    Price = tierPrice.Price,
+                    MinimumQuantity = tierPrice.MinimumQuantity
+                };
+
+                return res;
+            }
+            catch (UserFriendlyException ex)
+            {
+                throw new BusinessException(ex.Code, ex.Message, ex.Details);
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public async Task UpdateTierPriceAsync(CreateUpdateProductTierPriceDto dto)
+        {
+            try
+            {
+                var product = await _productRepository.GetAsync(dto.ProductId);
+                var tierPrice = product.TierPrices.FirstOrDefault(x => x.Id == dto.Id);
+
+                if (tierPrice != null)
+                {
+                    product.TierPrices.RemoveAll(x => x.Id == dto.Id);
+                    var customerGroup = await _customerGroupAppService.GetAsync(dto.CustomerGroupId);
+
+                    product.TierPrices.Add(new Models.Product.TeirPrice
+                    {
+                        Id = dto.Id,
+                        CustomerGroupId = dto.CustomerGroupId,
+                        CustomerGroup = customerGroup.Name,
+                        Price = dto.Price,
+                        MinimumQuantity = dto.MinimumQuantity
+                    });
+
+                    await _productRepository.UpdateAsync(product);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public async Task DeleteTierPriceAsync(DeleteTierPriceDto dto)
+        {
+            try
+            {
+                var product = await _productRepository.GetAsync(dto.ProductId);
+                product.TierPrices.RemoveAll(x => x.Id == dto.Id);
+
+                await _productRepository.UpdateAsync(product);
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+        #endregion 
     }
 }

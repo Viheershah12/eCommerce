@@ -43,6 +43,9 @@
     "Title:CustomerGroup": "Customer Group",
     "Title:CreateCustomerGroup": "Create Customer Group",
     "Title:EditCustomerGroup": "Edit Customer Group",
+    "Title:TierPrices": "Tier Price",
+    "Title:CreateTierPrice": "Create Tier Price",
+    "Title:EditTierPrice": "Edit Tier Price",
 
     //notification
     "SuccessfullyAdded": "Successfully Added!",
@@ -55,6 +58,7 @@
     "ProductDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Product!",
     "ProductTagDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Product Tag!",
     "CustomerGroupDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Customer Group!",
+    "ImageDeletionConfirmationMessage": "Are you sure you want to delete Image?",
 
     //labels
     "ContentType": "Content Type",
@@ -72,6 +76,10 @@
     "IsNew": "Mark As New",
     "IsFeatured": "Featured",
     "OldPrice": "Old Price",
+    "LimitedToCustomerGroups": "Limited To Customer Groups",
+    "CustomerGroup": "Customer Group",
+    "MinimumQuantity": "Minimum Quantity",
+    "CreateTierPrice": "Create Tier Price",
 
     //permissions
     "Permission:Management": "Management",

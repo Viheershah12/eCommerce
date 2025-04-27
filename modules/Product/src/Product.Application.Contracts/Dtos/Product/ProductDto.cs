@@ -27,4 +27,9 @@ namespace Product.Dtos.Product
 
         public bool IsNew { get; set; }
     }
+
+    public class DeleteProductMedia : BaseIdModel
+    {
+        public Guid FileId { get; set; }
+    }
 }
