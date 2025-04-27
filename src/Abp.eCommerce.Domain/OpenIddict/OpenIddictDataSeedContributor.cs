@@ -127,7 +127,25 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             );
         }
 
+        // Public Web
+        var webPublicClientId = configurationSection["eCommerce_Public_App:ClientId"];
+        if (!webPublicClientId.IsNullOrWhiteSpace())
+        {
+            var webPublicRootUrl = configurationSection["eCommerce_Public_App:RootUrl"]?.TrimEnd('/');
 
+            await CreateApplicationAsync(
+                applicationType: OpenIddictConstants.ApplicationTypes.Web,
+                name: swaggerClientId!,
+                type: OpenIddictConstants.ClientTypes.Public,
+                consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                displayName: "Web Public Application",
+                secret: null,
+                grantTypes: new List<string> { OpenIddictConstants.GrantTypes.AuthorizationCode, },
+                scopes: commonScopes,
+                redirectUri: $"{webPublicRootUrl}/swagger/oauth2-redirect.html",
+                clientUri: webPublicRootUrl
+            );
+        }
     }
 
     private async Task CreateApplicationAsync(

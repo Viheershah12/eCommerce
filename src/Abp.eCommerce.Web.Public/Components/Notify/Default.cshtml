@@ -1,0 +1,111 @@
+﻿@using Abp.eCommerce.MvcNotifications
+@{
+    var title = TempData[eCommerceNotificationKeys.Title]?.ToString() ?? null;
+    var message = TempData[eCommerceNotificationKeys.Message]?.ToString() ?? null;
+    var type = TempData[eCommerceNotificationKeys.Type]?.ToString() ?? null;
+    var renderType = TempData[eCommerceNotificationKeys.RenderType]?.ToString() ?? null;
+    var keep = TempData[eCommerceNotificationKeys.Keep] != null ? true : false;
+
+    if (keep)
+    {
+        TempData.Keep(eCommerceNotificationKeys.Message);
+        TempData.Keep(eCommerceNotificationKeys.Type);
+        TempData.Keep(eCommerceNotificationKeys.RenderType);
+        TempData.Keep(eCommerceNotificationKeys.Title);
+    }
+
+    if (message != null && type != null)
+    {
+        if (renderType == ((int)RenderTypeEnum.popup).ToString())
+        {
+            if (type == ((int)eCommerceNotificationTypeEnum.info).ToString())
+            {
+
+                <script>
+                    abp.message.info('@message', '@title');
+                </script>
+
+
+            }
+            else if (type == ((int)eCommerceNotificationTypeEnum.success).ToString())
+            {
+
+                <script>
+                    abp.message.success('@message', '@title')
+                </script>
+
+
+            }
+            else if (type == ((int)eCommerceNotificationTypeEnum.error).ToString())
+            {
+
+                <script>
+                    abp.message.error('@message', '@title')
+                </script>
+
+
+            }
+            else
+            {
+                <script>
+                    abp.message.warning('@message', '@title')
+                </script>
+
+            }
+        }
+        else
+        {
+            if (type == ((int)eCommerceNotificationTypeEnum.info).ToString())
+            {
+
+                <script>
+                    abp.notify.info('@message');
+                </script>
+
+
+            }
+            else if (type == ((int)eCommerceNotificationTypeEnum.success).ToString())
+            {
+
+                <script>
+                    abp.notify.success('@message')
+                </script>
+
+
+            }
+            else if (type == ((int)eCommerceNotificationTypeEnum.error).ToString())
+            {
+
+                <script>
+                    abp.notify.error('@message')
+                </script>
+
+
+            }
+            else
+            {
+                <script>
+                    abp.notify.warning('@message')
+                </script>
+
+            }
+        }
+        
+
+    }
+    else
+    {
+        if (!string.IsNullOrEmpty(message))
+        {
+            <script>
+                abp.notify.info('@message')
+            </script>
+        }
+    }
+
+    if (!keep)
+    {
+        TempData.Clear();
+    }
+}
+
