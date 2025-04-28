@@ -14,7 +14,233 @@ body {
 
 .abp-empty-layout {
     background-color: #f5f5f7;
-    background-image: url("../images/LandingBackground.jpg");
+    /*background-image: url("../images/LandingBackground.jpg");*/
     background-size: cover;
     background-position: bottom center;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #f9f9f9, #e0eafc);
+    overflow: hidden;
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Particle dots in background */
+.background-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.1;
+    animation: moveParticle 20s linear infinite;
+}
+
+.particle:nth-child(1) {
+    width: 8px;
+    height: 8px;
+    top: 10%;
+    left: 20%;
+    animation-duration: 25s;
+}
+
+.particle:nth-child(2) {
+    width: 6px;
+    height: 6px;
+    top: 50%;
+    left: 80%;
+    animation-duration: 20s;
+}
+
+.particle:nth-child(3) {
+    width: 10px;
+    height: 10px;
+    top: 70%;
+    left: 30%;
+    animation-duration: 30s;
+}
+
+.particle:nth-child(4) {
+    width: 5px;
+    height: 5px;
+    top: 80%;
+    left: 60%;
+    animation-duration: 18s;
+}
+
+.particle:nth-child(5) {
+    width: 7px;
+    height: 7px;
+    top: 40%;
+    left: 10%;
+    animation-duration: 22s;
+}
+
+@keyframes moveParticle {
+    0% {
+        transform: translateY(0px) translateX(0px);
+    }
+
+    50% {
+        transform: translateY(-50px) translateX(30px);
+    }
+
+    100% {
+        transform: translateY(0px) translateX(0px);
+    }
+}
+
+/* Floating Ecommerce icons */
+.background-icons {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.icon1 {
+    top: 10%;
+    left: 20%;
+    animation-duration: 12s;
+}
+
+.icon2 {
+    top: 30%;
+    left: 80%;
+    animation-duration: 16s;
+}
+
+.icon3 {
+    top: 70%;
+    left: 10%;
+    animation-duration: 14s;
+}
+
+.icon4 {
+    top: 80%;
+    left: 70%;
+    animation-duration: 18s;
+}
+
+.icon5 {
+    top: 50%;
+    left: 40%;
+    animation-duration: 20s;
+}
+
+/* Add pulse to some icons */
+.pulse-icon {
+    animation: pulse 1.5s infinite; /* Faster pulse */
+    color: #007bff;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.5); /* Bigger scale */
+        opacity: 0.6; /* More noticeable opacity change */
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Floating Ecommerce icons */
+.icon {
+    position: absolute;
+    font-size: 3rem;
+    opacity: 0.12;
+    animation: floatIcon 12s ease-in-out infinite; /* Faster float animation */
+}
+
+@keyframes floatIcon {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-40px) rotate(30deg); /* Higher float and more rotation */
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+/* Login card animation */
+.login-card {
+    position: relative;
+    z-index: 1;
+    animation: zoomIn 1s ease;
+}
+
+@keyframes zoomIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.login-button {
+    transition: background 0.3s, transform 0.3s;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+}
+
+/* Button Styling */
+.login-button, .guest-button {
+    transition: background 0.3s, transform 0.3s;
+    border-radius: 30px;
+    padding: 12px 30px;
+}
+
+.login-button:hover, .guest-button:hover {
+    transform: translateY(-3px);
+}
+
+.login-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.guest-button {
+    background-color: #f8f9fa;
+    color: #333;
+    border: 2px solid #007bff;
+    margin-top: 10px;
+}
+
+.guest-button:hover {
+    background-color: #e0e0e0;
 }

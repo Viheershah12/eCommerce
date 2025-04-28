@@ -54,6 +54,8 @@ using Volo.Abp.Ui.LayoutHooks;
 using Abp.eCommerce.Web.Common;
 using Customer.Web;
 using Abp.eCommerce.Web.Public.Menus;
+using Microsoft.AspNetCore.Identity;
+using Abp.eCommerce.Web.Public.PasswordlessAuthentication;
 
 namespace Abp.eCommerce.Web.Public;
 
@@ -154,6 +156,11 @@ namespace Abp.eCommerce.Web.Public;
         {
             options.IsDynamicPermissionStoreEnabled = true;
         });
+
+        context.Services
+        .GetObject<IdentityBuilder>()
+        .AddDefaultTokenProviders()
+        .AddPasswordlessLoginProvider();
     }
 
 

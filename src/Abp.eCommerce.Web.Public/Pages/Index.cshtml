@@ -25,21 +25,53 @@
 
 @section styles {
     <abp-style src="/Pages/Index.css" />
+    <abp-style src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 }
 
 @if (!CurrentUser.IsAuthenticated)
 {
-    <div class="row align-items-center justify-content-center vh-100">
-        <div class="col-md-4 text-center">
-            <abp-card>
-                <abp-card-body class="my-5">
-                    <img src="~/images/logo/lepton/logo-dark.png" class="img-fluid pb-3" />
+    <!-- Dynamic Background & Particles -->
+    <div class="background-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
 
-                    <p class="lead pb-4">
-                        @L["AppName"]
+    <!-- Floating Ecommerce Icons -->
+    <div class="background-icons">
+        <div class="icon icon1 pulse-icon"><i class="fas fa-shopping-cart"></i></div>
+        <div class="icon icon2"><i class="fas fa-gift"></i></div>
+        <div class="icon icon3"><i class="fas fa-credit-card"></i></div>
+        <div class="icon icon4"><i class="fas fa-shopping-bag"></i></div>
+        <div class="icon icon5"><i class="fas fa-truck"></i></div>
+    </div>
+
+    <!-- Main Login Card -->
+    <div class="row align-items-center justify-content-center vh-100">
+        <div class="col-md-5 text-center login-card">
+            <abp-card class="shadow-lg rounded-4 border-0">
+                <abp-card-body class="py-5 px-4">
+                    <img src="~/images/logo/lepton/logo-dark.png" class="img-fluid mb-4" style="max-width: 150px;" />
+
+                    <h1 class="mb-3 fw-bold display-5 animate__animated animate__fadeInDown">
+                        Welcome to @L["AppName"]!
+                    </h1>
+
+                    <p class="text-muted mb-4 animate__animated animate__fadeInUp animate__delay-1s" style="font-size: 1.2rem;">
+                        Explore exclusive offers and amazing products!
                     </p>
 
-                    <a abp-button="Primary" href="~/Account/Login"><i class="fa fa-sign-in"></i> @L["Login"]</a>
+                    <!-- Login Button -->
+                    <a abp-button="Primary" href="~/Account/Login" class="btn btn-lg btn-primary rounded-pill px-5 login-button">
+                        <i class="fa fa-sign-in me-2"></i> @L["Login"]
+                    </a>
+
+                    <!-- Continue as Guest Button -->
+                    <a href="@Model.PasswordlessLoginUrl" class="btn btn-lg rounded-pill px-5 guest-button">
+                        <i class="fa fa-user-circle me-2"></i> Continue as Guest
+                    </a>
                 </abp-card-body>
             </abp-card>
         </div>
