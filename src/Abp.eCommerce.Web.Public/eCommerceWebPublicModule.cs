@@ -56,6 +56,7 @@ using Customer.Web;
 using Abp.eCommerce.Web.Public.Menus;
 using Microsoft.AspNetCore.Identity;
 using Abp.eCommerce.Web.Public.PasswordlessAuthentication;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
 
 namespace Abp.eCommerce.Web.Public;
 
@@ -66,7 +67,7 @@ namespace Abp.eCommerce.Web.Public;
     typeof(AbpAutofacModule),
     typeof(AbpStudioClientAspNetCoreModule),
     typeof(AbpIdentityWebModule),
-    typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
+    //typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
     typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpTenantManagementWebModule),
     typeof(AbpFeatureManagementWebModule),
@@ -74,7 +75,8 @@ namespace Abp.eCommerce.Web.Public;
     typeof(AbpAspNetCoreSerilogModule)
 )]
 [DependsOn(typeof(eCommerceWebCommonModule))]
-    public class eCommerceWebPublicModule : AbpModule
+[DependsOn(typeof(AbpAspNetCoreMvcUiBasicThemeModule))]
+public class eCommerceWebPublicModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
@@ -142,7 +144,7 @@ namespace Abp.eCommerce.Web.Public;
             });
         }
 
-        ConfigureBundles();
+        //ConfigureBundles();
         ConfigureUrls(configuration);
         ConfigureAuthentication(context);
         ConfigureAutoMapper();
@@ -158,26 +160,26 @@ namespace Abp.eCommerce.Web.Public;
         });
 
         context.Services
-        .GetObject<IdentityBuilder>()
-        .AddDefaultTokenProviders()
-        .AddPasswordlessLoginProvider();
+            .GetObject<IdentityBuilder>()
+            .AddDefaultTokenProviders()
+            .AddPasswordlessLoginProvider();
     }
 
 
-    private void ConfigureBundles()
-    {
-        Configure<AbpBundlingOptions>(options =>
-        {
-            options.StyleBundles.Configure(
-                LeptonXLiteThemeBundles.Styles.Global,
-                bundle =>
-                {
-                    bundle.AddFiles("/global-scripts.js");
-                    bundle.AddFiles("/global-styles.css");
-                }
-            );
-        });
-    }
+    //private void ConfigureBundles()
+    //{
+    //    Configure<AbpBundlingOptions>(options =>
+    //    {
+    //        options.StyleBundles.Configure(
+    //            LeptonXLiteThemeBundles.Styles.Global,
+    //            bundle =>
+    //            {
+    //                bundle.AddFiles("/global-scripts.js");
+    //                bundle.AddFiles("/global-styles.css");
+    //            }
+    //        );
+    //    });
+    //}
 
     private void ConfigureCustom()
     {
@@ -190,7 +192,7 @@ namespace Abp.eCommerce.Web.Public;
         });
     }
 
-private void ConfigureUrls(IConfiguration configuration)
+    private void ConfigureUrls(IConfiguration configuration)
     {
         Configure<AppUrlOptions>(options =>
         {

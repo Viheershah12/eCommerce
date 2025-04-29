@@ -1,0 +1,101 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+@model Volo.Abp.Account.Web.Pages.Account.RegisterModel
+@inject IHtmlLocalizer<AccountResource> L
+@inject IThemeManager ThemeManager
+
+@{
+    Layout = ThemeManager.CurrentTheme.GetAccountLayout();
+}
+
+@section styles
+{
+    <abp-style src="/account/register.css" />
+}
+
+@section scripts {
+    <script>
+        const toggleRegisterPassword = document.getElementById('toggleRegisterPassword');
+        const registerPasswordField = document.getElementById('registerPasswordField');
+
+        toggleRegisterPassword?.addEventListener('click', function () {
+            const type = registerPasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            registerPasswordField.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="fa fa-eye-slash"></i>' : '<i class="fa fa-eye"></i>';
+        });
+    </script>
+}
+
+<div class="register-page d-flex align-items-center justify-content-center mt-5">
+    <div class="register-card shadow-lg p-5 rounded-4 bg-white" style="max-width: 500px; width: 100%;">
+        <div class="text-center mb-5">
+            <img src="~/images/logo/lepton/logo-dark.png" alt="Logo" class="mb-3" />
+            <h2 class="fw-bold">@L["CreateAccount"]</h2>
+            <p class="text-muted">@L["JoinUsToday"]</p>
+        </div>
+
+        <div class="text-center mb-4">
+            <small>@L["AlreadyRegistered"]?</small>
+            <a href="@Url.Page("./Login", new {returnUrl = Model.ReturnUrl, returnUrlHash = Model.ReturnUrlHash})" class="text-primary fw-bold text-decoration-none">@L["Login"]</a>
+        </div>
+
+        <form method="post">
+            @if (Model.EnableLocalRegister || Model.IsExternalLogin)
+            {
+                <div class="form-floating mb-4">
+                    <input asp-for="Input.UserName" class="form-control rounded-pill" placeholder="Username" />
+                    <label asp-for="Input.UserName">@L["UserName"]</label>
+                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                </div>
+            }
+
+            @if (Model.EnableLocalRegister || Model.IsExternalLogin)
+            {
+                <div class="form-floating mb-4">
+                    <input asp-for="Input.EmailAddress" class="form-control rounded-pill" placeholder="Email" />
+                    <label asp-for="Input.EmailAddress">@L["EmailAddress"]</label>
+                    <span asp-validation-for="Input.EmailAddress" class="text-danger"></span>
+                </div>
+            }
+
+            @if (!Model.IsExternalLogin && Model.EnableLocalRegister)
+            {
+                <div class="form-floating mb-4 position-relative">
+                    <input type="password" asp-for="Input.Password" class="form-control rounded-pill" placeholder="Password" id="registerPasswordField" />
+                    <label asp-for="Input.Password">@L["Password"]</label>
+                    <button type="button" id="toggleRegisterPassword" class="btn position-absolute top-50 end-0 translate-middle-y me-3 border-0 bg-transparent">
+                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                    </button>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+            }
+
+            @if (Model.EnableLocalRegister || Model.IsExternalLogin)
+            {
+                <div class="d-grid gap-3">
+                    <abp-button button-type="Primary" type="submit" class="btn-lg rounded-pill mt-2">@L["Register"]</abp-button>
+                </div>
+            }
+        </form>
+
+        @if (!Model.IsExternalLogin && Model.VisibleExternalProviders.Any())
+        {
+            <div class="text-center mt-5">
+                <p class="text-muted">@L["OrRegisterWith"]</p>
+                <form asp-page="./Login" asp-page-handler="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" asp-route-returnUrlHash="@Model.ReturnUrlHash" method="post">
+                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                        @foreach (var provider in Model.VisibleExternalProviders)
+                        {
+                            <button type="submit" class="btn btn-outline-primary rounded-pill px-4" name="provider" value="@provider.AuthenticationScheme" title="@L["RegisterUsingYourProviderAccount", provider.DisplayName]">
+                                @provider.DisplayName
+                            </button>
+                        }
+                    </div>
+                </form>
+            </div>
+        }
+    </div>
+</div>
+

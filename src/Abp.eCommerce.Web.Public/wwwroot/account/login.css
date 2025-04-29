@@ -1,0 +1,24 @@
+﻿.login-wrapper {
+    background: linear-gradient(135deg, #f9f9f9 0%, #f1f1f1 100%);
+}
+
+.login-card {
+    animation: fadeInUp 0.7s ease forwards;
+    border: none;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#togglePassword {
+    cursor: pointer;
+}

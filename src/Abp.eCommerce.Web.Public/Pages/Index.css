@@ -19,16 +19,6 @@ body {
     background-position: bottom center;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    background: linear-gradient(135deg, #f9f9f9, #e0eafc);
-    overflow: hidden;
-    position: relative;
-    font-family: 'Poppins', sans-serif;
-}
-
 /* Particle dots in background */
 .background-particles {
     position: absolute;

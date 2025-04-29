@@ -26,6 +26,34 @@
 @section styles {
     <abp-style src="/Pages/Index.css" />
     <abp-style src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    @if (!CurrentUser.IsAuthenticated)
+    {
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background: linear-gradient(135deg, #f9f9f9, #e0eafc);
+                overflow: hidden;
+                position: relative;
+                font-family: 'Poppins', sans-serif;
+            }
+        </style>
+    }
+    else
+    {
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                @* height: 100vh; *@
+                background: linear-gradient(135deg, #f9f9f9, #e0eafc);
+                @* overflow: hidden; *@
+                position: relative;
+                font-family: 'Poppins', sans-serif;
+            }
+        </style>
+    }
 }
 
 @if (!CurrentUser.IsAuthenticated)

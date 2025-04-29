@@ -24,6 +24,8 @@ public class eCommerceWebPublicMenuContributor : IMenuContributor
     {
         var l = context.GetLocalizer<eCommerceResource>();
 
+        context.Menu.TryRemoveMenuItem(DefaultMenuNames.Application.Main.Administration);
+
         //Home
         context.Menu.AddItem(
             new ApplicationMenuItem(
@@ -35,27 +37,25 @@ public class eCommerceWebPublicMenuContributor : IMenuContributor
             )
         );
 
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                eCommerceWebPublicMenus.Store,
+                l["Menu:Store"],
+                "~/Store",
+                icon: "fa fa-home",
+                order: 2
+            )
+        );
 
-        //Administration
-        var administration = context.Menu.GetAdministration();
-        administration.Order = 5;
-
-        //Administration->Identity
-        administration.SetSubItemOrder(IdentityMenuNames.GroupName, 1);
-    
-        if (MultiTenancyConsts.IsEnabled)
-        {
-            administration.SetSubItemOrder(TenantManagementMenuNames.GroupName, 1);
-        }
-        else
-        {
-            administration.TryRemoveMenuItem(TenantManagementMenuNames.GroupName);
-        }
-        
-        administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 3);
-
-        //Administration->Settings
-        administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 7);
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                eCommerceWebPublicMenus.About,
+                l["Menu:About"],
+                "~/About",
+                icon: "fa fa-home",
+                order: 3
+            )
+        );
         
         return Task.CompletedTask;
     }

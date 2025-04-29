@@ -1,0 +1,122 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.Account.Settings
+@using Volo.Abp.Account.Web.Pages.Account;
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming;
+@using Volo.Abp.Identity;
+@using Volo.Abp.Settings;
+@using Abp.eCommerce.Localization;
+@model Volo.Abp.Account.Web.Pages.Account.LoginModel
+@inject IHtmlLocalizer<eCommerceResource> L
+@inject IThemeManager ThemeManager
+@inject Volo.Abp.Settings.ISettingProvider SettingProvider
+
+@{
+    Layout = ThemeManager.CurrentTheme.GetAccountLayout();
+}
+
+@section scripts
+{
+    <abp-script-bundle name="@typeof(LoginModel).FullName">
+        <abp-script src="/Pages/Account/Login.js" />
+    </abp-script-bundle>
+
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordField = document.querySelector('#passwordField');
+
+        togglePassword.addEventListener('click', function (e) {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="fa fa-eye-slash"></i>' : '<i class="fa fa-eye"></i>';
+        });
+    </script>
+}
+
+@section styles
+{
+    <abp-style src="/account/login.css" />
+}
+
+<div class="login-page d-flex align-items-center justify-content-center mt-5">
+    <div class="login-card shadow-lg p-5 rounded-4 bg-white" style="max-width: 450px; width: 100%;">
+        <div class="text-center mb-5">
+            <img src="~/images/logo/lepton/logo-dark.png" alt="Logo" class="mb-3" />
+            <h2 class="fw-bold">@L["WelcomeBack"]</h2>
+            <p class="text-muted">@L["LoginToContinue"]</p>
+        </div>
+
+        @if (await SettingProvider.IsTrueAsync(AccountSettingNames.IsSelfRegistrationEnabled))
+        {
+            <div class="text-center mb-4">
+                <small>@L["NewHere"]?</small>
+                <a href="@Url.Page("./Register", new {returnUrl = Model.ReturnUrl, returnUrlHash = Model.ReturnUrlHash})" class="text-primary fw-bold text-decoration-none">@L["RegisterNow"]</a>
+            </div>
+        }
+
+        @if (Model.EnableLocalLogin)
+        {
+            <form method="post">
+                <div class="form-floating mb-4">
+                    <input asp-for="LoginInput.UserNameOrEmailAddress" class="form-control rounded-pill" placeholder="Email or Username" />
+                    <label asp-for="LoginInput.UserNameOrEmailAddress">@L["UserNameOrEmailAddress"]</label>
+                    <span asp-validation-for="LoginInput.UserNameOrEmailAddress" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-4 position-relative">
+                    <input type="password" asp-for="LoginInput.Password" class="form-control rounded-pill" placeholder="Password" maxlength="@IdentityUserConsts.MaxPasswordLength" id="passwordField" />
+                    <label asp-for="LoginInput.Password">@L["Password"]</label>
+                    <button type="button" id="togglePassword" class="btn position-absolute top-50 end-0 translate-middle-y me-3 border-0 bg-transparent">
+                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                    </button>
+                    <span asp-validation-for="LoginInput.Password" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="form-check">
+                        <input asp-for="LoginInput.RememberMe" class="form-check-input" />
+                        <label class="form-check-label" asp-for="LoginInput.RememberMe">@L["RememberMe"]</label>
+                    </div>
+                    <div>
+                        <a href="@Url.Page("./ForgotPassword", new {returnUrl = Model.ReturnUrl, returnUrlHash = Model.ReturnUrlHash})" class="text-primary small">@L["ForgotPassword"]?</a>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-3">
+                    <abp-button type="submit" button-type="Primary" name="Action" value="Login" class="btn-lg rounded-pill">@L["Login"]</abp-button>
+                    @if (Model.ShowCancelButton)
+                    {
+                        <abp-button type="submit" button-type="Secondary" formnovalidate="formnovalidate" name="Action" value="Cancel" class="btn-lg rounded-pill">@L["Cancel"]</abp-button>
+                    }
+                </div>
+            </form>
+        }
+
+        @if (Model.VisibleExternalProviders.Any())
+        {
+            <div class="text-center mt-5">
+                <p class="text-muted">@L["OrLoginWith"]</p>
+                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                    <form asp-page="./Login" asp-page-handler="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" asp-route-returnUrlHash="@Model.ReturnUrlHash" method="post">
+                        @foreach (var provider in Model.VisibleExternalProviders)
+                        {
+                            <button type="submit" class="btn btn-outline-primary rounded-pill px-4" name="provider" value="@provider.AuthenticationScheme" title="@L["LogInUsingYourProviderAccount", provider.DisplayName]">
+                                @provider.DisplayName
+                            </button>
+                        }
+                    </form>
+                </div>
+            </div>
+        }
+
+        @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
+        {
+            <div class="alert alert-warning text-center mt-4">
+                <strong>@L["InvalidLoginRequest"]</strong><br />
+                @L["ThereAreNoLoginSchemesConfiguredForThisClient"]
+            </div>
+        }
+    </div>
+</div>
+

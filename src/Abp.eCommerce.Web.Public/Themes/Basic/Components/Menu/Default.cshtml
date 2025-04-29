@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Volo.Abp.UI.Navigation
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model ApplicationMenu
+
+@{
+    var currentUrl = HttpContextAccessor.HttpContext?.Request?.Path.Value?.ToLower() ?? "";
+}
+
+@foreach (var menuItem in Model.Items)
+{
+    var elementId = string.IsNullOrEmpty(menuItem.ElementId) ? string.Empty : $"id=\"{menuItem.ElementId}\"";
+    var cssClass = string.IsNullOrEmpty(menuItem.CssClass) ? string.Empty : menuItem.CssClass;
+    var disabled = menuItem.IsDisabled ? "disabled" : string.Empty;
+    var url = string.IsNullOrEmpty(menuItem.Url) ? "#" : Url.IsLocalUrl(menuItem.Url) ? Url.Content(menuItem.Url.EnsureStartsWith('~')) : menuItem.Url;
+    var customComponentType = menuItem.GetComponentTypeOrDefault();
+    var isActive = (!string.IsNullOrEmpty(menuItem.Url) && currentUrl.Equals(Url.Content(menuItem.Url).ToLower())) ? "active" : "";
+
+    if (menuItem.IsLeaf)
+    {
+        if (customComponentType != null && typeof(ViewComponent).IsAssignableFrom(customComponentType))
+        {
+            @(await Component.InvokeAsync(customComponentType))
+        }
+        else if (menuItem.Url != null)
+        {
+            <li class="nav-item mx-1 @cssClass @disabled" @elementId>
+                <a class="nav-link @isActive" href="@url" target="@menuItem.Target">
+                    @if (menuItem.Icon != null)
+                    {
+                        if (menuItem.Icon.StartsWith("fa"))
+                        {
+                            <i class="@menuItem.Icon"></i>
+                        }
+                    }
+                    @menuItem.DisplayName
+                </a>
+            </li>
+        }
+    }
+    else
+    {
+        <li class="nav-item">
+            <div class="dropdown">
+                @if (customComponentType != null && typeof(ViewComponent).IsAssignableFrom(customComponentType))
+                {
+                    @(await Component.InvokeAsync(customComponentType))
+                }
+                else
+                {
+                    <a class="nav-link mx-1 dropdown-toggle @isActive" href="#" id="Menu_@(menuItem.Name)" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @if (menuItem.Icon != null)
+                        {
+                            <i class="@menuItem.Icon"></i>
+                        }
+                        @menuItem.DisplayName
+                    </a>
+                    <div class="dropdown-menu border-0 shadow-sm" aria-labelledby="Menu_@(menuItem.Name)">
+                        @foreach (var childMenuItem in menuItem.Items)
+                        {
+                            @await Html.PartialAsync("~/Themes/Basic/Components/Menu/_MenuItem.cshtml", childMenuItem)
+                        }
+                    </div>
+                }
+            </div>
+        </li>
+    }
+}

@@ -1,0 +1,304 @@
+﻿/* --- General Styling --- */
+body {
+    background: linear-gradient(135deg, #f9f9f9, #e0eafc); /* Soft gradient */
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+h1, h2, h3 {
+    color: #1a202c;
+    font-weight: 600;
+}
+
+.container {
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* --- Navbar Styling --- */
+.navbar {
+    background: linear-gradient(90deg, #4f46e5, #3b82f6);
+    border-bottom: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.25rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+    .navbar-brand:hover {
+        color: #fffbeb;
+        text-decoration: none;
+    }
+
+    .navbar-brand img {
+        height: 40px;
+        width: auto;
+        max-height: 40px;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-brand:hover img {
+        transform: scale(1.05);
+    }
+
+/* Navbar links */
+.navbar-nav .nav-link {
+    color: #ffffff;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+    .navbar-nav .nav-link.active,
+    .navbar-nav .nav-link:hover {
+        color: #fffbeb;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 0.5rem;
+    }
+
+    .navbar-nav .nav-link::after {
+        content: "";
+        display: block;
+        width: 0%;
+        height: 4px;
+        background: #fffbeb;
+        transition: width 0.3s;
+        margin-top: 4px;
+    }
+
+    .navbar-nav .nav-link:hover::after,
+    .navbar-nav .nav-link.active::after {
+        width: 100%;
+    }
+
+/* --- Dropdown Styling --- */
+.dropdown-menu {
+    background: #f0f9ff;
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    min-width: 220px;
+    position: absolute;
+    z-index: 1000;
+}
+
+    /* Hover on the dropdown menu only */
+    .dropdown:hover > .dropdown-menu,
+    .dropdown-menu:hover {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .dropdown-menu a.dropdown-item {
+        color: #0f172a;
+        font-weight: 500;
+        padding: 0.5rem 1.5rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+        .dropdown-menu a.dropdown-item:hover {
+            background-color: #bae6fd;
+            transform: translateX(5px);
+            color: #1e40af;
+        }
+
+.dropdown-submenu {
+    position: relative;
+}
+
+    .dropdown-submenu > .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -0.5rem;
+        border-radius: 0.5rem;
+    }
+
+    .dropdown-submenu:hover > .dropdown-menu {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .dropdown-submenu > a::after {
+        content: "▶";
+        float: right;
+        margin-left: 0.5rem;
+        font-size: 0.7em;
+        opacity: 0.6;
+    }
+
+/* Dropdown animation */
+@keyframes dropdownFadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Tools Navbar Styling --- */
+#main-navbar-tools a.dropdown-toggle {
+    text-decoration: none;
+    color: #343a40;
+    font-weight: 500;
+}
+
+/* --- Navbar List Items --- */
+.nav-item {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+/* --- Card Styling --- */
+.container > .card {
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.06) !important;
+    border-radius: 0.75rem;
+    border: none;
+}
+
+.card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+    .card-header .btn {
+        padding: 4px 8px;
+        font-size: 0.85rem;
+    }
+
+/* --- Form & Validation --- */
+.input-validation-error {
+    border-color: #dc3545;
+    background-color: #f8d7da;
+}
+
+.field-validation-error {
+    font-size: 0.85em;
+    color: #dc3545;
+}
+
+/* --- DataTable Adjustments --- */
+.dataTables_scrollBody {
+    min-height: 248px;
+}
+
+div.dataTables_wrapper div.dataTables_info {
+    padding-top: 11px;
+    white-space: nowrap;
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+div.dataTables_wrapper div.dataTables_length label {
+    padding-top: 10px;
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+/* --- RTL (Right to Left) Support --- */
+.rtl .dropdown-menu-right {
+    right: auto;
+    left: 0;
+}
+
+    .rtl .dropdown-menu-right a,
+    .rtl .navbar .dropdown-menu a {
+        text-align: right;
+    }
+
+.rtl .navbar .dropdown-submenu .dropdown-menu {
+    right: 100%;
+    left: auto;
+}
+
+.rtl div.dataTables_wrapper div.dataTables_filter {
+    text-align: left;
+}
+
+    .rtl div.dataTables_wrapper div.dataTables_filter input {
+        margin-left: auto;
+        margin-right: 0.5em;
+    }
+
+.rtl table.dataTable thead th,
+.rtl table.dataTable thead td,
+.rtl table.dataTable tfoot th,
+.rtl table.dataTable tfoot td {
+    text-align: right;
+}
+
+/* --- Language and User Top Buttons --- */
+.d-flex.align-items-center.gap-3 .nav-item {
+    list-style: none;
+}
+
+.d-flex.align-items-center.gap-3 .nav-link.dropdown-toggle {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1e293b;
+    background-color: #f0f9ff;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    border: 1px solid #cbd5e1;
+    transition: all 0.3s ease;
+}
+
+    .d-flex.align-items-center.gap-3 .nav-link.dropdown-toggle:hover,
+    .d-flex.align-items-center.gap-3 .nav-link.dropdown-toggle:focus {
+        background-color: #3b82f6;
+        color: #ffffff;
+        border-color: #3b82f6;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ff7e5f;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f4f7fb;
+}

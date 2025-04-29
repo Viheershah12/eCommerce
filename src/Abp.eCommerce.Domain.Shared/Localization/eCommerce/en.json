@@ -6,6 +6,15 @@
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information visit",
     "Welcome": "Welcome",
 
+    "PublicAppName": "Store",
+    "WelcomeBack": "Welcome Back",
+    "LoginToContinue": "Login To Continue",
+    "NewHere": "New Here",
+    "RegisterNow": "Register Now",
+    "UserNameOrEmailAddress": "Username or Email Address",
+    "RememberMe": "Remember Me",
+    "ForgotPassword": "Forgot Password",
+
     //menu
     "Menu:Management": "Management",
     "Menu:ContentManagement": "Content Management",
