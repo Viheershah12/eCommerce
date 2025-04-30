@@ -18,8 +18,8 @@ public class BasicTheme : ITheme, ITransientDependency
                 return "~/Themes/Basic/Layouts/Account.cshtml";
             case StandardLayouts.Empty:
                 return "~/Themes/Basic/Layouts/Empty.cshtml";
-            case "Blog":
-                return "~/Themes/Basic/Layouts/Blog.cshtml";
+            case "Store":
+                return "~/Themes/Basic/Layouts/Store.cshtml";
             default:
                 return fallbackToDefault ? "~/Themes/Basic/Layouts/Application.cshtml" : string.Empty;
         }
