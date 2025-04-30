@@ -56,14 +56,12 @@ using Customer.Web;
 using Abp.eCommerce.Web.Public.Menus;
 using Microsoft.AspNetCore.Identity;
 using Abp.eCommerce.Web.Public.PasswordlessAuthentication;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Toolbars;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Bundling;
-using Volo.Abp.AspNetCore.Mvc.UI.Theming;
-using Volo.Abp.AspNetCore.Mvc.UI.Components.LayoutHook;
-using Abp.eCommerce.Web.Public.Themes.Basic.Components.BlogMenu;
 using Volo.CmsKit.Web;
+using Abp.eCommerce.Web.Public.Themes.Basic;
+using Volo.Abp.AspNetCore.Mvc.UI.Theming;
+using Abp.eCommerce.Web.Public.Toolbars;
+using Abp.eCommerce.Web.Public.Bundling;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Bundling;
 
 namespace Abp.eCommerce.Web.Public;
 
@@ -74,7 +72,6 @@ namespace Abp.eCommerce.Web.Public;
     typeof(AbpAutofacModule),
     typeof(AbpStudioClientAspNetCoreModule),
     typeof(AbpIdentityWebModule),
-    //typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
     typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpTenantManagementWebModule),
     typeof(AbpFeatureManagementWebModule),
@@ -163,34 +160,29 @@ public class eCommerceWebPublicModule : AbpModule
             }
         });
 
-        Configure<AbpVirtualFileSystemOptions>(options =>
-        {
-            options.FileSets.AddEmbedded<AbpAspNetCoreMvcUiBasicThemeModule>("Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic");
-        });
-
         Configure<AbpToolbarOptions>(options =>
         {
-            options.Contributors.Add(new BasicThemeMainTopToolbarContributor());
+            options.Contributors.Add(new eCommerceBasicThemeToolbarContributor());
         });
 
         Configure<AbpBundlingOptions>(options =>
         {
             options
                 .StyleBundles
-                .Add(BasicThemeBundles.Styles.Global, bundle =>
+                .Add(eCommerceBasicThemeBundles.Styles.Global, bundle =>
                 {
                     bundle
                         .AddBaseBundles(StandardBundles.Styles.Global)
-                        .AddContributors(typeof(BasicThemeGlobalStyleContributor));
+                        .AddContributors(typeof(eCommerceBasicThemeGlobalStyleContributor));
                 });
 
             options
                 .ScriptBundles
-                .Add(BasicThemeBundles.Scripts.Global, bundle =>
+                .Add(eCommerceBasicThemeBundles.Scripts.Global, bundle =>
                 {
                     bundle
                         .AddBaseBundles(StandardBundles.Scripts.Global)
-                        .AddContributors(typeof(BasicThemeGlobalScriptContributor));
+                        .AddContributors(typeof(eCommerceBasicThemeGlobalScriptContributor));
                 });
         });
 

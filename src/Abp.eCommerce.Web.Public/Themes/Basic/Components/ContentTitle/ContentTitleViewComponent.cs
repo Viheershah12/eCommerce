@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Layout;
 
-namespace Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Themes.Basic.Components.ContentTitle;
+namespace Abp.eCommerce.Web.Public.Themes.Basic.Components.ContentTitle;
 
 public class ContentTitleViewComponent : AbpViewComponent
 {

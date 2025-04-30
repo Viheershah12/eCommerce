@@ -1,17 +1,19 @@
-﻿@using Microsoft.Extensions.Options
-@using Volo.Abp.AspNetCore.Mvc.UI.Bundling.TagHelpers
+﻿@using Abp.eCommerce.Web.Public.Bundling
+@using Abp.eCommerce.Web.Public.Themes.Basic.Components.ContentTitle
+@using Abp.eCommerce.Web.Public.Themes.Basic.Components.MainNavbar
+@using Abp.eCommerce.Web.Public.Themes.Basic.Components.PageAlerts
+@using Microsoft.Extensions.Options
 @using Volo.Abp.AspNetCore.Mvc.UI.Components.LayoutHook
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
-@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling
-@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Themes.Basic.Components.ContentTitle
-@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Themes.Basic.Components.MainNavbar
-@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Themes.Basic.Components.PageAlerts
 @using Volo.Abp.AspNetCore.Mvc.UI.Theming
 @using Volo.Abp.AspNetCore.Mvc.UI.Widgets.Components.WidgetScripts
 @using Volo.Abp.AspNetCore.Mvc.UI.Widgets.Components.WidgetStyles
 @using Volo.Abp.Localization
 @using Volo.Abp.Ui.Branding
 @using Volo.Abp.Ui.LayoutHooks
+@using Volo.Abp.AspNetCore.Mvc.UI.Bundling.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling
+
 @inject IBrandingProvider BrandingProvider
 @inject IPageLayout PageLayout
 @inject IOptions<AbpThemingOptions> ThemingOptions
@@ -51,7 +53,7 @@
 
     <title>@pageTitle</title>
 
-    <abp-style-bundle name="@BasicThemeBundles.Styles.Global" />
+    <abp-style-bundle name="@eCommerceBasicThemeBundles.Styles.Global" />
 
     @await Component.InvokeAsync(typeof(WidgetStylesViewComponent))
 
@@ -81,7 +83,7 @@
         @await Component.InvokeLayoutHookAsync(LayoutHooks.PageContent.Last, StandardLayouts.Application)
     </div>
 
-    <abp-script-bundle name="@BasicThemeBundles.Scripts.Global" />
+    <abp-script-bundle name="@eCommerceBasicThemeBundles.Scripts.Global" />
 
     <script src="~/Abp/ApplicationLocalizationScript?cultureName=@CultureInfo.CurrentUICulture.Name"></script>
     <script src="~/Abp/ApplicationConfigurationScript"></script>

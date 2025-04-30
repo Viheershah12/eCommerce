@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.UI.Navigation;
 
-namespace Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Themes.Basic.Components.Menu;
+namespace Abp.eCommerce.Web.Public.Themes.Basic.Components.Menu;
 
 public class MainNavbarMenuViewComponent : AbpViewComponent
 {
