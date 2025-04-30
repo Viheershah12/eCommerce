@@ -131,19 +131,26 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         var webPublicClientId = configurationSection["eCommerce_Public_App:ClientId"];
         if (!webPublicClientId.IsNullOrWhiteSpace())
         {
-            var webPublicRootUrl = configurationSection["eCommerce_Public_App:RootUrl"]?.TrimEnd('/');
-
+            var webPublicUrl = configurationSection["eCommerce_Public_App:RootUrl"]?.TrimEnd('/');
             await CreateApplicationAsync(
                 applicationType: OpenIddictConstants.ApplicationTypes.Web,
-                name: swaggerClientId!,
+                name: webPublicClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Web Public Application",
                 secret: null,
-                grantTypes: new List<string> { OpenIddictConstants.GrantTypes.AuthorizationCode, },
+                grantTypes: new List<string> {
+                    OpenIddictConstants.GrantTypes.AuthorizationCode,
+                    OpenIddictConstants.GrantTypes.Password,
+                    OpenIddictConstants.GrantTypes.ClientCredentials,
+                    OpenIddictConstants.GrantTypes.RefreshToken,
+                    "LinkLogin",
+                    "Impersonation"
+                },
                 scopes: commonScopes,
-                redirectUri: $"{webPublicRootUrl}/swagger/oauth2-redirect.html",
-                clientUri: webPublicRootUrl
+                redirectUri: webPublicUrl,
+                postLogoutRedirectUri: webPublicUrl,
+                clientUri: webPublicUrl
             );
         }
     }

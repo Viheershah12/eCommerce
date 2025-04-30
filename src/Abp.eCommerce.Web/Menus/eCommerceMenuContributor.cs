@@ -7,6 +7,8 @@ using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Identity.Web.Navigation;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.TenantManagement.Web.Navigation;
+using Management.Web.Menus;
+using Volo.CmsKit.Admin.Web.Menus;
 
 namespace Abp.eCommerce.Web.Menus;
 
@@ -35,7 +37,6 @@ public class eCommerceMenuContributor : IMenuContributor
             )
         );
 
-
         //Administration
         var administration = context.Menu.GetAdministration();
         administration.Order = 5;
@@ -56,7 +57,24 @@ public class eCommerceMenuContributor : IMenuContributor
 
         //Administration->Settings
         administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 7);
-        
+
+        // CMS
+        var cms = administration.Items.Find(x => x.Name == CmsKitAdminMenus.GroupName);
+        var management = context.Menu.FindMenuItem(ManagementMenus.Prefix);
+
+        if (cms != null && management != null)
+        {
+            cms.Icon = string.Empty;
+            cms.Order = 2;
+            cms.Items.RemoveAll(x => 
+                x.Name == CmsKitAdminMenus.Pages.PagesMenu ||
+                x.Name == CmsKitAdminMenus.Menus.MenusMenu);
+
+            management.Items.Add(cms);
+        }
+
+        administration.TryRemoveMenuItem(CmsKitAdminMenus.GroupName);
+
         return Task.CompletedTask;
     }
 }

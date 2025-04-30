@@ -16,5 +16,12 @@ public static class eCommerceGlobalFeatureConfigurator
                  * https://docs.abp.io/en/abp/latest/Global-Features
                  */
             });
+
+        GlobalFeatureManager.Instance.Modules.CmsKit(cmsKit =>
+        {
+            cmsKit.EnableAll();
+
+            cmsKit.GlobalResources.Disable();
+        });
     }
 }

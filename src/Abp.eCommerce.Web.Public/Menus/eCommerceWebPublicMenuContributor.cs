@@ -7,6 +7,8 @@ using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Identity.Web.Navigation;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.TenantManagement.Web.Navigation;
+using Volo.CmsKit.Admin.Blogs;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Abp.eCommerce.Web.Public.Menus;
 
@@ -20,9 +22,11 @@ public class eCommerceWebPublicMenuContributor : IMenuContributor
         }
     }
 
-    private static Task ConfigureMainMenuAsync(MenuConfigurationContext context)
+    private static async Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
         var l = context.GetLocalizer<eCommerceResource>();
+        var blogAppService = context.ServiceProvider.GetRequiredService<IBlogAdminAppService>();
+        var list = await blogAppService.GetListAsync(new BlogGetListInput { MaxResultCount = 1000 });
 
         context.Menu.TryRemoveMenuItem(DefaultMenuNames.Application.Main.Administration);
 
@@ -47,16 +51,36 @@ public class eCommerceWebPublicMenuContributor : IMenuContributor
             )
         );
 
+        // Blog
+        var blog = new ApplicationMenuItem(
+                eCommerceWebPublicMenus.Blog,
+                l["Menu:Blog"],
+                "~/Blog",
+                icon: "fa fa-blog",
+                order: 3
+            );
+
+        foreach (var item in list.Items)
+        {
+            blog.AddItem(
+                new ApplicationMenuItem(
+                    item.Name,
+                    item.Name,
+                    $"/Blog/{item.Slug}"
+                )                    
+            );
+        }
+
+        context.Menu.AddItem(blog);
+
         context.Menu.AddItem(
             new ApplicationMenuItem(
                 eCommerceWebPublicMenus.About,
                 l["Menu:About"],
                 "~/About",
                 icon: "fa fa-home",
-                order: 3
+                order: 4
             )
         );
-        
-        return Task.CompletedTask;
     }
 }

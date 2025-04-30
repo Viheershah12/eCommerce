@@ -11,6 +11,7 @@ using Volo.Abp.TenantManagement;
 using Product;
 using Management;
 using Customer;
+using Volo.CmsKit;
 
 namespace Abp.eCommerce;
 
@@ -26,6 +27,7 @@ namespace Abp.eCommerce;
 [DependsOn(typeof(ProductHttpApiModule))]
 [DependsOn(typeof(ManagementHttpApiModule))]
     [DependsOn(typeof(CustomerHttpApiModule))]
+    [DependsOn(typeof(CmsKitHttpApiModule))]
     public class eCommerceHttpApiModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

@@ -1,0 +1,20 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Abp.eCommerce.Web.Public.Menus
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<eCommerceResource> L
+@inject IThemeManager ThemeManager
+
+@model Abp.eCommerce.Web.Public.Pages.Blog.IndexModel
+
+@{
+    ViewBag.PageTitle = L["Blog"];
+    PageLayout.Content.MenuItemName = eCommerceWebPublicMenus.Blog;
+
+    Layout = ThemeManager.CurrentTheme.GetLayout("Blog");
+}
+

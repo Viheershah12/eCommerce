@@ -54,6 +54,7 @@ using Management.Web;
 using Volo.Abp.Ui.LayoutHooks;
 using Abp.eCommerce.Web.Common;
 using Customer.Web;
+using Volo.CmsKit.Web;
 
 namespace Abp.eCommerce.Web;
 
@@ -75,7 +76,8 @@ namespace Abp.eCommerce.Web;
 [DependsOn(typeof(ManagementWebModule))]
 [DependsOn(typeof(eCommerceWebCommonModule))]
 [DependsOn(typeof(CustomerWebModule))]
-    public class eCommerceWebModule : AbpModule
+[DependsOn(typeof(CmsKitWebModule))]
+public class eCommerceWebModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {

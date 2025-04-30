@@ -34,7 +34,8 @@ public class ManagementMenuContributor : IMenuContributor
                 new ApplicationMenuItem(
                     ManagementMenus.ContentManagement,
                     displayName: l["Menu:ContentManagement"],
-                    "~/ContentManagement"
+                    "~/ContentManagement", 
+                    order: 1
                 )
                 .RequirePermissions(ManagementPermissions.ContentManagement.Default)
             )

@@ -57,6 +57,13 @@ using Abp.eCommerce.Web.Public.Menus;
 using Microsoft.AspNetCore.Identity;
 using Abp.eCommerce.Web.Public.PasswordlessAuthentication;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Toolbars;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Bundling;
+using Volo.Abp.AspNetCore.Mvc.UI.Theming;
+using Volo.Abp.AspNetCore.Mvc.UI.Components.LayoutHook;
+using Abp.eCommerce.Web.Public.Themes.Basic.Components.BlogMenu;
+using Volo.CmsKit.Web;
 
 namespace Abp.eCommerce.Web.Public;
 
@@ -75,7 +82,7 @@ namespace Abp.eCommerce.Web.Public;
     typeof(AbpAspNetCoreSerilogModule)
 )]
 [DependsOn(typeof(eCommerceWebCommonModule))]
-[DependsOn(typeof(AbpAspNetCoreMvcUiBasicThemeModule))]
+[DependsOn(typeof(CmsKitWebModule))]
 public class eCommerceWebPublicModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
@@ -118,6 +125,8 @@ public class eCommerceWebPublicModule : AbpModule
                 serverBuilder.SetIssuer(new Uri(configuration["AuthServer:Authority"]!));
             });
         }
+
+        CmsBlogsWebConsts.BlogsRoutePrefix = "Blog";
     }
 
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -143,6 +152,47 @@ public class eCommerceWebPublicModule : AbpModule
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
             });
         }
+
+        Configure<AbpThemingOptions>(options =>
+        {
+            options.Themes.Add<BasicTheme>();
+
+            if (options.DefaultThemeName == null)
+            {
+                options.DefaultThemeName = BasicTheme.Name;
+            }
+        });
+
+        Configure<AbpVirtualFileSystemOptions>(options =>
+        {
+            options.FileSets.AddEmbedded<AbpAspNetCoreMvcUiBasicThemeModule>("Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic");
+        });
+
+        Configure<AbpToolbarOptions>(options =>
+        {
+            options.Contributors.Add(new BasicThemeMainTopToolbarContributor());
+        });
+
+        Configure<AbpBundlingOptions>(options =>
+        {
+            options
+                .StyleBundles
+                .Add(BasicThemeBundles.Styles.Global, bundle =>
+                {
+                    bundle
+                        .AddBaseBundles(StandardBundles.Styles.Global)
+                        .AddContributors(typeof(BasicThemeGlobalStyleContributor));
+                });
+
+            options
+                .ScriptBundles
+                .Add(BasicThemeBundles.Scripts.Global, bundle =>
+                {
+                    bundle
+                        .AddBaseBundles(StandardBundles.Scripts.Global)
+                        .AddContributors(typeof(BasicThemeGlobalScriptContributor));
+                });
+        });
 
         //ConfigureBundles();
         ConfigureUrls(configuration);

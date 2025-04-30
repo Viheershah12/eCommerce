@@ -17,9 +17,9 @@
 
     //menu
     "Menu:Management": "Management",
-    "Menu:ContentManagement": "Content Management",
-    "Menu:EditContent": "Edit Content",
-    "Menu:CreateContent": "Edit Content",
+    "Menu:ContentManagement": "Static Content",
+    "Menu:EditContent": "Edit Static Content",
+    "Menu:CreateContent": "Edit Static Content",
     "Menu:Catalog": "Catalog",
     "Menu:Product": "Product",
     "Menu:ProductCategory": "Product Category",
@@ -37,9 +37,9 @@
     "Menu:EditCustomerGroup": "Edit Customer Group",
 
     //title
-    "Title:ContentManagement": "Content Management",
-    "Title:CreateContent": "Create Content",
-    "Title:EditContent": "Edit Content",
+    "Title:ContentManagement": "Static Content",
+    "Title:CreateContent": "Create Static Content",
+    "Title:EditContent": "Edit Static Content",
     "Title:ProductCategory": "Product Category",
     "Title:CreateProductCategory": "Create Product Category",
     "Title:EditProductCategory": "Edit Product Category",
