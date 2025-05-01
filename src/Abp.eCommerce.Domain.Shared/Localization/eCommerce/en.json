@@ -35,6 +35,9 @@
     "Menu:CustomerGroup": "Customer Group",
     "Menu:CreateCustomerGroup": "Create Customer Group",
     "Menu:EditCustomerGroup": "Edit Customer Group",
+    "Menu:Store": "Store",
+    "Menu:Blog": "Blog",
+    "Menu:About": "About",
 
     //title
     "Title:ContentManagement": "Static Content",
@@ -89,6 +92,7 @@
     "CustomerGroup": "Customer Group",
     "MinimumQuantity": "Minimum Quantity",
     "CreateTierPrice": "Create Tier Price",
+    "ViewDetails": "View Details",
 
     //permissions
     "Permission:Management": "Management",

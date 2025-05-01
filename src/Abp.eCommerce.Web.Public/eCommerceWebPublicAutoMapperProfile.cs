@@ -1,4 +1,9 @@
+using Abp.eCommerce.Models;
+using Abp.eCommerce.Web.Public.Models.Store;
+using AngleSharp.Css.Dom;
 using AutoMapper;
+using Product.Dtos.Product;
+using Volo.Abp.Application.Dtos;
 
 namespace Abp.eCommerce.Web.Public;
 
@@ -6,6 +11,7 @@ public class eCommerceWebPublicAutoMapperProfile : Profile
 {
     public eCommerceWebPublicAutoMapperProfile()
     {
-        //Define your object mappings here, for the Web project
+        CreateMap<PagedResultDto<StoreProductDto>, BasePagedModel<ProductModel>>();
+        CreateMap<StoreProductDto, ProductModel>();
     }
 }

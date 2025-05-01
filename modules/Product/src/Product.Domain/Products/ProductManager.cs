@@ -35,5 +35,19 @@ namespace Product.Products
 
             return (result, totalCount);
         }
+
+        public async Task<(List<Models.Product> items, int totalCount)> GetProductByCategoryListing(GetProductCategoryListDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Sorting))
+                dto.Sorting = nameof(Models.Product.Name);
+
+            var result = await _productRepository.GetListByCategoryAsync(dto.SkipCount, dto.MaxResultCount, dto.Sorting, dto.Filter, dto.Category);
+
+            var totalCount = await _productRepository.CountAsync(x =>
+                (string.IsNullOrEmpty(dto.Filter) || x.Name.Contains(dto.Filter)) && x.Category == dto.Category
+            );
+
+            return (result, totalCount);
+        }
     }
 }

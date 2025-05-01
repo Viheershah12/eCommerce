@@ -20,14 +20,16 @@
     // NEW: Remove initial 'show' classes for clean hover behavior
     $('.dropdown-toggle.show').removeClass('show');
     $('.dropdown-menu.show').removeClass('show');
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
 });
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+
+    // Toggle sidebar and main content classes
+    sidebar.classList.toggle('collapsed');
+    sidebar.classList.toggle('expanded');
+
+    mainContent.classList.toggle('ms-md-320');
+    mainContent.classList.toggle('ms-md-60');
+}

@@ -173,7 +173,8 @@ public class eCommerceWebPublicModule : AbpModule
                 {
                     bundle
                         .AddBaseBundles(StandardBundles.Styles.Global)
-                        .AddContributors(typeof(eCommerceBasicThemeGlobalStyleContributor));
+                        .AddContributors(typeof(eCommerceBasicThemeGlobalStyleContributor))
+                        .AddFiles("/global-styles.css");
                 });
 
             options
@@ -182,7 +183,8 @@ public class eCommerceWebPublicModule : AbpModule
                 {
                     bundle
                         .AddBaseBundles(StandardBundles.Scripts.Global)
-                        .AddContributors(typeof(eCommerceBasicThemeGlobalScriptContributor));
+                        .AddContributors(typeof(eCommerceBasicThemeGlobalScriptContributor))
+                        .AddFiles("/global-scripts.js");
                 });
         });
 
@@ -230,7 +232,7 @@ public class eCommerceWebPublicModule : AbpModule
             options.Add(
                 LayoutHooks.Body.Last,
                     typeof(NotifyViewComponent)
-            );
+            );     
         });
     }
 

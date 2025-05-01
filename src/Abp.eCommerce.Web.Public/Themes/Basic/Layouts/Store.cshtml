@@ -62,19 +62,70 @@
 
     @(await Component.InvokeAsync<MainNavbarViewComponent>())
 
-    <div class="d-flex" style="min-height: 100vh;">
-        <!-- Sidebar: Wider than usual -->
-        @await Component.InvokeAsync(typeof(ProductMenuViewComponent))
+    <!-- Mobile -->
+    <div class="d-md-none p-2 text-end">
+        <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+            <i class="fa-solid fa-bars"></i> Categories
+        </button>
+    </div>
 
-        <!-- Main content: standard container, now shrinks naturally -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar">
+        <div class="offcanvas-header">
+            @* <h5 class="offcanvas-title">Categories</h5> *@
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            @await Component.InvokeAsync(typeof(ProductMenuViewComponent))
+        </div>
+    </div>
+
+    <!-- Desktop -->
+    <div id="sidebar" class="sidebar expanded d-none d-md-block bg-light p-3 border-end shadow-sm min-vh-100 position-fixed start-0 z-1030">
+        @await Component.InvokeAsync(typeof(ProductMenuViewComponent))
+    </div>
+
+    <div id="mainContent" class="main-content ms-md-320">
+        <!-- Main content -->
         <div class="flex-grow-1 px-4" style="min-width: 0;">
             <div class="@containerClass py-3">
                 @(await Component.InvokeAsync<PageAlertsViewComponent>())
 
-                <div id="AbpContentToolbar">
-                    <div class="row mb-2">
-                        @(await Component.InvokeAsync<ContentTitleViewComponent>())
-                        <div class="col">
+                <div id="AbpContentToolbar" class="mb-3">
+                    <div id="AbpContentToolbar" class="mb-3">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <div class="flex-grow-1">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb bg-light px-3 py-2 rounded shadow-sm mb-0">
+
+                                        <!-- Home Icon -->
+                                        <li class="breadcrumb-item">
+                                            <a href="/" class="text-decoration-none text-muted">
+                                                <i class="fa fa-home"></i>
+                                            </a>
+                                        </li>
+
+                                        <!-- Dynamic Breadcrumbs via PageLayout.Content.BreadCrumb -->
+                                        @foreach (var breadcrumb in PageLayout.Content.BreadCrumb.Items)
+                                        {
+                                            <li class="breadcrumb-item">
+                                                <a href="@breadcrumb.Url" class="text-decoration-none text-muted">
+                                                    @breadcrumb.Text
+                                                </a>
+                                            </li>
+                                        }
+
+                                        <!-- Current Page Title -->
+                                        @if (ViewBag.PageTitle != null)
+                                        {
+                                            <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">
+                                                @ViewBag.PageTitle
+                                            </li>
+                                        }
+
+                                    </ol>
+                                </nav>
+                            </div>
+
                             <div class="text-end">
                                 @await RenderSectionAsync("content_toolbar", false)
                             </div>
@@ -100,13 +151,6 @@
     @await Component.InvokeAsync(typeof(WidgetScriptsViewComponent))
 
     @await RenderSectionAsync("scripts", false)
-
-    @*     <footer id="footer" class="parallax-footer">
-        <div class="footer-inner">
-            <h2>🚀 Parallax Scrolling Footer 🚀</h2>
-            <p>Contact us | Privacy Policy | Terms of Service</p>
-        </div>
-    </footer> *@
 
     @await Component.InvokeLayoutHookAsync(LayoutHooks.Body.Last, StandardLayouts.Application)
 </body>

@@ -3,23 +3,43 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top" id="main-navbar">
     <div class="container">
-        @* <div class="d-flex align-items-center">
-            @(await Component.InvokeAsync<MainNavbarBrandViewComponent>())
-        </div> *@
-
+        <!-- Toggler Button -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#main-navbar-collapse" aria-controls="main-navbar-collapse"
                 aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <i class="fa-solid fa-bars text-white"></i>
         </button>
 
+        <!-- Mobile Cart Icon -->
+        <div class="d-lg-none ms-auto">
+            <a href="/cart" class="btn position-relative">
+                <i class="fa-solid fa-shopping-cart text-white"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    3
+                </span>
+            </a>
+        </div>
+
+        <!-- Collapsible Menu -->
         <div class="collapse navbar-collapse" id="main-navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @(await Component.InvokeAsync<MainNavbarMenuViewComponent>())
             </ul>
 
-            <div class="d-flex align-items-center gap-3">
-                @(await Component.InvokeAsync<MainNavbarToolbarViewComponent>())
+            <!-- Desktop Toolbar -->
+            <div class="d-flex justify-content-end">
+                <div class="d-flex align-items-center gap-3">
+                    @(await Component.InvokeAsync<MainNavbarToolbarViewComponent>())
+
+                    <div class="d-none d-lg-block">
+                        <a href="/cart" class="btn position-relative">
+                            <i class="fa-solid fa-shopping-cart text-white"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                            </span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

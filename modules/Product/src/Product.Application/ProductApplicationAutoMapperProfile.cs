@@ -19,6 +19,8 @@ public class ProductApplicationAutoMapperProfile : Profile
 
         // Product
         CreateMap<Models.Product, ProductDto>();
+        CreateMap<Models.Product, StoreProductDto>()
+            .Ignore(x => x.Media);
         CreateMap<Models.Product, CreateUpdateProductDto>()
             .Ignore(x => x.Media)
             .Ignore(x => x.UploadedMedia);

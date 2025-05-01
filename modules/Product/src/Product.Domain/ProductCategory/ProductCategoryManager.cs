@@ -26,7 +26,7 @@ namespace Product.ProductCategory
         }
         #endregion
 
-        public async Task<(List<Models.ProductCategory> items, int totalCount)> GetProductListing(GetProductCategoryListDto dto)
+        public async Task<(List<Models.ProductCategory> items, int totalCount)> GetProductListing(Dtos.ProductCategory.GetProductCategoryListDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Sorting))
                 dto.Sorting = nameof(Models.ProductCategory.Name);

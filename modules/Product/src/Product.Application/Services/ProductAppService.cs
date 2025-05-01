@@ -17,6 +17,7 @@ using Management.Interfaces;
 using Product.Dtos.Common;
 using Volo.Abp.ObjectMapping;
 using static Product.Models.Product;
+using Product.ProductCategory;
 
 namespace Product.Services
 {
@@ -29,6 +30,7 @@ namespace Product.Services
         private readonly Customer.Interfaces.ICommonAppService _customerCommonAppService;
         private readonly IFileAppService _fileAppService;
         private readonly ICustomerGroupAppService _customerGroupAppService;
+        private readonly IProductCategoryRepository _productCategoryRepository;
         #endregion
 
         #region CTOR
@@ -38,7 +40,8 @@ namespace Product.Services
             IProductTagRepository productTagRepository,
             Customer.Interfaces.ICommonAppService customerCommonAppService,
             IFileAppService fileAppService,
-            ICustomerGroupAppService customerGroupAppService
+            ICustomerGroupAppService customerGroupAppService,
+            IProductCategoryRepository productCategoryRepository
         )
         {
             _productRepository = productRepository;
@@ -47,6 +50,7 @@ namespace Product.Services
             _customerCommonAppService = customerCommonAppService;
             _fileAppService = fileAppService;
             _customerGroupAppService = customerGroupAppService;
+            _productCategoryRepository = productCategoryRepository; 
         }
         #endregion
 
@@ -61,6 +65,44 @@ namespace Product.Services
                 return new PagedResultDto<ProductDto>(totalCount, list);
             }
             catch (Exception ex) 
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public async Task<PagedResultDto<StoreProductDto>> GetListByCategoryAsync(Dtos.Product.GetProductCategoryListDto dto)
+        {
+            try
+            {
+                if (dto.Category == null)
+                {
+                    var category = (await _productCategoryRepository.GetListAsync())
+                        .OrderBy(x => x.DisplayOrder)
+                        .FirstOrDefault();
+
+                    dto.Category = category?.Id;
+                }
+
+                var (items, totalCount) = await _productManager.GetProductByCategoryListing(dto);
+                var list = new List<StoreProductDto>();
+
+                foreach (var item in items)
+                {
+                    var prod = ObjectMapper.Map<Models.Product, StoreProductDto>(item);
+
+                    // Get Files
+                    if (item.Media != null)
+                    {
+                        var files = await _fileAppService.DownloadMultipleFileByIdAsync(item.Media.Select(x => x.Id).ToList());
+                        prod.Media = ObjectMapper.Map<List<FileDto>, List<UserFileDto>>(files);
+                    }
+
+                    list.Add(prod);
+                }
+
+                return new PagedResultDto<StoreProductDto>(totalCount, list);
+            }
+            catch (Exception ex)
             {
                 throw new BusinessException(ex.Message);
             }

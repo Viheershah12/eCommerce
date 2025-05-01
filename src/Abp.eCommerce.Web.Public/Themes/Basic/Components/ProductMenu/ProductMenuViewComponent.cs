@@ -24,7 +24,7 @@ namespace Abp.eCommerce.Web.Public.Themes.Basic.Components.BlogMenu
                 MaxResultCount = 1000
             }); 
 
-            var items = categories.Items.Where(x => x.IsActive).ToList();
+            var items = categories.Items.Where(x => x.IsActive).OrderBy(x => x.DisplayOrder).ToList();
 
             return View("~/Themes/Basic/Components/ProductMenu/Default.cshtml", items);
         }

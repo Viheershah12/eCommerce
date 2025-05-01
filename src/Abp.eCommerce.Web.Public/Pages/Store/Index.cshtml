@@ -2,11 +2,12 @@
 @using Abp.eCommerce.Localization
 @using Abp.eCommerce.Web.Public.Menus
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
 @using Volo.Abp.AspNetCore.Mvc.UI.Theming
 
 @inject IPageLayout PageLayout
-@inject IHtmlLocalizer<eCommerceResource> L
+@inject IStringLocalizer<eCommerceResource> L
 @inject IThemeManager ThemeManager
 
 @model Abp.eCommerce.Web.Public.Pages.Store.IndexModel
@@ -15,11 +16,26 @@
     ViewBag.PageTitle = L["Store"];
     PageLayout.Content.MenuItemName = eCommerceWebPublicMenus.Store;
 
+    PageLayout.Content.BreadCrumb.Add(L["Menu:Product"], "/Product/");
+
     Layout = ThemeManager.CurrentTheme.GetLayout("Store");
 }
 
-<abp-row>
-    <h3 class="title">@L["Store"]</h3>
+@section scripts {
+    <abp-script src="/Pages/Store/js/Index.js" />
+}
+
+<abp-row class="mb-4">
+    <div class="col">
+        <h3 class="title text-primary fw-bold">@L["Store"]</h3>
+        <hr />
+    </div>
 </abp-row>
 
-
+<abp-row>
+    <div class="col-12">
+        <div id="productsTable">
+            <partial name="_Table" model="Model.Products" />
+        </div>
+    </div>
+</abp-row>

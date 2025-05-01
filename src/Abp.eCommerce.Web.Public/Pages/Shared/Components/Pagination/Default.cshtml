@@ -1,0 +1,130 @@
+﻿@using Abp.eCommerce.Localization
+@using Abp.eCommerce.Models
+@using Microsoft.Extensions.Localization
+
+@model PaginationComponentDto
+
+@inject IStringLocalizer<eCommerceResource> L
+
+@{
+    var urlTemplate = Url.Page("/" + Model.Page, Model.PageHandler, new { PageNumber = "{0}", PageSize = Model.PageSize });
+    var filterUrl = string.Empty;
+
+    if (Model.Data != null)
+    {
+        var objectType = Model.Data.GetType();
+
+        foreach (var property in objectType.GetProperties())
+        {
+            var propertyName = property.Name;
+            var propertyValue = property.GetValue(Model.Data);
+
+            urlTemplate += $"&{propertyName}={propertyValue}";
+            filterUrl += $"&{propertyName}={propertyValue}";
+            <input type="hidden" id="@propertyName" value="@propertyValue" />
+        }
+    }
+
+    var startIndex = Math.Max(Model.PageNumber, 1);
+    var finishIndex = (int)Model.TotalPages;
+
+    int previousMultiple = ((Model.PageNumber - 1) / Model.PageListLimit) * Model.PageListLimit + 1;
+    int nextMultiple = previousMultiple + Model.PageListLimit - 1;
+
+    nextMultiple = Math.Min(nextMultiple, finishIndex);
+    previousMultiple = Math.Max(1, nextMultiple - Model.PageListLimit + 1);
+
+    var nextDisabled = "";
+    var prevDisabled = "";
+
+    if (Model.TotalPages == 1)
+    {
+        nextDisabled = "disabled";
+        prevDisabled = "disabled";
+    }
+
+    if (Model.PageNumber == 1)
+        prevDisabled = "disabled";
+
+    if (Model.PageNumber == Model.TotalPages)
+        nextDisabled = "disabled";
+}
+
+@if (Model.TotalPages >= 1)
+{
+    <abp-input asp-for="PageNumber" type="hidden" />
+
+    <div class="mt-2 row align-items-center gap-2">
+        @if (Model.HasPageSize)
+        {
+            <div class="col-auto d-flex align-items-center gap-2 mobile-font">
+                <label class="form-label mb-0">@L["Show"]</label>
+                <select class="form-select form-select-sm" asp-for="PageSize" asp-items="Model.PageSizeList" onchange="changePageSize(this, @Model.PageNumber, '@Model.Page', '@Model.PageHandler', '@Model.PartialId', '@filterUrl')"></select>
+                <span>@L["entries"]</span>
+            </div>
+        }
+
+        <div class="col-auto me-auto mobile-font">
+            <span>@L["Showing"] @((Model.PageNumber - 1) * Model.PageSize + 1) @L["To"] @(Math.Min(Model.PageNumber * Model.PageSize, Model.TotalCount)) of @Model.TotalCount @L["Entries"]</span>
+        </div>
+
+        <div class="col-auto mobile-font">
+            <nav>
+                <ul class="pagination mb-0">
+                    @if (Model.HasQuickLinks)
+                    {
+                        <li class="page-item @(Model.TotalPages == 1 || Model.PageNumber == 1 ? "disabled" : "")">
+                            <button class="page-link first" type="button" aria-disabled="true" aria-label="First" onclick="paginateTable(@Model.PageSize, 1, '@Model.Page', '@Model.PageHandler', '@Model.PartialId', '@filterUrl')">
+                                @L["First"]
+                            </button>
+                        </li>
+
+                        <li class="page-item @prevDisabled">
+                            <button class="page-link previous" type="button" aria-disabled="true" aria-label="Previous" onclick="paginateTable(@Model.PageSize, @(startIndex - 1), '@Model.Page','@Model.PageHandler', '@Model.PartialId', '@filterUrl')">
+                                @L["Previous"]
+                            </button>
+                        </li>
+                    }
+
+                    @if (previousMultiple > 1)
+                    {
+                        <li class="page-item">
+                            <button class="page-link ellipsis" type="button" onclick="paginateTable(@Model.PageSize, @(previousMultiple - 1), '@Model.Page', '@Model.PageHandler', '@Model.PartialId', '@filterUrl')">…</button>
+                        </li>
+                    }
+
+                    @for (var i = previousMultiple; i <= nextMultiple; i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <button class="page-link" type="button" aria-current="page" onclick="paginateTable(@Model.PageSize, @i, '@Model.Page', '@Model.PageHandler', '@Model.PartialId', '@filterUrl')">
+                                @i
+                            </button>
+                        </li>
+                    }
+
+                    @if (nextMultiple < finishIndex)
+                    {
+                        <li class="page-item">
+                            <button class="page-link ellipsis" type="button" onclick="paginateTable(@Model.PageSize, @(nextMultiple + 1), '@Model.Page', '@Model.PageHandler', '@Model.PartialId', '@filterUrl')">…</button>
+                        </li>
+                    }
+
+                    @if (Model.HasQuickLinks)
+                    {
+                        <li class="page-item @nextDisabled">
+                            <button class="page-link next" type="button" aria-disabled="true" aria-label="Next" onclick="paginateTable(@Model.PageSize, @(Model.PageNumber + 1), '@Model.Page', '@Model.PageHandler', '@Model.PartialId', '@filterUrl')">
+                                @L["Next"]
+                            </button>
+                        </li>
+
+                        <li class="page-item @(Model.TotalPages == Model.PageNumber ? "disabled" : "")">
+                            <button class="page-link last" type="button" aria-disabled="true" aria-label="Last" onclick="paginateTable(@Model.PageSize, @Model.TotalPages, '@Model.Page', '@Model.PageHandler', '@Model.PartialId', '@filterUrl')">
+                                @L["Last"]
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+}

@@ -87,7 +87,7 @@ namespace Abp.eCommerce.Models
     #endregion
 
     #region Pagination
-    public class BasePaginationModel<T> : PagedResultDto<T>
+    public class BasePagedModel<T> : PagedResultDto<T>
     {
         public int PageNumber { get; set; } = 0;
 
@@ -129,7 +129,42 @@ namespace Abp.eCommerce.Models
 
         public object? Data { get; set; } = null;
     }
+
+    public class BasePaginationModel : PagedResultRequestDto
+    {
+        private int _pageNumber = 1;
+        private int _pageSize = 10;
+
+        /// <summary>
+        /// The current page number (1-based).
+        /// </summary>
+        public int PageNumber
+        {
+            get => _pageNumber;
+            set => _pageNumber = (value < 1) ? 1 : value;
+        }
+
+        /// <summary>
+        /// The number of items per page.
+        /// </summary>
+        public int PageSize
+        {
+            get => _pageSize;
+            set => _pageSize = (value < 1) ? 10 : value;
+        }
+
+        /// <summary>
+        /// The number of items to skip based on the page number and page size.
+        /// </summary>
+        public override int SkipCount => (PageNumber - 1) * PageSize;
+
+        /// <summary>
+        /// The maximum number of items to retrieve.
+        /// </summary>
+        public override int MaxResultCount => PageSize;
+    }
     #endregion
+
 
     public class Media : BaseIdModel
     {

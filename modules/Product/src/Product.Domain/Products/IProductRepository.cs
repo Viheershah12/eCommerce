@@ -14,5 +14,11 @@ namespace Product.Products
             int maxResultCount,
             string sorting,
             string? filter = null);
+
+        Task<List<Models.Product>> GetListByCategoryAsync(
+            int skipCount,
+            int maxResultCount,
+            string sorting,
+            string? filter = null, Guid? category = null);
     }
 }

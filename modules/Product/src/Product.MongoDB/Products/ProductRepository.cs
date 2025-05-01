@@ -36,5 +36,28 @@ namespace Product.Products
                 .Take(maxResultCount)
                 .ToListAsync();
         }
+
+        public async Task<List<Models.Product>> GetListByCategoryAsync(
+            int skipCount,
+            int maxResultCount,
+            string sorting,
+            string? filter = null, Guid? category = null)
+        {
+            var queryable = await GetMongoQueryableAsync();
+            return await queryable
+                .WhereIf<Models.Product, IMongoQueryable<Models.Product>>(
+                    !string.IsNullOrEmpty(filter),
+                    product => !string.IsNullOrEmpty(product.Name) && product.Name.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
+                )
+                .WhereIf<Models.Product, IMongoQueryable<Models.Product>>(
+                    category != null,
+                    product => product.Category == category
+                )
+                .OrderBy(sorting)
+                .As<IMongoQueryable<Models.Product>>()
+                .Skip(skipCount)
+                .Take(maxResultCount)
+                .ToListAsync();
+        }
     }
 }

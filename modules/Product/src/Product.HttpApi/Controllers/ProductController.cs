@@ -37,6 +37,13 @@ namespace Product.Controllers
             return await _productAppService.GetListAsync(dto);
         }
 
+        [HttpGet]
+        [Route("getListByCategory")]
+        public async Task<PagedResultDto<StoreProductDto>> GetListByCategoryAsync(GetProductCategoryListDto dto)
+        {
+            return await _productAppService.GetListByCategoryAsync(dto);    
+        }
+
         [HttpPost]
         [Route("create")]
         public async Task<Guid> CreateAsync(CreateUpdateProductDto dto)

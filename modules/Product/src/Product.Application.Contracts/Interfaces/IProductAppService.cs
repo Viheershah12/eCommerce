@@ -14,6 +14,8 @@ namespace Product.Interfaces
         #region Product
         Task<PagedResultDto<ProductDto>> GetListAsync(GetProductListDto dto);
 
+        Task<PagedResultDto<StoreProductDto>> GetListByCategoryAsync(Dtos.Product.GetProductCategoryListDto dto);
+
         Task<Guid> CreateAsync(CreateUpdateProductDto dto);
 
         Task<CreateUpdateProductDto> GetAsync(Guid id);

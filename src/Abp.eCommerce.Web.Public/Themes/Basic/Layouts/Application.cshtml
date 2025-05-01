@@ -46,10 +46,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-@*     @if (!ThemingOptions.Value.BaseUrl.IsNullOrWhiteSpace())
-    {
-        <base href="@ThemingOptions.Value.BaseUrl" />
-    } *@
 
     <title>@pageTitle</title>
 
@@ -68,16 +64,50 @@
 
     <div class="@containerClass">
         @(await Component.InvokeAsync<PageAlertsViewComponent>())
-        <div id="AbpContentToolbar">
-            <div class="row mb-2">
-                @(await Component.InvokeAsync<ContentTitleViewComponent>())
-                <div class="col">
+
+        <div id="AbpContentToolbar" class="mb-3">
+            <div id="AbpContentToolbar" class="mb-3">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <div class="flex-grow-1">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb bg-light px-3 py-2 rounded shadow-sm mb-0">
+
+                                <!-- Home Icon -->
+                                <li class="breadcrumb-item">
+                                    <a href="/" class="text-decoration-none text-muted">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Dynamic Breadcrumbs via PageLayout.Content.BreadCrumb -->
+                                @foreach (var breadcrumb in PageLayout.Content.BreadCrumb.Items)
+                                {
+                                    <li class="breadcrumb-item">
+                                        <a href="@breadcrumb.Url" class="text-decoration-none text-muted">
+                                            @breadcrumb.Text
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Current Page Title -->
+                                @if (ViewBag.PageTitle != null)
+                                {
+                                    <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">
+                                        @ViewBag.PageTitle
+                                    </li>
+                                }
+
+                            </ol>
+                        </nav>
+                    </div>
+
                     <div class="text-end">
                         @await RenderSectionAsync("content_toolbar", false)
                     </div>
                 </div>
             </div>
         </div>
+
         @await Component.InvokeLayoutHookAsync(LayoutHooks.PageContent.First, StandardLayouts.Application)
         @RenderBody()
         @await Component.InvokeLayoutHookAsync(LayoutHooks.PageContent.Last, StandardLayouts.Application)
