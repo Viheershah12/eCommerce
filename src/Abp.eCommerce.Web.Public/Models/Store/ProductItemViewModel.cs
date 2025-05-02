@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Abp.eCommerce.Web.Public.Models.Store
 {
-    public class ProductModel : BaseIdModel
+    public class ProductItemViewModel : BaseIdModel
     {
         public string Name { get; set; }
 

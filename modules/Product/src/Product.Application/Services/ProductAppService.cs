@@ -231,6 +231,10 @@ namespace Product.Services
                         Name = x.Filename
                     }).ToList());
                 }
+                else
+                {
+                    updatedProduct.Media = product.Media;
+                }
 
                 await _productRepository.UpdateAsync(updatedProduct);
             }
@@ -377,6 +381,42 @@ namespace Product.Services
                 throw new BusinessException(ex.Message);
             }
         }
+        #endregion
+
+        #region Similar Products
+        public async Task<List<StoreProductDto>> GetSimilarProductAsync(List<Guid> tagIds, int limit = 10)
+        {
+            try
+            {
+                var products = (await _productRepository.GetListAsync(
+                    x => x.ProductTags.Any(tag => tagIds.Contains(tag.Id))
+                ))
+                .Take(limit)
+                .ToList();
+
+                var res = new List<StoreProductDto>();
+                foreach (var item in products)
+                {
+                    var prod = ObjectMapper.Map<Models.Product, StoreProductDto>(item);
+
+                    // Get Files
+                    if (item.Media != null)
+                    {
+                        var files = await _fileAppService.DownloadMultipleFileByIdAsync(item.Media.Select(x => x.Id).ToList());
+                        prod.Media = ObjectMapper.Map<List<FileDto>, List<UserFileDto>>(files);
+                    }
+
+                    res.Add(prod);
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
         #endregion 
     }
 }

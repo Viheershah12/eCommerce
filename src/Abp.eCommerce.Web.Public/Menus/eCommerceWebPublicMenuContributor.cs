@@ -9,6 +9,7 @@ using Volo.Abp.UI.Navigation;
 using Volo.Abp.TenantManagement.Web.Navigation;
 using Volo.CmsKit.Admin.Blogs;
 using Microsoft.Extensions.DependencyInjection;
+using Volo.Abp.Users;
 
 namespace Abp.eCommerce.Web.Public.Menus;
 
@@ -24,63 +25,69 @@ public class eCommerceWebPublicMenuContributor : IMenuContributor
 
     private static async Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
-        var l = context.GetLocalizer<eCommerceResource>();
-        var blogAppService = context.ServiceProvider.GetRequiredService<IBlogAdminAppService>();
-        var list = await blogAppService.GetListAsync(new BlogGetListInput { MaxResultCount = 1000 });
+        var currentUser = context.ServiceProvider.GetRequiredService<ICurrentUser>();
 
-        context.Menu.TryRemoveMenuItem(DefaultMenuNames.Application.Main.Administration);
+        if (currentUser.IsAuthenticated)
+        {
 
-        //Home
-        context.Menu.AddItem(
-            new ApplicationMenuItem(
-                eCommerceWebPublicMenus.Home,
-                l["Menu:Home"],
-                "~/",
-                icon: "fa fa-home",
-                order: 1
-            )
-        );
+            var l = context.GetLocalizer<eCommerceResource>();
+            var blogAppService = context.ServiceProvider.GetRequiredService<IBlogAdminAppService>();
+            var list = await blogAppService.GetListAsync(new BlogGetListInput { MaxResultCount = 1000 });
 
-        context.Menu.AddItem(
-            new ApplicationMenuItem(
-                eCommerceWebPublicMenus.Store,
-                l["Menu:Store"],
-                "~/Store",
-                icon: "fa fa-home",
-                order: 2
-            )
-        );
+            context.Menu.TryRemoveMenuItem(DefaultMenuNames.Application.Main.Administration);
 
-        // Blog
-        var blog = new ApplicationMenuItem(
-                eCommerceWebPublicMenus.Blog,
-                l["Menu:Blog"],
-                "~/Blog",
-                icon: "fa fa-blog",
-                order: 3
+            //Home
+            context.Menu.AddItem(
+                new ApplicationMenuItem(
+                    eCommerceWebPublicMenus.Home,
+                    l["Menu:Home"],
+                    "~/",
+                    icon: "fa fa-home",
+                    order: 1
+                )
             );
 
-        foreach (var item in list.Items)
-        {
-            blog.AddItem(
+            context.Menu.AddItem(
                 new ApplicationMenuItem(
-                    item.Name,
-                    item.Name,
-                    $"/Blog/{item.Slug}"
-                )                    
+                    eCommerceWebPublicMenus.Store,
+                    l["Menu:Store"],
+                    "~/Store",
+                    icon: "fa fa-home",
+                    order: 2
+                )
+            );
+
+            // Blog
+            var blog = new ApplicationMenuItem(
+                    eCommerceWebPublicMenus.Blog,
+                    l["Menu:Blog"],
+                    "~/Blog",
+                    icon: "fa fa-blog",
+                    order: 3
+                );
+
+            foreach (var item in list.Items)
+            {
+                blog.AddItem(
+                    new ApplicationMenuItem(
+                        item.Name,
+                        item.Name,
+                        $"/Blog/{item.Slug}"
+                    )
+                );
+            }
+
+            context.Menu.AddItem(blog);
+
+            context.Menu.AddItem(
+                new ApplicationMenuItem(
+                    eCommerceWebPublicMenus.About,
+                    l["Menu:About"],
+                    "~/About",
+                    icon: "fa fa-home",
+                    order: 4
+                )
             );
         }
-
-        context.Menu.AddItem(blog);
-
-        context.Menu.AddItem(
-            new ApplicationMenuItem(
-                eCommerceWebPublicMenus.About,
-                l["Menu:About"],
-                "~/About",
-                icon: "fa fa-home",
-                order: 4
-            )
-        );
     }
 }

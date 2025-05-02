@@ -13,10 +13,8 @@
 @model Abp.eCommerce.Web.Public.Pages.Store.IndexModel
 
 @{
-    ViewBag.PageTitle = L["Store"];
+    PageLayout.Content.Title = L["Menu:Store"];
     PageLayout.Content.MenuItemName = eCommerceWebPublicMenus.Store;
-
-    PageLayout.Content.BreadCrumb.Add(L["Menu:Product"], "/Product/");
 
     Layout = ThemeManager.CurrentTheme.GetLayout("Store");
 }
@@ -24,13 +22,6 @@
 @section scripts {
     <abp-script src="/Pages/Store/js/Index.js" />
 }
-
-<abp-row class="mb-4">
-    <div class="col">
-        <h3 class="title text-primary fw-bold">@L["Store"]</h3>
-        <hr />
-    </div>
-</abp-row>
 
 <abp-row>
     <div class="col-12">

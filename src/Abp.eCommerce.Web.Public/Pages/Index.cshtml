@@ -2,19 +2,19 @@
 @model Abp.eCommerce.Web.Pages.IndexModel
 
 @using Abp.eCommerce.Web.Public.Menus
+@using Microsoft.Extensions.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
-@using Microsoft.AspNetCore.Mvc.Localization
 @using Abp.eCommerce.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Theming
 @using Volo.Abp.Users
 
 @inject IPageLayout PageLayout
-@inject IHtmlLocalizer<eCommerceResource> L
+@inject IStringLocalizer<eCommerceResource> L
 @inject ICurrentUser CurrentUser
 @inject IThemeManager ThemeManager
 
 @{
-    ViewBag.PageTitle = L["Home"];
+    PageLayout.Content.Title = L["Menu:Home"];
     PageLayout.Content.MenuItemName = eCommerceWebPublicMenus.Home;
 
     if (!CurrentUser.IsAuthenticated)

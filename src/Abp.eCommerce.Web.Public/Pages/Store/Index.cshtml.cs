@@ -16,7 +16,7 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
     {
         #region Fields
         [BindProperty]
-        public BasePagedModel<ProductModel> Products { get; set; }
+        public BasePagedModel<ProductItemViewModel> Products { get; set; }
 
         private readonly IProductAppService _productAppService;
         private readonly INotificationAppService _notificationAppService;
@@ -41,7 +41,7 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
                     MaxResultCount = 5,
                 });
 
-                Products = ObjectMapper.Map<PagedResultDto<StoreProductDto>, BasePagedModel<ProductModel>>(res);
+                Products = ObjectMapper.Map<PagedResultDto<StoreProductDto>, BasePagedModel<ProductItemViewModel>>(res);
                 Products.PageSize = 5;
 
                 return Page();
@@ -63,7 +63,7 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
                     MaxResultCount = 5,
                 });
 
-                Products = ObjectMapper.Map<PagedResultDto<StoreProductDto>, BasePagedModel<ProductModel>>(res);
+                Products = ObjectMapper.Map<PagedResultDto<StoreProductDto>, BasePagedModel<ProductItemViewModel>>(res);
 
                 return PartialView("_Table", Products);
             }
@@ -85,7 +85,7 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
                     SkipCount = model.SkipCount,
                 });
 
-                Products = ObjectMapper.Map<PagedResultDto<StoreProductDto>, BasePagedModel<ProductModel>>(res);
+                Products = ObjectMapper.Map<PagedResultDto<StoreProductDto>, BasePagedModel<ProductItemViewModel>>(res);
 
                 return PartialView("_Table", Products);
             }

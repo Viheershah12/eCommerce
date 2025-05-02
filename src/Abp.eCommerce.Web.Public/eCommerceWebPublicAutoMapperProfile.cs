@@ -11,7 +11,10 @@ public class eCommerceWebPublicAutoMapperProfile : Profile
 {
     public eCommerceWebPublicAutoMapperProfile()
     {
-        CreateMap<PagedResultDto<StoreProductDto>, BasePagedModel<ProductModel>>();
-        CreateMap<StoreProductDto, ProductModel>();
+        CreateMap<PagedResultDto<StoreProductDto>, BasePagedModel<ProductItemViewModel>>();
+        CreateMap<StoreProductDto, ProductItemViewModel>();
+
+        CreateMap<CreateUpdateProductDto, ProductViewModel>();
+        CreateMap<CreateUpdateProductDto.ProductTagDto, ProductViewModel.ProductTagViewModel>();
     }
 }

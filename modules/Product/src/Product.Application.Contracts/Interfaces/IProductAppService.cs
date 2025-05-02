@@ -37,6 +37,10 @@ namespace Product.Interfaces
         Task UpdateTierPriceAsync(CreateUpdateProductTierPriceDto dto);
 
         Task DeleteTierPriceAsync(DeleteTierPriceDto dto);
-        #endregion 
+        #endregion
+
+        #region Similar Products
+        Task<List<StoreProductDto>> GetSimilarProductAsync(List<Guid> tagIds, int limit = 10);
+        #endregion
     }
 }

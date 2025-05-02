@@ -6,7 +6,7 @@
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information visit",
     "Welcome": "Welcome",
 
-    "PublicAppName": "Store",
+    "PublicAppName": "eShop",
     "WelcomeBack": "Welcome Back",
     "LoginToContinue": "Login To Continue",
     "NewHere": "New Here",
@@ -93,6 +93,9 @@
     "MinimumQuantity": "Minimum Quantity",
     "CreateTierPrice": "Create Tier Price",
     "ViewDetails": "View Details",
+    "AddToCart": "Add To Cart",
+    "AddToWishlist": "Add To Wishlist",
+    "SimilarProducts": "Similar Products",
 
     //permissions
     "Permission:Management": "Management",

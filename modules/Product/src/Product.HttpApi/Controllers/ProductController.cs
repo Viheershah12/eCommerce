@@ -110,5 +110,14 @@ namespace Product.Controllers
             await _productAppService.DeleteTierPriceAsync(dto);
         }
         #endregion
+
+        #region Similar Products
+        [HttpGet]
+        [Route("getSimilarProduct")]
+        public async Task<List<StoreProductDto>> GetSimilarProductAsync(List<Guid> tagIds, int limit = 10)
+        {
+            return await _productAppService.GetSimilarProductAsync(tagIds, limit);
+        }
+        #endregion
     }
 }

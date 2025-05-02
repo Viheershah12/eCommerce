@@ -1,35 +1,24 @@
-﻿using Abp.eCommerce.Models;
-using System.Collections.Generic;
-using System;
+﻿
+using Abp.eCommerce.Models;
 using Microsoft.AspNetCore.Http;
-using Product.Web.Models.ProductCategory;
-using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System;
+using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 
-namespace Product.Web.Models.Product
+namespace Abp.eCommerce.Web.Public.Models.Store
 {
     public class ProductViewModel : BaseIdModel
     {
-        [Placeholder("Name")]
-        [Display(Name = "Name")]
-        [Required]
         public string Name { get; set; }
 
-        [Placeholder("Category")]
-        [Display(Name = "Category")]
         public Guid? Category { get; set; }
 
-        [TextArea(Rows = 3)]
-        [Placeholder("Description")]
-        [Display(Name = "Description")]
         public string? Description { get; set; }
 
-        [Placeholder("SKU")]
-        [Display(Name = "SKU")]
         public string? SKU { get; set; }
 
         #region Product Tags
-        public string[]? ProductTagIds { get; set; } = [];
 
         public ProductTagViewModel[]? ProductTags { get; set; } = [];
 
@@ -56,19 +45,13 @@ namespace Product.Web.Models.Product
 
         public bool IsFeatured { get; set; }
 
-        [Placeholder("AvailableFrom")]
-        [Display(Name = "AvailableFrom")]
         public DateTime? AvailableFrom { get; set; }
 
-        [Placeholder("AvailableTo")]
-        [Display(Name = "AvailableTo")]
         public DateTime? AvailableTo { get; set; }
 
         public decimal Price { get; set; }
 
-        public decimal OldPrice { get; set; } //For Internal Use
-
-        public List<IFormFile>? Media { get; set; } 
+        public decimal OldPrice { get; set; } 
 
         public List<UserFileDto>? UploadedMedia { get; set; }
     }
