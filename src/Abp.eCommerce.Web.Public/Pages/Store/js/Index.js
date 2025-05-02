@@ -9,9 +9,16 @@
         },
         success: function (response) {
             $('#productsTable').html(response);
+            const tabs = document.querySelectorAll('.category-item');
 
-            $('.category-item').removeClass('active');
-            $(`#${categoryId}`).addClass('active');
+            tabs.forEach(tab => {
+                const tabId = tab.id;
+                if (tabId === categoryId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
