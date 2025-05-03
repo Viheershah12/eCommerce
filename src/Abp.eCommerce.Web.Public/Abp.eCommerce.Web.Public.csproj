@@ -49,12 +49,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\Customer\src\Customer.Web\Customer.Web.csproj" />
-    <ProjectReference Include="..\..\modules\Management\src\Management.Web\Management.Web.csproj" />
-    <ProjectReference Include="..\..\modules\Product\src\Product.Web\Product.Web.csproj" />
     <ProjectReference Include="..\Abp.eCommerce.Application\Abp.eCommerce.Application.csproj" />
     <ProjectReference Include="..\Abp.eCommerce.HttpApi\Abp.eCommerce.HttpApi.csproj" />
     <ProjectReference Include="..\Abp.eCommerce.MongoDB\Abp.eCommerce.MongoDB.csproj" />
+    <ProjectReference Include="..\Abp.eCommerce.Web.Common\Abp.eCommerce.Web.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

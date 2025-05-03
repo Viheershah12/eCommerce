@@ -14,6 +14,7 @@ using Product.MongoDB;
 using Management.MongoDB;
 using Customer.MongoDB;
 using Volo.CmsKit.MongoDB;
+using Order.MongoDB;
 
 namespace Abp.eCommerce.MongoDB;
 
@@ -33,6 +34,7 @@ namespace Abp.eCommerce.MongoDB;
 [DependsOn(typeof(ManagementMongoDbModule))]
 [DependsOn(typeof(CustomerMongoDbModule))]
     [DependsOn(typeof(CmsKitMongoDbModule))]
+    [DependsOn(typeof(OrderMongoDbModule))]
     public class eCommerceMongoDbModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

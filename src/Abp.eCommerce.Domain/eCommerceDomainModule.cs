@@ -21,6 +21,7 @@ using Product;
 using Management;
 using Customer;
 using Volo.CmsKit;
+using Order;
 
 namespace Abp.eCommerce;
 
@@ -43,6 +44,7 @@ namespace Abp.eCommerce;
 [DependsOn(typeof(ManagementDomainModule))]
     [DependsOn(typeof(CustomerDomainModule))]
     [DependsOn(typeof(CmsKitDomainModule))]
+    [DependsOn(typeof(OrderDomainModule))]
     public class eCommerceDomainModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

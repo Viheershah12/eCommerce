@@ -9,6 +9,7 @@ using Product;
 using Management;
 using Customer;
 using Volo.CmsKit;
+using Order;
 
 namespace Abp.eCommerce;
 
@@ -25,6 +26,7 @@ namespace Abp.eCommerce;
 [DependsOn(typeof(ManagementApplicationContractsModule))]
     [DependsOn(typeof(CustomerApplicationContractsModule))]
     [DependsOn(typeof(CmsKitApplicationContractsModule))]
+    [DependsOn(typeof(OrderApplicationContractsModule))]
     public class eCommerceApplicationContractsModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
