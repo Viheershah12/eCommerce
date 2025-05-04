@@ -1,25 +1,25 @@
 ﻿var l = abp.localization.getResource('eCommerce');
 
-document.getElementById('btnIncrement').addEventListener('click', function () {
+$('#btnIncrement').click(function (e) {
     var input = document.getElementById('quantityInput');
     input.value = parseInt(input.value) + 1;
 });
 
-document.getElementById('btnDecrement').addEventListener('click', function () {
+$('#btnDecrement').click(function (e) {
     var input = document.getElementById('quantityInput');
     if (parseInt(input.value) > 1) {
         input.value = parseInt(input.value) - 1;
     }
 });
 
-$('#addToCart').click(function (e) {
+$('.addToCart').click(function (e) {
     e.preventDefault();
 
     abp.message.confirm(l('AddToCartMessage')).then(function (confirmed) {
         if (!confirmed) return;
 
-        var productId = $('#Product_Id').val();
-        var quantity = parseInt($('#quantityInput').val(), 10);
+        var productId = $(e.currentTarget).data('product-id');
+        var quantity = parseInt($('.quantityInput').val(), 10);
 
         if (!productId || isNaN(quantity) || quantity < 1) {
             abp.message.warn(l('InvalidQuantity'));
@@ -52,13 +52,18 @@ $('#addToCart').click(function (e) {
     });
 });
 
-$('#addToWishlist').click(function (e) {
+$('.addToWishlist').click(function (e) {
     e.preventDefault();
 
     abp.message.confirm(l('AddToWishlistMessage')).then(function (confirmed) {
         if (!confirmed) return;
 
-        var productId = $('#Product_Id').val();
+        var productId = $(e.currentTarget).data('product-id');
+
+        if (!productId) {
+            abp.message.warn(l('InvalidQuantity'));
+            return;
+        }
 
         abp.ajax({
             type: 'GET',

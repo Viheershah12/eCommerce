@@ -17,7 +17,7 @@
 }
 
 @section scripts {
-    <abp-script src="/Pages/Store/js/Product.js" />
+    <abp-script src="/Pages/Store/js/Common.js" />
 }
 
 @section styles {
@@ -145,12 +145,12 @@
             <div class="d-grid gap-2 mt-4">
                 <div class="input-group mb-3" style="max-width: 200px;">
                     <button class="btn btn-outline-secondary" type="button" id="btnDecrement">−</button>
-                    <input type="number" id="quantityInput" class="form-control text-center" value="1" min="1" />
+                    <input type="number" class="form-control text-center quantityInput" value="1" min="1" />
                     <button class="btn btn-outline-secondary" type="button" id="btnIncrement">+</button>
                 </div>
 
-                <button id="addToCart" class="btn btn-primary btn-lg">@L["AddToCart"]</button>
-                <button id="addToWishlist" class="btn btn-outline-secondary">@L["AddToWishlist"]</button>
+                <button class="btn btn-primary btn-lg addToCart" data-product-id="@Model.Product.Id">@L["AddToCart"]</button>
+                <button class="btn btn-outline-secondary addToWishlist" data-product-id="@Model.Product.Id">@L["AddToWishlist"]</button>
             </div>
         </div>
     </div>

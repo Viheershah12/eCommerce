@@ -108,6 +108,7 @@
     "WishlistIsEmpty": "Wish list is empty!",
     "CartIsEmpty": "Shopping Cart is empty!",
     "ViewCart": "View Cart",
+    "ViewWishlist": "View Wish List",
 
     //permissions
     "Permission:Management": "Management",
