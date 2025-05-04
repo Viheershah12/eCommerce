@@ -108,6 +108,37 @@ namespace Product.Services
             }
         }
 
+        public async Task<List<StoreProductDto>> GetProductByMultipleIdAsync(List<Guid> ids)
+        {
+            try
+            {
+                var querable = await _productRepository.GetQueryableAsync();
+                var products = querable.Where(x => ids.Contains(x.Id));
+
+                var list = new List<StoreProductDto>();
+
+                foreach (var item in products)
+                {
+                    var prod = ObjectMapper.Map<Models.Product, StoreProductDto>(item);
+
+                    // Get Files
+                    if (item.Media != null)
+                    {
+                        var files = await _fileAppService.DownloadMultipleFileByIdAsync(item.Media.Select(x => x.Id).ToList());
+                        prod.Media = ObjectMapper.Map<List<FileDto>, List<UserFileDto>>(files);
+                    }
+
+                    list.Add(prod);
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
         public async Task<Guid> CreateAsync(CreateUpdateProductDto dto) 
         {
             try

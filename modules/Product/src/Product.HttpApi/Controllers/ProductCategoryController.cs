@@ -57,7 +57,7 @@ namespace Product.Controllers
             await _productCategoryAppService.UpdateAsync(dto);
         }
 
-        [HttpPut]
+        [HttpDelete]
         [Route("delete")]
         public async Task DeleteAsync(Guid id)
         {

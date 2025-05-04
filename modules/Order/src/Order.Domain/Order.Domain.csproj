@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="9.0.3" />
+    <ProjectReference Include="..\..\..\..\src\Abp.eCommerce.Domain.Shared\Abp.eCommerce.Domain.Shared.csproj" />
+    <ProjectReference Include="..\Order.Application.Contracts\Order.Application.Contracts.csproj" />
     <ProjectReference Include="..\Order.Domain.Shared\Order.Domain.Shared.csproj" />
   </ItemGroup>
 

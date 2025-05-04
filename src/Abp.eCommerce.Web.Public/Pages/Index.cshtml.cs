@@ -1,10 +1,12 @@
 using Abp.eCommerce.Web.Public.Models.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Volo.Abp.Identity;
 
-namespace Abp.eCommerce.Web.Pages;
+namespace Abp.eCommerce.Web.Public.Pages;
 
+[AllowAnonymous]
 public class IndexModel : eCommerceWebPublicPageModel
 {
     protected IdentityUserManager UserManager { get; }

@@ -3,6 +3,9 @@ using Abp.eCommerce.Web.Public.Models.Common;
 using Abp.eCommerce.Web.Public.Models.Store;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Order.Dtos.ShoppingCart;
+using Order.Dtos.WishList;
+using Order.Interfaces;
 using Product.Dtos.Product;
 using Product.Interfaces;
 using System;
@@ -24,16 +27,25 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
 
         private readonly INotificationAppService _notificationAppService;
         private readonly IProductAppService _productAppService;
+        private readonly IShoppingCartAppService _shoppingCartAppService;
+        private readonly Order.Interfaces.ICommonAppService _orderCommonAppService;
+        private readonly IWishListAppService _wishListAppService;
         #endregion
 
         #region CTOR
         public ProductModel(
             INotificationAppService notificationAppService,
-            IProductAppService productAppService
+            IProductAppService productAppService,
+            IShoppingCartAppService shoppingCartAppService,
+            Order.Interfaces.ICommonAppService orderCommonAppService,
+            IWishListAppService wishListAppService  
         )
         {
             _notificationAppService = notificationAppService;
-            _productAppService = productAppService;     
+            _productAppService = productAppService;
+            _shoppingCartAppService = shoppingCartAppService;
+            _orderCommonAppService = orderCommonAppService;
+            _wishListAppService = wishListAppService;
         }
         #endregion
 
@@ -55,12 +67,83 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
             catch (AbpValidationException ex)
             {
                 _notificationAppService.ProcessValidationErrors(TempData, ex.ValidationErrors);
-                return Page();
+                return Redirect("/Store");
             }
             catch (Exception ex)
             {
                 _notificationAppService.ShowErrorPopupNotification(TempData, ex.Message);
-                return Page();
+                return Redirect("/Store");
+            }
+        }
+        
+        public async Task<JsonResult> OnGetAddToCartAsync(AddToCartDto model)
+        {
+            try
+            {
+                if (CurrentUser.Id == null)
+                    return new JsonResult(new { success = false, message = L["NotAuthenticated"] });
+
+                var dto = new CreateUpdateShoppingCartItemDto
+                {
+                    Id = Guid.NewGuid(),
+                    ProductId = model.ProductId,
+                    Quantity = model.Quantity,
+                    AddedOn = DateTime.Now
+                };
+
+                await _shoppingCartAppService.AddShoppingCartItemAsync(dto);
+
+                // Return success and new cart data
+                var updatedCart = await _orderCommonAppService.GetStatisticsAsync(CurrentUser.Id.Value); // Make sure this returns count/items
+                return new JsonResult(new
+                {
+                    success = true,
+                    cartCount = updatedCart.ShoppingCartCount,
+                    cartItemsHtml = await RenderPartialViewToString("Pages/Store/_CartCanvasPartial.cshtml", updatedCart.ShoppingCartItems)
+                });
+            }
+            catch (AbpValidationException ex)
+            {
+                return new JsonResult(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, message = ex.Message });
+            }
+        }
+
+        public async Task<JsonResult> OnGetAddToWishlistAsync(Guid productId)
+        {
+            try
+            {
+                if (CurrentUser.Id == null)
+                    return new JsonResult(new { success = false, message = L["NotAuthenticated"] });
+
+                var dto = new CreateUpdateWishlistItemDto
+                {
+                    Id = Guid.NewGuid(),
+                    ProductId = productId,
+                    AddedOn = DateTime.Now
+                };
+
+                await _wishListAppService.AddWishlistItemAsync(dto);
+
+                // Return success and new wishlist data
+                var updatedCart = await _orderCommonAppService.GetStatisticsAsync(CurrentUser.Id.Value);
+                return new JsonResult(new
+                {
+                    success = true,
+                    wishListCount = updatedCart.WishListCount,
+                    wishListItemsHtml = await RenderPartialViewToString("Pages/Store/_WishlistCanvasPartial.cshtml", updatedCart.WishListItems)
+                });
+            }
+            catch (AbpValidationException ex)
+            {
+                return new JsonResult(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, message = ex.Message });
             }
         }
     }

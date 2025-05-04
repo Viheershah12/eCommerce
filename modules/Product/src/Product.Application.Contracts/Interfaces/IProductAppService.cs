@@ -16,6 +16,8 @@ namespace Product.Interfaces
 
         Task<PagedResultDto<StoreProductDto>> GetListByCategoryAsync(Dtos.Product.GetProductCategoryListDto dto);
 
+        Task<List<StoreProductDto>> GetProductByMultipleIdAsync(List<Guid> ids);
+
         Task<Guid> CreateAsync(CreateUpdateProductDto dto);
 
         Task<CreateUpdateProductDto> GetAsync(Guid id);

@@ -1,4 +1,5 @@
-﻿using Volo.Abp.Data;
+﻿using MongoDB.Driver;
+using Volo.Abp.Data;
 using Volo.Abp.MongoDB;
 
 namespace Order.MongoDB;
@@ -9,6 +10,10 @@ public class OrderMongoDbContext : AbpMongoDbContext, IOrderMongoDbContext
     /* Add mongo collections here. Example:
      * public IMongoCollection<Question> Questions => Collection<Question>();
      */
+
+    public IMongoCollection<Models.ShoppingCart> ShoppingCart => Collection<Models.ShoppingCart>();
+
+    public IMongoCollection<Models.WishList> WishList => Collection<Models.WishList>();
 
     protected override void CreateModel(IMongoModelBuilder modelBuilder)
     {

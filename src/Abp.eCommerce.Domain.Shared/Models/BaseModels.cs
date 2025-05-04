@@ -10,12 +10,11 @@ namespace Abp.eCommerce.Models
     #region Base Models
     public class BaseIdModel : EntityDto<Guid>
     {
-        //public Guid Id { get; set; }
     }
 
-    public class BaseCompanyModel
+    public class BaseUserIdModel : EntityDto<Guid>
     {
-        public Guid CompanyId { get; set; }
+        public Guid UserId { get; set; }
     }
 
     public class BaseUserIdTenantModel : IMultiTenant
@@ -30,24 +29,6 @@ namespace Abp.eCommerce.Models
         public Guid? TenantId { get; set; }
     }
 
-    public class BaseCompanyTenantModel : BaseCompanyModel, IMultiTenant
-    {
-        public Guid? TenantId { get; set; }
-    }
-
-    public class BaseIdCompanyTenantModel : BaseIdTenantModel
-    {
-        public Guid CompanyId { get; set; }
-    }
-
-    public class BaseIdCompanyModel : EntityDto<Guid>
-    {
-        public Guid CompanyId { get; set; }
-    }
-    public class BaseNullableIdCompanyModel : EntityDto<Guid?>
-    {
-        public Guid CompanyId { get; set; }
-    }
     #endregion
 
     #region Base Nullable Models
@@ -68,21 +49,15 @@ namespace Abp.eCommerce.Models
     #endregion
 
     #region Base Audit Models
-    public class BaseCompanyFullAuditedAggregateRootModel : FullAuditedAggregateRoot<Guid>
-    {
-        public Guid CompanyId { get; set; }
-    }
-
-    public class BaseCompanyFullAuditedAggregateRootTenantModel : FullAuditedAggregateRoot<Guid>, IMultiTenant
-    {
-        public Guid CompanyId { get; set; }
-
-        public Guid? TenantId { get; set; }
-    }
 
     public class BaseFullAuditedAggregateRootTenantModel : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
         public Guid? TenantId { get; set; }
+    }
+
+    public class BaseFullAuditedAggregateRootUserModel : FullAuditedAggregateRoot<Guid>
+    {
+        public Guid UserId { get; set; }
     }
     #endregion
 

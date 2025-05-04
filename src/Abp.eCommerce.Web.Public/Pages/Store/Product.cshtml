@@ -23,29 +23,31 @@
 @section styles {
     <style>
         .custom-tabs .nav-link {
-            border: none;
-            color: #555;
-            font-weight: 500;
+        border: none;
+        color: #555;
+        font-weight: 500;
         }
 
         .custom-tabs .nav-link.active {
-            background-color: #fff;
-            border-radius: 0.5rem 0.5rem 0 0;
-            font-weight: 600;
-            color: #000;
-            box-shadow: 0 -3px 0 #0d6efd inset;
+        background-color: #fff;
+        border-radius: 0.5rem 0.5rem 0 0;
+        font-weight: 600;
+        color: #000;
+        box-shadow: 0 -3px 0 #0d6efd inset;
         }
 
         .custom-tab-content {
-            background: #f8f9fa;
-            border-radius: 0 0 0.5rem 0.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border: 1px solid #dee2e6;
-            border-top: none;
+        background: #f8f9fa;
+        border-radius: 0 0 0.5rem 0.5rem;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #dee2e6;
+        border-top: none;
         }
     </style>
 }
+
+<abp-input asp-for="Product.Id" type="hidden" />
 
 <div class="row align-items-stretch">
     <!-- Product Images -->
@@ -71,8 +73,8 @@
                         @for (int i = 0; i < images.Count; i++)
                         {
                             <button type="button" data-bs-target="#@carouselId" data-bs-slide-to="@i"
-                                    class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")"
-                                    aria-label="Slide @(i + 1)"></button>
+                            class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")"
+                            aria-label="Slide @(i + 1)"></button>
                         }
                     </div>
 
@@ -89,25 +91,26 @@
                     <!-- Controls -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
+                        <span class="visually-hidden">@L["Previous"]</span>
                     </button>
+
                     <button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
+                        <span class="visually-hidden">@L["Next"]</span>
                     </button>
                 </div>
             }
             else
             {
                 <div class="border rounded w-100 d-flex align-items-center justify-content-center bg-light" style="height: 400px;">
-                    <span class="text-muted">No image available</span>
+                    <span class="text-muted">@L["NoImage"]</span>
                 </div>
             }
         }
         else
         {
             <div class="border rounded w-100 d-flex align-items-center justify-content-center bg-light" style="height: 400px;">
-                <span class="text-muted">No image available</span>
+                <span class="text-muted">@L["NoImage"]</span>
             </div>
         }
     </div>
@@ -117,7 +120,10 @@
         <div class="border rounded p-4 bg-light w-100" style="flex: 1;">
             <h2 class="mb-3">@Model.Product.Name</h2>
 
-            <p class="text-muted mb-2">@L["SKU"]: <strong>@Model.Product.SKU</strong></p>
+            @if (!string.IsNullOrEmpty(Model.Product.SKU))
+            {
+                <p class="text-muted mb-2">@L["SKU"]: <strong>@Model.Product.SKU</strong></p>
+            }
 
             <h4 class="text-primary mb-3">KES @Model.Product.Price</h4>
 
@@ -137,8 +143,14 @@
             }
 
             <div class="d-grid gap-2 mt-4">
-                <button class="btn btn-primary btn-lg">@L["AddToCart"]</button>
-                <button class="btn btn-outline-secondary">@L["AddToWishlist"]</button>
+                <div class="input-group mb-3" style="max-width: 200px;">
+                    <button class="btn btn-outline-secondary" type="button" id="btnDecrement">−</button>
+                    <input type="number" id="quantityInput" class="form-control text-center" value="1" min="1" />
+                    <button class="btn btn-outline-secondary" type="button" id="btnIncrement">+</button>
+                </div>
+
+                <button id="addToCart" class="btn btn-primary btn-lg">@L["AddToCart"]</button>
+                <button id="addToWishlist" class="btn btn-outline-secondary">@L["AddToWishlist"]</button>
             </div>
         </div>
     </div>

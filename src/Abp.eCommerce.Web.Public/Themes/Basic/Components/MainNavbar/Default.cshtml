@@ -1,23 +1,41 @@
-﻿@using Abp.eCommerce.Web.Public.Themes.Basic.Components.Menu
+﻿@using Abp.eCommerce.Localization
+@using Abp.eCommerce.Web.Public.Themes.Basic.Components.Menu
 @using Abp.eCommerce.Web.Public.Themes.Basic.Components.Toolbar
+@using Microsoft.Extensions.Localization
+@using Order.Dtos.Common
+
+@inject IStringLocalizer<eCommerceResource> L
+
+@model StatisticDto
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top" id="main-navbar">
     <div class="container">
         <!-- Toggler Button -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#main-navbar-collapse" aria-controls="main-navbar-collapse"
-                aria-expanded="false" aria-label="Toggle navigation">
+            data-bs-target="#main-navbar-collapse" aria-controls="main-navbar-collapse"
+            aria-expanded="false" aria-label="Toggle navigation">
             <i class="fa-solid fa-bars text-white"></i>
         </button>
 
         <!-- Mobile Cart Icon -->
-        <div class="d-lg-none ms-auto">
-            <a href="/cart" class="btn position-relative">
-                <i class="fa-solid fa-shopping-cart text-white"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    3
-                </span>
-            </a>
+        <div class="d-flex justify-content-end">
+            <div class="d-lg-none ms-auto">
+                <button class="btn position-relative" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#wishlistPanel">
+                    <i class="fa-solid fa-star text-white"></i>
+                    <span class="position-absolute top-5 start-80 translate-middle badge rounded-pill bg-danger @(Model.WishListCount == 0 ? "d-none" : "d-block")">
+                        @Model.WishListCount
+                    </span>
+                </button>
+            </div>
+
+            <div class="d-lg-none ms-auto">
+                <button class="btn position-relative" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#shoppingCartPanel">
+                    <i class="fa-solid fa-shopping-cart text-white"></i>
+                    <span class="position-absolute top-5 start-80 translate-middle badge rounded-pill bg-danger @(Model.ShoppingCartCount == 0 ? "d-none" : "d-block")">
+                        @Model.ShoppingCartCount
+                    </span>
+                </button>
+            </div>
         </div>
 
         <!-- Collapsible Menu -->
@@ -30,17 +48,34 @@
             <div class="d-flex justify-content-end">
                 <div class="d-flex align-items-center gap-3">
                     @(await Component.InvokeAsync<MainNavbarToolbarViewComponent>())
-
-                    <div class="d-none d-lg-block">
-                        <a href="/cart" class="btn position-relative">
-                            <i class="fa-solid fa-shopping-cart text-white"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                3
-                            </span>
-                        </a>
-                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="d-none d-lg-block">
+                <button class="btn position-relative" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#wishlistPanel">
+                    <i class="fa-solid fa-star text-white"></i>
+                    <span class="position-absolute top-5 start-80 translate-middle badge rounded-pill bg-danger @(Model.WishListCount == 0 ? "d-none" : "d-block")">
+                        @Model.WishListCount
+                    </span>
+                </button>
+            </div>
+
+            <div class="d-none d-lg-block">
+                <button class="btn position-relative" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#shoppingCartPanel">
+                    <i class="fa-solid fa-shopping-cart text-white"></i>
+                    <span class="position-absolute top-5 start-80 translate-middle badge rounded-pill bg-danger @(Model.ShoppingCartCount == 0 ? "d-none" : "d-block")">
+                        @Model.ShoppingCartCount
+                    </span>
+                </button>
+            </div>
+        </div>        
     </div>
 </nav>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="shoppingCartPanel" aria-labelledby="shoppingCartPanelLabel">
+    <partial name="Store/_CartCanvasPartial" model="Model.ShoppingCartItems" />
+</div>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="wishlistPanel" aria-labelledby="wishlistPanelLabel">
+    <partial name="Store/_WishlistCanvasPartial" model="Model.WishListItems" />
+</div>

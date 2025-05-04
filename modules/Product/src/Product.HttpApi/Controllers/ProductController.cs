@@ -44,6 +44,13 @@ namespace Product.Controllers
             return await _productAppService.GetListByCategoryAsync(dto);    
         }
 
+        [HttpGet]
+        [Route("getProductByMultipleId")]
+        public async Task<List<StoreProductDto>> GetProductByMultipleIdAsync(List<Guid> ids)
+        {
+            return await _productAppService.GetProductByMultipleIdAsync(ids);
+        }
+
         [HttpPost]
         [Route("create")]
         public async Task<Guid> CreateAsync(CreateUpdateProductDto dto)
@@ -65,7 +72,7 @@ namespace Product.Controllers
             await _productAppService.UpdateAsync(dto);
         }
 
-        [HttpPut]
+        [HttpDelete]
         [Route("delete")]
         public async Task DeleteAsync(Guid id)
         {
@@ -103,7 +110,7 @@ namespace Product.Controllers
             await _productAppService.UpdateTierPriceAsync(dto);
         }
 
-        [HttpPut]
+        [HttpDelete]
         [Route("deleteTierPrice")]
         public async Task DeleteTierPriceAsync(DeleteTierPriceDto dto)
         {

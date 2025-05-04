@@ -33,3 +33,13 @@ function toggleSidebar() {
     mainContent.classList.toggle('ms-md-320');
     mainContent.classList.toggle('ms-md-60');
 }
+
+//document.addEventListener("click", function (event) {
+//    var dropdown = document.getElementById("cartDropdownButton");
+//    var menu = dropdown?.nextElementSibling;
+
+//    if (!dropdown.contains(event.target) && !menu.contains(event.target)) {
+//        var dropdownInstance = bootstrap.Dropdown.getInstance(dropdown);
+//        if (dropdownInstance) dropdownInstance.hide();
+//    }
+//});

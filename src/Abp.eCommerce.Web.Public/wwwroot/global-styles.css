@@ -215,3 +215,11 @@ select.form-select.form-select-sm {
     width: auto;
     min-width: 80px;
 }
+
+.start-80 {
+    left: 80% !important;
+}
+
+.top-5 {
+    top: 5% !important;
+}

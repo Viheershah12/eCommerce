@@ -4,25 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Volo.Abp.Domain.Entities.Auditing;
 
 namespace Order.Models
 {
-    public class ShoppingCart : BaseFullAuditedAggregateRootUserModel
+    public class WishList : BaseFullAuditedAggregateRootUserModel
     {
         public string Username { get; set; } = string.Empty;
 
-        public List<CartItem> Items { get; set; } = [];
+        public List<WishlistItem> Items { get; set; } = [];
 
-        public partial class CartItem : BaseIdModel
+        public class WishlistItem : BaseIdModel
         {
             public Guid ProductId { get; set; }
 
-            public int Quantity { get; set; }
-
             public DateTime AddedOn { get; set; }
-
-            public DateTime UpdatedOn { get; set; }
         }
     }
 }

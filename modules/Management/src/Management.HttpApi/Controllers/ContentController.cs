@@ -58,7 +58,7 @@ namespace Management.Controllers
             await _contentAppService.UpdateAsync(dto);
         }
 
-        [HttpPut]
+        [HttpDelete]
         [Route("delete")]
         public async Task DeleteAsync(Guid id)
         {

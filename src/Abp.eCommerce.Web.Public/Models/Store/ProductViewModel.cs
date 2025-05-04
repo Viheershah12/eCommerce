@@ -55,4 +55,11 @@ namespace Abp.eCommerce.Web.Public.Models.Store
 
         public List<UserFileDto>? UploadedMedia { get; set; }
     }
+
+    public class AddToCartDto
+    {
+        public Guid ProductId { get; set; }
+
+        public int Quantity { get; set; }
+    }
 }

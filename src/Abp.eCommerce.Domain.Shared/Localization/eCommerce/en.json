@@ -58,11 +58,16 @@
     "Title:TierPrices": "Tier Price",
     "Title:CreateTierPrice": "Create Tier Price",
     "Title:EditTierPrice": "Edit Tier Price",
+    "Title:ShoppingCart": "Shopping Cart",
+    "Title:Wishlist": "Wish List",
 
     //notification
     "SuccessfullyAdded": "Successfully Added!",
     "SuccessfullyUpdated": "Successfully Updated!",
     "SuccessfullyDeleted": "Successfully Deleted!",
+    "AddToCartFailed": "Add To Cart Failed!",
+    "AddedToCart": "Product Added To Cart Successfully!",
+    "AddedToWishlist": "Product Added To Wishlist Successfully!",
 
     //delete confirmation
     "ContentDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Content!",
@@ -71,6 +76,10 @@
     "ProductTagDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Product Tag!",
     "CustomerGroupDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Customer Group!",
     "ImageDeletionConfirmationMessage": "Are you sure you want to delete Image?",
+
+    //message
+    "AddToCartMessage": "Do you want to add to cart?",
+    "AddToWishlistMessage": "Do you want to add to wishlist?",
 
     //labels
     "ContentType": "Content Type",
@@ -96,6 +105,9 @@
     "AddToCart": "Add To Cart",
     "AddToWishlist": "Add To Wishlist",
     "SimilarProducts": "Similar Products",
+    "WishlistIsEmpty": "Wish list is empty!",
+    "CartIsEmpty": "Shopping Cart is empty!",
+    "ViewCart": "View Cart",
 
     //permissions
     "Permission:Management": "Management",
