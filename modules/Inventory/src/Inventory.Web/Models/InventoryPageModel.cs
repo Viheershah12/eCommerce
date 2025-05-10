@@ -1,7 +1,7 @@
 ﻿using Inventory.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.RazorPages;
 
-namespace Inventory.Web.Pages;
+namespace Inventory.Web.Models;
 
 /* Inherit your PageModel classes from this class.
  */
