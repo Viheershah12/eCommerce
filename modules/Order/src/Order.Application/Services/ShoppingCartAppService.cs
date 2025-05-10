@@ -125,6 +125,27 @@ namespace Order.Services
             }
         }
 
+        public async Task RemoveShoppingCartItemAsync(Guid productId)
+        {
+            try
+            {
+                if (CurrentUser.Id != null && !string.IsNullOrEmpty(CurrentUser.UserName))
+                {
+                    var shoppingCart = await _shoppingCartRepository.FirstOrDefaultAsync(x => x.UserId == CurrentUser.Id);
+
+                    if (shoppingCart != null)
+                    {
+                        shoppingCart.Items.RemoveAll(x => x.ProductId == productId);
+                        await _shoppingCartRepository.UpdateAsync(shoppingCart);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
         public async Task UpdateAsync(CreateUpdateShoppingCartDto dto)
         {
             try

@@ -8,4 +8,6 @@ public class eCommerceWebPublicMenus
     public const string Store = Prefix + ".Store";
     public const string About = Prefix + ".About";
     public const string Blog = Prefix + ".Blog";
+    public const string ShoppingCart = Prefix + ".ShoppingCart";
+    public const string Wishlist = Prefix + ".Wishlist";
 }

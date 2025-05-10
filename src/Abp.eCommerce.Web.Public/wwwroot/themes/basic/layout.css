@@ -5,6 +5,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     animation: fadeIn 0.5s ease-out;
+    height: 100vh;
 }
 
 @keyframes fadeIn {
@@ -477,4 +478,36 @@ div.dataTables_wrapper div.dataTables_length label {
 
 .breadcrumb .fa-home {
     font-size: 1rem;
+}
+
+/* Base styling for nav-like icon buttons */
+.nav-icon-btn {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Underline effect using ::before */
+.nav-icon-btn::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    width: 0%;
+    height: 3px;
+    background: #fffbeb;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    border-radius: 2px;
+}
+
+/* Trigger underline on hover or active */
+.nav-icon-btn:hover::before,
+.nav-icon-btn:focus::before,
+.nav-icon-btn.active::before {
+    width: 65%;
+    opacity: 1;
 }

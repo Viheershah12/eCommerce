@@ -38,6 +38,8 @@
     "Menu:Store": "Store",
     "Menu:Blog": "Blog",
     "Menu:About": "About",
+    "Menu:ShoppingCart": "Shopping Cart",
+    "Menu:Wishlist": "Wish List",
 
     //title
     "Title:ContentManagement": "Static Content",

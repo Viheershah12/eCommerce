@@ -19,6 +19,8 @@ namespace Order.Interfaces
 
         Task AddShoppingCartItemAsync(CreateUpdateShoppingCartItemDto dto);
 
+        Task RemoveShoppingCartItemAsync(Guid productId);
+
         Task UpdateAsync(CreateUpdateShoppingCartDto dto);
 
         Task DeleteAsync(Guid id);

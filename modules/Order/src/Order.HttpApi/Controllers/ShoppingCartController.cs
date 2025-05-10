@@ -57,6 +57,13 @@ namespace Order.Controllers
             await _shoppingCartAppService.AddShoppingCartItemAsync(dto);
         }
 
+        [HttpDelete]
+        [Route("removeShoppingCartItem")]
+        public async Task RemoveShoppingCartItemAsync(Guid productId)
+        {
+            await _shoppingCartAppService.RemoveShoppingCartItemAsync(productId);
+        }
+
         [HttpPut]
         [Route("update")]
         public async Task UpdateAsync(CreateUpdateShoppingCartDto dto)

@@ -1,0 +1,15 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Abp.eCommerce.Web.Public.Menus
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IPageLayout PageLayout
+@inject IStringLocalizer<eCommerceResource> L
+
+@model Abp.eCommerce.Web.Public.Pages.Wishlist.IndexModel
+
+@{
+    PageLayout.Content.Title = L["Menu:Wishlist"];
+    PageLayout.Content.MenuItemName = eCommerceWebPublicMenus.Wishlist;
+}

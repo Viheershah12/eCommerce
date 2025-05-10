@@ -1,10 +1,13 @@
 ﻿@using Abp.eCommerce.Localization
+@using Abp.eCommerce.Web.Public.Menus
 @using Abp.eCommerce.Web.Public.Themes.Basic.Components.Menu
 @using Abp.eCommerce.Web.Public.Themes.Basic.Components.Toolbar
 @using Microsoft.Extensions.Localization
 @using Order.Dtos.Common
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
 
 @inject IStringLocalizer<eCommerceResource> L
+@inject IPageLayout PageLayout
 
 @model StatisticDto
 
@@ -20,7 +23,7 @@
         <!-- Mobile Cart Icon -->
         <div class="d-flex justify-content-end">
             <div class="d-lg-none ms-auto">
-                <button class="btn position-relative" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#wishlistPanel">
+                <button class="btn nav-icon-btn position-relative @(PageLayout.Content.MenuItemName == eCommerceWebPublicMenus.Wishlist ? "active" : "")" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#wishlistPanel">
                     <i class="fa-solid fa-star text-white"></i>
                     <span class="position-absolute top-5 start-80 translate-middle badge rounded-pill bg-danger @(Model.WishListCount == 0 ? "d-none" : "d-block")">
                         @Model.WishListCount
@@ -29,7 +32,7 @@
             </div>
 
             <div class="d-lg-none ms-auto">
-                <button class="btn position-relative" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#shoppingCartPanel">
+                <button class="btn nav-icon-btn position-relative @(PageLayout.Content.MenuItemName == eCommerceWebPublicMenus.ShoppingCart ? "active" : "")" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#shoppingCartPanel">
                     <i class="fa-solid fa-shopping-cart text-white"></i>
                     <span class="position-absolute top-5 start-80 translate-middle badge rounded-pill bg-danger @(Model.ShoppingCartCount == 0 ? "d-none" : "d-block")">
                         @Model.ShoppingCartCount
@@ -52,7 +55,7 @@
             </div>
 
             <div class="d-none d-lg-block">
-                <button class="btn position-relative" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#wishlistPanel">
+                <button class="btn nav-icon-btn position-relative @(PageLayout.Content.MenuItemName == eCommerceWebPublicMenus.Wishlist ? "active" : "")" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#wishlistPanel">
                     <i class="fa-solid fa-star text-white"></i>
                     <span class="position-absolute top-5 start-80 translate-middle badge rounded-pill bg-danger @(Model.WishListCount == 0 ? "d-none" : "d-block")">
                         @Model.WishListCount
@@ -61,7 +64,7 @@
             </div>
 
             <div class="d-none d-lg-block">
-                <button class="btn position-relative" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#shoppingCartPanel">
+                <button class="btn nav-icon-btn nav-icon-btn position-relative @(PageLayout.Content.MenuItemName == eCommerceWebPublicMenus.ShoppingCart ? "active" : "")" style="border: none;" type="button" data-bs-toggle="offcanvas" data-bs-target="#shoppingCartPanel">
                     <i class="fa-solid fa-shopping-cart text-white"></i>
                     <span class="position-absolute top-5 start-80 translate-middle badge rounded-pill bg-danger @(Model.ShoppingCartCount == 0 ? "d-none" : "d-block")">
                         @Model.ShoppingCartCount
