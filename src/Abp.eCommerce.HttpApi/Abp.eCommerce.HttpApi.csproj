@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abp.eCommerce.Application.Contracts\Abp.eCommerce.Application.Contracts.csproj" />
-  <ProjectReference Include="..\..\modules\Product\src\Product.HttpApi\Product.HttpApi.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.HttpApi\Management.HttpApi.csproj" /><ProjectReference Include="..\..\modules\Customer\src\Customer.HttpApi\Customer.HttpApi.csproj" /><ProjectReference Include="..\..\modules\Order\src\Order.HttpApi\Order.HttpApi.csproj" /></ItemGroup>
+  <ProjectReference Include="..\..\modules\Product\src\Product.HttpApi\Product.HttpApi.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.HttpApi\Management.HttpApi.csproj" /><ProjectReference Include="..\..\modules\Customer\src\Customer.HttpApi\Customer.HttpApi.csproj" /><ProjectReference Include="..\..\modules\Order\src\Order.HttpApi\Order.HttpApi.csproj" /><ProjectReference Include="..\..\modules\Inventory\src\Inventory.HttpApi\Inventory.HttpApi.csproj" /></ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi" Version="9.0.3" />

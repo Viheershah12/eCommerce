@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abp.eCommerce.Domain\Abp.eCommerce.Domain.csproj" />
-  <ProjectReference Include="..\..\modules\Product\src\Product.MongoDB\Product.MongoDB.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.MongoDB\Management.MongoDB.csproj" /><ProjectReference Include="..\..\modules\Customer\src\Customer.MongoDB\Customer.MongoDB.csproj" /><ProjectReference Include="..\..\modules\Order\src\Order.MongoDB\Order.MongoDB.csproj" /></ItemGroup>
+  <ProjectReference Include="..\..\modules\Product\src\Product.MongoDB\Product.MongoDB.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.MongoDB\Management.MongoDB.csproj" /><ProjectReference Include="..\..\modules\Customer\src\Customer.MongoDB\Customer.MongoDB.csproj" /><ProjectReference Include="..\..\modules\Order\src\Order.MongoDB\Order.MongoDB.csproj" /><ProjectReference Include="..\..\modules\Inventory\src\Inventory.MongoDB\Inventory.MongoDB.csproj" /></ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.PermissionManagement.MongoDB" Version="9.0.3" />

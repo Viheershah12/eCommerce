@@ -13,6 +13,7 @@ using Management;
 using Customer;
 using Volo.CmsKit;
 using Order;
+using Inventory;
 
 namespace Abp.eCommerce;
 
@@ -30,6 +31,7 @@ namespace Abp.eCommerce;
     [DependsOn(typeof(CustomerHttpApiModule))]
     [DependsOn(typeof(CmsKitHttpApiModule))]
     [DependsOn(typeof(OrderHttpApiModule))]
+    [DependsOn(typeof(InventoryHttpApiModule))]
     public class eCommerceHttpApiModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

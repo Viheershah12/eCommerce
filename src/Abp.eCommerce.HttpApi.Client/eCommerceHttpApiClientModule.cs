@@ -12,6 +12,7 @@ using Management;
 using Customer;
 using Volo.CmsKit;
 using Order;
+using Inventory;
 
 namespace Abp.eCommerce;
 
@@ -27,6 +28,7 @@ namespace Abp.eCommerce;
     [DependsOn(typeof(CustomerHttpApiClientModule))]
     [DependsOn(typeof(CmsKitHttpApiClientModule))]
     [DependsOn(typeof(OrderHttpApiClientModule))]
+    [DependsOn(typeof(InventoryHttpApiClientModule))]
     public class eCommerceHttpApiClientModule : AbpModule
 {
     public const string RemoteServiceName = "Default";

@@ -56,6 +56,7 @@ using Abp.eCommerce.Web.Common;
 using Customer.Web;
 using Volo.CmsKit.Web;
 using Order.Web;
+using Inventory.Web;
 
 namespace Abp.eCommerce.Web;
 
@@ -79,6 +80,7 @@ namespace Abp.eCommerce.Web;
 [DependsOn(typeof(CustomerWebModule))]
 [DependsOn(typeof(CmsKitWebModule))]
 [DependsOn(typeof(OrderWebModule))]
+[DependsOn(typeof(InventoryWebModule))]
     public class eCommerceWebModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)

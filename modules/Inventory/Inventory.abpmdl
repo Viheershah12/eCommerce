@@ -1,0 +1,111 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "Inventory.Domain.Shared": {
+      "path": "src/Inventory.Domain.Shared/Inventory.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Inventory.Domain": {
+      "path": "src/Inventory.Domain/Inventory.Domain.abppkg",
+      "folder": "src"
+    },
+    "Inventory.Application.Contracts": {
+      "path": "src/Inventory.Application.Contracts/Inventory.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Inventory.Application": {
+      "path": "src/Inventory.Application/Inventory.Application.abppkg",
+      "folder": "src"
+    },
+    "Inventory.EntityFrameworkCore": {
+      "path": "src/Inventory.EntityFrameworkCore/Inventory.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Inventory.MongoDB": {
+      "path": "src/Inventory.MongoDB/Inventory.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Inventory.HttpApi": {
+      "path": "src/Inventory.HttpApi/Inventory.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Inventory.HttpApi.Client": {
+      "path": "src/Inventory.HttpApi.Client/Inventory.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Inventory.TestBase": {
+      "path": "test/Inventory.TestBase/Inventory.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Inventory.EntityFrameworkCore.Tests": {
+      "path": "test/Inventory.EntityFrameworkCore.Tests/Inventory.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Inventory.MongoDB.Tests": {
+      "path": "test/Inventory.MongoDB.Tests/Inventory.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Inventory.Domain.Tests": {
+      "path": "test/Inventory.Domain.Tests/Inventory.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Inventory.Application.Tests": {
+      "path": "test/Inventory.Application.Tests/Inventory.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Inventory.HttpApi.Host": {
+      "path": "host/Inventory.HttpApi.Host/Inventory.HttpApi.Host.abppkg",
+      "folder": "host"
+    },
+    "Inventory.Web": {
+      "path": "src/Inventory.Web/Inventory.Web.abppkg",
+      "folder": "src"
+    },
+    "Inventory.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/Inventory.HttpApi.Client.ConsoleTestApp/Inventory.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "Inventory.Web.Host": {
+      "path": "host/Inventory.Web.Host/Inventory.Web.Host.abppkg",
+      "folder": "host"
+    },
+    "Inventory.AuthServer": {
+      "path": "host/Inventory.AuthServer/Inventory.AuthServer.abppkg",
+      "folder": "host"
+    },
+    "Inventory.Host.Shared": {
+      "path": "host/Inventory.Host.Shared/Inventory.Host.Shared.abppkg",
+      "folder": "host"
+    },
+    "Inventory.Web.Unified": {
+      "path": "host/Inventory.Web.Unified/Inventory.Web.Unified.abppkg",
+      "folder": "host"
+    },
+    "Inventory.Blazor": {
+      "path": "src/Inventory.Blazor/Inventory.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Inventory.Blazor.Host": {
+      "path": "host/Inventory.Blazor.Host/Inventory.Blazor.Host.abppkg",
+      "folder": "host"
+    },
+    "Inventory.Blazor.Server": {
+      "path": "src/Inventory.Blazor.Server/Inventory.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Inventory.Blazor.WebAssembly": {
+      "path": "src/Inventory.Blazor.WebAssembly/Inventory.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Inventory.Blazor.Server.Host": {
+      "path": "host/Inventory.Blazor.Server.Host/Inventory.Blazor.Server.Host.abppkg",
+      "folder": "host"
+    }
+  }
+}
