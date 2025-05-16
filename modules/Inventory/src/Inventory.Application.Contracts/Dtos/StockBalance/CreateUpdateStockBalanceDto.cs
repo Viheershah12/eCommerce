@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Inventory.Dtos.Inventory
 {
-    public class CreateUpdateInventoryDto : BaseIdModel
+    public class CreateUpdateStockBalanceDto : BaseIdModel
     {
         public Guid ProductId { get; set; }
 

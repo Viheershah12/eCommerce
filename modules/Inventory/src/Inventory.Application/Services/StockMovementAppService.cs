@@ -1,6 +1,8 @@
-﻿using Inventory.Dtos.Inventory;
+﻿using Abp.eCommerce.Enums;
+using Inventory.Dtos.Inventory;
 using Inventory.Dtos.StockMovement;
 using Inventory.Interfaces;
+using Inventory.Inventory;
 using Inventory.StockMovement;
 using System;
 using System.Collections.Generic;
@@ -17,16 +19,19 @@ namespace Inventory.Services
         #region Fields
         private readonly IStockMovementRepository _stockMovementRepository;
         private readonly StockMovementManager _stockMovementManager;
+        private readonly IInventoryRepository _stockBalanceRepository;
         #endregion
 
         #region CTOR
         public StockMovementAppService(
             IStockMovementRepository stockMovementRepository,
-            StockMovementManager stockMovementManager
+            StockMovementManager stockMovementManager,
+            IInventoryRepository stockBalanceRepository
         ) 
         {
             _stockMovementRepository = stockMovementRepository;
             _stockMovementManager = stockMovementManager;
+            _stockBalanceRepository = stockBalanceRepository;
         }
         #endregion 
 
@@ -41,7 +46,7 @@ namespace Inventory.Services
             }
             catch (Exception ex) 
             {
-                throw new BusinessException(ex.Message);
+                throw new BusinessException(message: ex.Message);
             }
         }
 
@@ -52,11 +57,16 @@ namespace Inventory.Services
                 var stockMovementDto = ObjectMapper.Map<CreateUpdateStockMovementDto, Models.StockMovement>(dto);
                 var stockMovement = await _stockMovementRepository.InsertAsync(stockMovementDto);
 
+                var inventory = await _stockBalanceRepository.GetAsync(stockMovement.InventoryId);
+                inventory.StockQuantity = stockMovement.QuantityAfterChange;
+
+                await _stockBalanceRepository.UpdateAsync(inventory);
+
                 return stockMovement.Id;
             }
             catch (Exception ex)
             {
-                throw new BusinessException(ex.Message);
+                throw new BusinessException(message: ex.Message);
             }
         }
 
@@ -71,7 +81,7 @@ namespace Inventory.Services
             }
             catch (Exception ex)
             {
-                throw new BusinessException(ex.Message);
+                throw new BusinessException(message: ex.Message);
             }
         }
 
@@ -88,7 +98,7 @@ namespace Inventory.Services
             }
             catch (Exception ex)
             {
-                throw new BusinessException(ex.Message);
+                throw new BusinessException(message: ex.Message);
             }
         }
 
@@ -96,12 +106,27 @@ namespace Inventory.Services
         {
             try
             {
-                var inventory = await _stockMovementRepository.GetAsync(id);
-                await _stockMovementRepository.DeleteAsync(inventory);
+                var stockMovement = await _stockMovementRepository.GetAsync(id);
+                await _stockMovementRepository.DeleteAsync(stockMovement);
+
+                var inventory = await _stockBalanceRepository.GetAsync(stockMovement.InventoryId);
+
+                if (stockMovement.MovementType == StockMovementType.ManualAdjustmentPlus || 
+                    stockMovement.MovementType == StockMovementType.Restock || 
+                    stockMovement.MovementType == StockMovementType.ReleaseReservation)
+                {
+                    inventory.StockQuantity -= stockMovement.QuantityChanged;
+                }
+                else
+                {
+                    inventory.StockQuantity += stockMovement.QuantityChanged;
+                }
+
+                await _stockBalanceRepository.UpdateAsync(inventory);
             }
             catch (Exception ex)
             {
-                throw new BusinessException(ex.Message);
+                throw new BusinessException(message: ex.Message);
             }
         }
     }

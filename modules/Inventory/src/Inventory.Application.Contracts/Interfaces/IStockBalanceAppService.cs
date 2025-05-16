@@ -11,13 +11,13 @@ namespace Inventory.Interfaces
 {
     public interface IStockBalanceAppService : IApplicationService
     {
-        Task<PagedResultDto<InventoryDto>> GetListAsync(GetInventoryListDto dto);
+        Task<PagedResultDto<StockBalanceDto>> GetListAsync(GetStockBalanceListDto dto);
 
-        Task<Guid> CreateAsync(CreateUpdateInventoryDto dto);
+        Task<Guid> CreateAsync(CreateUpdateStockBalanceDto dto);
 
-        Task<CreateUpdateInventoryDto> GetAsync(Guid id);
+        Task<CreateUpdateStockBalanceDto> GetAsync(Guid id);
 
-        Task UpdateAsync(CreateUpdateInventoryDto dto);
+        Task UpdateAsync(CreateUpdateStockBalanceDto dto);
 
         Task DeleteAsync(Guid id);
     }

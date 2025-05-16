@@ -24,7 +24,7 @@ namespace Inventory.Inventory
         }
         #endregion
 
-        public async Task<(List<Models.Inventory> items, int totalCount)> GetInventoryListing(GetInventoryListDto dto)
+        public async Task<(List<Models.Inventory> items, int totalCount)> GetInventoryListing(GetStockBalanceListDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Sorting))
                 dto.Sorting = nameof(Models.Inventory.ProductName);

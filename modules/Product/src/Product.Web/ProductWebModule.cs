@@ -9,6 +9,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
 using Product.Permissions;
+using Abp.eCommerce.Localization;
 
 namespace Product.Web;
 
@@ -23,7 +24,7 @@ public class ProductWebModule : AbpModule
     {
         context.Services.PreConfigure<AbpMvcDataAnnotationsLocalizationOptions>(options =>
         {
-            options.AddAssemblyResource(typeof(ProductResource), typeof(ProductWebModule).Assembly);
+            options.AddAssemblyResource(typeof(eCommerceResource), typeof(ProductWebModule).Assembly);
         });
 
         PreConfigure<IMvcBuilder>(mvcBuilder =>

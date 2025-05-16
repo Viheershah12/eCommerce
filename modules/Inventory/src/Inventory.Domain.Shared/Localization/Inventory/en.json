@@ -1,7 +1,7 @@
 {
   "culture": "en",
   "texts": {
-    "MyAccount":  "My account",
-    "SamplePageMessage": "A sample page for the Inventory module"
+    // Error Strings
+    "DevInventory:00001": "This Product '{0}' Already has a stock balance!"
   }
 }

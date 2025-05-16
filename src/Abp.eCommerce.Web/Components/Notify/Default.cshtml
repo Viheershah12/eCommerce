@@ -20,85 +20,64 @@
         {
             if (type == ((int)eCommerceNotificationTypeEnum.info).ToString())
             {
-
                 <script>
-                    abp.message.info('@message', '@title');
+                    abp.message.info(@Html.Raw(Json.Serialize(message)), @Html.Raw(Json.Serialize(title)));
                 </script>
-
-
             }
             else if (type == ((int)eCommerceNotificationTypeEnum.success).ToString())
             {
-
                 <script>
-                    abp.message.success('@message', '@title')
+                    abp.message.success(@Html.Raw(Json.Serialize(message)), @Html.Raw(Json.Serialize(title)))
                 </script>
-
-
             }
             else if (type == ((int)eCommerceNotificationTypeEnum.error).ToString())
             {
 
                 <script>
-                    abp.message.error('@message', '@title')
+                    abp.message.error(@Html.Raw(Json.Serialize(message)), @Html.Raw(Json.Serialize(title)))
                 </script>
-
-
             }
             else
             {
                 <script>
-                    abp.message.warning('@message', '@title')
+                    abp.message.warning(@Html.Raw(Json.Serialize(message)), @Html.Raw(Json.Serialize(title)))
                 </script>
-
             }
         }
         else
         {
             if (type == ((int)eCommerceNotificationTypeEnum.info).ToString())
             {
-
                 <script>
-                    abp.notify.info('@message');
+                    abp.notify.info(@Html.Raw(Json.Serialize(message)));
                 </script>
-
-
             }
             else if (type == ((int)eCommerceNotificationTypeEnum.success).ToString())
             {
-
                 <script>
-                    abp.notify.success('@message')
+                    abp.notify.success(@Html.Raw(Json.Serialize(message)))
                 </script>
-
-
             }
             else if (type == ((int)eCommerceNotificationTypeEnum.error).ToString())
             {
-
                 <script>
-                    abp.notify.error('@message')
+                    abp.notify.error(@Html.Raw(Json.Serialize(message)))
                 </script>
-
-
             }
             else
             {
                 <script>
-                    abp.notify.warning('@message')
+                    abp.notify.warning(@Html.Raw(Json.Serialize(message)))
                 </script>
-
             }
-        }
-        
-
+        }     
     }
     else
     {
         if (!string.IsNullOrEmpty(message))
         {
             <script>
-                abp.notify.info('@message')
+                abp.notify.info(@Html.Raw(Json.Serialize(message)))
             </script>
         }
     }

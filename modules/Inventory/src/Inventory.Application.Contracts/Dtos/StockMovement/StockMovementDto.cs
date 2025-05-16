@@ -22,7 +22,7 @@ namespace Inventory.Dtos.StockMovement
 
         public string ProductName { get; set; }
 
-        public StockMovementType MovementType { get; set; }
+        public string MovementType { get; set; }
 
         public int QuantityChanged { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using Volo.Abp.Data;
 using Volo.Abp.MongoDB;
 
@@ -18,6 +19,26 @@ public class InventoryMongoDbContext : AbpMongoDbContext, IInventoryMongoDbConte
     protected override void CreateModel(IMongoModelBuilder modelBuilder)
     {
         base.CreateModel(modelBuilder);
+
+        modelBuilder.Entity<Models.Inventory>(b =>
+        {
+            b.ConfigureIndexes(indexes =>
+            {
+                var filter = Builders<BsonDocument>.Filter.Eq("IsDeleted", false);
+
+                indexes.CreateOne(
+                    new CreateIndexModel<BsonDocument>(
+                        Builders<BsonDocument>.IndexKeys.Ascending("ProductId"),
+                        new CreateIndexOptions<BsonDocument>
+                        {
+                            Name = "_ProductId_",
+                            Unique = true,
+                            PartialFilterExpression = filter
+                        }
+                    )
+                );
+            });
+        });
 
         modelBuilder.ConfigureInventory();
     }

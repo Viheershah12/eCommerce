@@ -8,14 +8,14 @@ using Volo.Abp.Application.Dtos;
 
 namespace Inventory.Dtos.Inventory
 {
-    public class GetInventoryListDto : PagedResultRequestDto
+    public class GetStockBalanceListDto : PagedResultRequestDto
     {
         public string? Filter { get; set; }
 
         public string? Sorting { get; set; }
     }
 
-    public class InventoryDto : BaseIdModel
+    public class StockBalanceDto : BaseIdModel
     {
         public Guid ProductId { get; set; }
 

@@ -1,6 +1,43 @@
 ﻿@page
+@using Abp.eCommerce.Localization
+@using Inventory.Web.Menus
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Product.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IAuthorizationService AuthorizationService
+@inject PageLayout PageLayout
+
 @model Inventory.Web.Pages.StockBalance.IndexModel
 
 @{
-
+    PageLayout.Content.MenuItemName = InventoryMenus.StockBalance;
+    PageLayout.Content.Title = L["Menu:StockBalance"];
 }
+
+@section scripts {
+    <abp-script src="/Pages/StockBalance/js/Index.js" />
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Title:StockBalance"]</abp-card-title>
+            </abp-column>
+
+            @* @if (await AuthorizationService.IsGrantedAsync(ProductPermissions.Product.Create))
+            { *@
+                <abp-column size-md="_6" class="text-end">
+                    <a abp-button="Primary" asp-page="/StockBalance/Create"><i class="fa-solid fa-plus"></i> @L["AddNew"]</a>
+                </abp-column>
+            @* } *@
+        </abp-row>
+    </abp-card-header>
+
+    <abp-card-body>
+        <abp-table striped-rows="true" id="stockBalanceTable"></abp-table>
+    </abp-card-body>
+</abp-card>

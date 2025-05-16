@@ -40,6 +40,13 @@
     "Menu:About": "About",
     "Menu:ShoppingCart": "Shopping Cart",
     "Menu:Wishlist": "Wish List",
+    "Menu:Inventory": "Inventory",
+    "Menu:StockBalance": "Stock Balance",
+    "Menu:StockMovement": "Stock Movement",
+    "Menu:EditStockBalance": "Edit Stock Balance",
+    "Menu:EditStockMovement": "Edit Stock Movement",
+    "Menu:CreateStockBalance": "Create Stock Balance",
+    "Menu:CreateStockMovement": "Create Stock Movement",
 
     //title
     "Title:ContentManagement": "Static Content",
@@ -62,6 +69,13 @@
     "Title:EditTierPrice": "Edit Tier Price",
     "Title:ShoppingCart": "Shopping Cart",
     "Title:Wishlist": "Wish List",
+    "Title:Inventory": "Inventory",
+    "Title:StockBalance": "Stock Balance",
+    "Title:StockMovement": "Stock Movement",
+    "Title:EditStockBalance": "Edit Stock Balance",
+    "Title:EditStockMovement": "Edit Stock Movement",
+    "Title:CreateStockBalance": "Create Stock Balance",
+    "Title:CreateStockMovement": "Create Stock Movement",
 
     //notification
     "SuccessfullyAdded": "Successfully Added!",
@@ -78,6 +92,8 @@
     "ProductTagDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Product Tag!",
     "CustomerGroupDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Customer Group!",
     "ImageDeletionConfirmationMessage": "Are you sure you want to delete Image?",
+    "StockMovementDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Stock Movement?",
+    "StockBalanceDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Stock Balance? Do Note that the movement(s) will also be deleted!",
 
     //message
     "AddToCartMessage": "Do you want to add to cart?",
@@ -111,6 +127,15 @@
     "CartIsEmpty": "Shopping Cart is empty!",
     "ViewCart": "View Cart",
     "ViewWishlist": "View Wish List",
+    "ProductName": "Product Name",
+    "MovementType": "Movement Type",
+    "QuantityChanged": "Quantity Changed",
+    "QuantityBeforeChange": "Before Change",
+    "QuantityAfterChange": "After Change",
+    "StockQuantity": "Stock Quantity",
+    "ReservedQuantity": "Reserved Quantity",
+    "ReorderThreshold": "Reorder Threshold",
+    "AllowBackorder": "Allow Backorder",
 
     //permissions
     "Permission:Management": "Management",

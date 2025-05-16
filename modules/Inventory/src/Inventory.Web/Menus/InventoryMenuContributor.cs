@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Abp.eCommerce.Localization;
+using System.Threading.Tasks;
 using Volo.Abp.UI.Navigation;
 
 namespace Inventory.Web.Menus;
@@ -15,8 +16,33 @@ public class InventoryMenuContributor : IMenuContributor
 
     private Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
+        var l = context.GetLocalizer<eCommerceResource>();
+
         //Add main menu items.
-        context.Menu.AddItem(new ApplicationMenuItem(InventoryMenus.Prefix, displayName: "Inventory", "~/Inventory", icon: "fa fa-globe"));
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                InventoryMenus.Prefix, 
+                displayName: l["Menu:Inventory"], 
+                "~/Inventory", 
+                icon: "fa fa-warehouse"
+            )
+            .AddItem(
+                new ApplicationMenuItem(
+                    InventoryMenus.StockBalance,
+                    displayName: l["Menu:StockBalance"],
+                    "~/StockBalance",
+                    icon: "fa fa-scale-balanced"
+                )
+            )
+            .AddItem(
+                new ApplicationMenuItem(
+                    InventoryMenus.StockMovement,
+                    displayName: l["Menu:StockMovement"],
+                    "~/StockMovement",
+                    icon: "fa fa-truck"
+                )
+            )
+        );
 
         return Task.CompletedTask;
     }

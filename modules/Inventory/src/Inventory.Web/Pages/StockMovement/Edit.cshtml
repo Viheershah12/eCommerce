@@ -1,0 +1,73 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Inventory.Web.Menus
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IAuthorizationService AuthorizationService
+@inject PageLayout PageLayout
+
+@model Inventory.Web.Pages.StockMovement.EditModel
+
+@{
+    PageLayout.Content.MenuItemName = InventoryMenus.StockMovement;
+    PageLayout.Content.Title = L["Menu:EditStockMovement"];
+
+    PageLayout.Content.BreadCrumb.Add(L["Menu:StockMovement"], "/StockMovement");
+}
+
+@section scripts {
+    <abp-script src="/Pages/StockMovement/js/Common.js" />
+}
+
+<form asp-page="/StockMovement/Edit">
+    <abp-card>
+        <abp-card-header>
+            <abp-card-title>@L["Title:EditStockMovement"]</abp-card-title>
+        </abp-card-header>
+
+        <abp-card-body>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-select asp-for="StockMovement.InventoryId" asp-items="Model.Dropdown.InventoryDropdown" disabled="disabled" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="StockMovement.ProductName" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column size-md="_6">
+                    <abp-select asp-for="StockMovement.MovementType" asp-items="Model.Dropdown.StockMovementTypeDropdown" disabled="disabled" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <abp-select asp-for="StockMovement.OrderId" asp-items="Model.Dropdown.OrderDropdown" disabled="disabled" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="StockMovement.QuantityChanged" type="number" readonly="true" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="StockMovement.Reason" readonly="true" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="StockMovement.QuantityBeforeChange" />
+                </abp-column>
+
+                <abp-column size-md="_6">
+                    <abp-input asp-for="StockMovement.QuantityAfterChange" />
+                </abp-column>
+            </abp-row>
+        </abp-card-body>
+    </abp-card>
+</form>

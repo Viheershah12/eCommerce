@@ -29,28 +29,28 @@ namespace Inventory.Controllers
 
         [HttpGet]
         [Route("getList")]
-        public async Task<PagedResultDto<InventoryDto>> GetListAsync(GetInventoryListDto dto)
+        public async Task<PagedResultDto<StockBalanceDto>> GetListAsync(GetStockBalanceListDto dto)
         {
             return await _stockBalanceAppService.GetListAsync(dto);
         }
 
         [HttpPost]
         [Route("create")]
-        public async Task<Guid> CreateAsync(CreateUpdateInventoryDto dto)
+        public async Task<Guid> CreateAsync(CreateUpdateStockBalanceDto dto)
         {
             return await _stockBalanceAppService.CreateAsync(dto);
         }
 
         [HttpGet]
         [Route("get")]
-        public async Task<CreateUpdateInventoryDto> GetAsync(Guid id)
+        public async Task<CreateUpdateStockBalanceDto> GetAsync(Guid id)
         {
             return await _stockBalanceAppService.GetAsync(id);
         }
 
         [HttpPut]
         [Route("update")]
-        public async Task UpdateAsync(CreateUpdateInventoryDto dto)
+        public async Task UpdateAsync(CreateUpdateStockBalanceDto dto)
         {
             await _stockBalanceAppService.UpdateAsync(dto);
         }

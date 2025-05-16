@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Abp.eCommerce.Enums;
+using AutoMapper;
 using Inventory.Dtos.Inventory;
 using Inventory.Dtos.StockMovement;
 using Volo.Abp.AutoMapper;
@@ -13,16 +14,23 @@ public class InventoryApplicationAutoMapperProfile : Profile
          * Alternatively, you can split your mapping configurations
          * into multiple profile classes for a better organization. */
 
-        CreateMap<CreateUpdateInventoryDto, Models.Inventory>()
+        // Stock Balance
+        CreateMap<Models.Inventory, StockBalanceDto>();
+
+        CreateMap<CreateUpdateStockBalanceDto, Models.Inventory>()
             .IgnoreFullAuditedObjectProperties()
             .Ignore(x => x.ConcurrencyStamp)
             .Ignore(x => x.ExtraProperties)
             .ReverseMap();
 
+        // Stock Movement
         CreateMap<CreateUpdateStockMovementDto, Models.StockMovement>()
             .IgnoreFullAuditedObjectProperties()
             .Ignore(x => x.ConcurrencyStamp)
             .Ignore(x => x.ExtraProperties)
             .ReverseMap();
+
+        CreateMap<Models.StockMovement, StockMovementDto>()
+            .ForMember(dest => dest.MovementType, opt => opt.MapFrom(x => x.MovementType.GetDescription()));
     }
 }
