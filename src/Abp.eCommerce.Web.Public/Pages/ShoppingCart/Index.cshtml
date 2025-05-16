@@ -38,6 +38,9 @@
                                     data-price="@Model.CartItems[i].Price"
                                     data-quantity="@Model.CartItems[i].Quantity" />
 
+                                <input asp-for="CartItems[i].Price" type="hidden" />
+                                <input asp-for="CartItems[i].Name" type="hidden" />
+
                                 <!-- Product Image -->
                                 @if (hasImage)
                                 {
@@ -111,7 +114,7 @@
 
                     @* <p class="text-muted small mb-3">@L["DeliveryFeeMsg"]</p> *@
 
-                    <button asp-page-handler="Checkout" type="submit" class="btn btn-success w-100 fw-bold" id="checkoutButton" disabled="disabled">
+                    <button asp-page="/ShoppingCart/Checkout" asp-page-handler="Checkout" type="submit" class="btn btn-success w-100 fw-bold" id="checkoutButton" disabled="disabled">
                         @L["Checkout"] <span class="checkoutTotal"></span>
                     </button>
                 </div>
