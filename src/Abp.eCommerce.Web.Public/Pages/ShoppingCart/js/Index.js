@@ -1,20 +1,40 @@
 ﻿function updateTotal() {
     let total = 0;
     let anyChecked = false;
+    const selectedItemsContainer = $('#selectedItems');
+    selectedItemsContainer.empty(); // Clear previous items
 
     $('.quantity-group').each(function () {
         const $group = $(this);
         const itemId = $group.data('id');
         const price = parseFloat($group.data('price'));
         const quantity = parseInt($group.find('.quantity-input').val());
-
         const isChecked = $(`.cart-item-checkbox[data-id='${itemId}']`).is(':checked');
+
         if (isChecked) {
-            total += quantity * price;
             anyChecked = true;
+            total += quantity * price;
+
+            // Get item name
+            const itemName = $(`.cart-item-checkbox[data-id='${itemId}']`).closest('.border-top').find('h6').text().trim();
+
+            // Format price
+            const formattedPrice = new Intl.NumberFormat('en-KE', {
+                style: 'currency',
+                currency: 'KES'
+            }).format(price * quantity);
+
+            // Append to summary
+            selectedItemsContainer.append(
+                `<div class="d-flex justify-content-between small">
+                    <span>${itemName} x${quantity}</span>
+                    <span>${formattedPrice}</span>
+                </div>`
+            );
         }
     });
 
+    // Update total price
     $('.checkoutTotal').text(
         new Intl.NumberFormat('en-KE', {
             style: 'currency',
@@ -22,9 +42,8 @@
         }).format(total)
     );
 
-    // Enable/disable checkout button
-    const checkoutButton = $('#checkoutButton');
-    checkoutButton.prop('disabled', !anyChecked);
+    // Enable/disable checkout
+    $('#checkoutButton').prop('disabled', !anyChecked);
 }
 
 $('.cart-item-checkbox').on('change', function () {

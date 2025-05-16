@@ -136,6 +136,8 @@
     "ReservedQuantity": "Reserved Quantity",
     "ReorderThreshold": "Reorder Threshold",
     "AllowBackorder": "Allow Backorder",
+    "CartSummary": "Cart Summary",
+    "SubTotal": "Sub-Total",
 
     //permissions
     "Permission:Management": "Management",

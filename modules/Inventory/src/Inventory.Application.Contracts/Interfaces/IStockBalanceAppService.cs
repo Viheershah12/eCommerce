@@ -17,6 +17,8 @@ namespace Inventory.Interfaces
 
         Task<CreateUpdateStockBalanceDto> GetAsync(Guid id);
 
+        Task<CreateUpdateStockBalanceDto> GetByProductIdAsync(Guid productId);
+
         Task UpdateAsync(CreateUpdateStockBalanceDto dto);
 
         Task DeleteAsync(Guid id);

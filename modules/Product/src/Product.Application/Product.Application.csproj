@@ -12,6 +12,7 @@
     <PackageReference Include="Volo.Abp.AutoMapper" Version="9.0.3" />
     <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.0.3" />
     <ProjectReference Include="..\..\..\Customer\src\Customer.Application.Contracts\Customer.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Inventory\src\Inventory.Application.Contracts\Inventory.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\..\Management\src\Management.Application.Contracts\Management.Application.Contracts.csproj" />
     <ProjectReference Include="..\Product.Application.Contracts\Product.Application.Contracts.csproj" />
     <ProjectReference Include="..\Product.Domain\Product.Domain.csproj" />

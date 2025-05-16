@@ -88,6 +88,24 @@ namespace Inventory.Services
             }
         }
 
+        public async Task<CreateUpdateStockBalanceDto> GetByProductIdAsync(Guid productId)
+        {
+            try
+            {
+                var querable = await _inventoryRepository.GetQueryableAsync();
+                var inventory = querable.FirstOrDefault(x => x.ProductId == productId);
+
+                if (inventory == null)
+                    throw new UserFriendlyException("");
+
+                return ObjectMapper.Map<Models.Inventory, CreateUpdateStockBalanceDto>(inventory);
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(message: ex.Message);
+            }
+        }
+
         public async Task UpdateAsync(CreateUpdateStockBalanceDto dto)
         {
             try

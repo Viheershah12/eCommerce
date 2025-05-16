@@ -48,6 +48,13 @@ namespace Inventory.Controllers
             return await _stockBalanceAppService.GetAsync(id);
         }
 
+        [HttpGet]
+        [Route("getByProductId")]
+        public async Task<CreateUpdateStockBalanceDto> GetByProductIdAsync(Guid productId)
+        {
+            return await _stockBalanceAppService.GetByProductIdAsync(productId);
+        }
+
         [HttpPut]
         [Route("update")]
         public async Task UpdateAsync(CreateUpdateStockBalanceDto dto)

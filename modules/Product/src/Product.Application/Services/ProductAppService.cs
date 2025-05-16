@@ -18,6 +18,7 @@ using Product.Dtos.Common;
 using Volo.Abp.ObjectMapping;
 using static Product.Models.Product;
 using Product.ProductCategory;
+using Inventory.Interfaces;
 
 namespace Product.Services
 {
@@ -31,6 +32,7 @@ namespace Product.Services
         private readonly IFileAppService _fileAppService;
         private readonly ICustomerGroupAppService _customerGroupAppService;
         private readonly IProductCategoryRepository _productCategoryRepository;
+        private readonly IStockBalanceAppService _stockBalanceAppService;
         #endregion
 
         #region CTOR
@@ -41,7 +43,8 @@ namespace Product.Services
             Customer.Interfaces.ICommonAppService customerCommonAppService,
             IFileAppService fileAppService,
             ICustomerGroupAppService customerGroupAppService,
-            IProductCategoryRepository productCategoryRepository
+            IProductCategoryRepository productCategoryRepository,
+            IStockBalanceAppService stockBalanceAppService
         )
         {
             _productRepository = productRepository;
@@ -51,6 +54,7 @@ namespace Product.Services
             _fileAppService = fileAppService;
             _customerGroupAppService = customerGroupAppService;
             _productCategoryRepository = productCategoryRepository; 
+            _stockBalanceAppService = stockBalanceAppService;
         }
         #endregion
 
@@ -127,6 +131,10 @@ namespace Product.Services
                         var files = await _fileAppService.DownloadMultipleFileByIdAsync(item.Media.Select(x => x.Id).ToList());
                         prod.Media = ObjectMapper.Map<List<FileDto>, List<UserFileDto>>(files);
                     }
+
+                    // Get Stock
+                    var inventory = await _stockBalanceAppService.GetByProductIdAsync(prod.Id);
+                    prod.Stock = inventory.StockQuantity ?? 0;
 
                     list.Add(prod);
                 }

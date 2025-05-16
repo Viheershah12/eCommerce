@@ -41,9 +41,13 @@ namespace Product.Dtos.Product
     {
         public decimal? Price { get; set; }
 
+        public decimal? OldPrice { get; set; }
+
         public List<UserFileDto>? Media { get; set; }
 
         public Guid Category { get; set; }
+
+        public decimal Stock { get; set; }
     }
 
     public class DeleteProductMedia : BaseIdModel

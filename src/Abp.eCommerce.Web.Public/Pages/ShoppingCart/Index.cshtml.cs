@@ -47,7 +47,7 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
             return Page();
         }
 
-        public async Task<IActionResult> OnPostCheckOutAsync()
+        public async Task<IActionResult> OnPostCheckoutAsync()
         {
             try
             {
