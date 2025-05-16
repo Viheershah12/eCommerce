@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>PaymentTransactions</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="9.0.3" />
+    <ProjectReference Include="..\PaymentTransactions.Application.Contracts\PaymentTransactions.Application.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

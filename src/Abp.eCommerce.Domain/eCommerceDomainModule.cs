@@ -23,6 +23,7 @@ using Customer;
 using Volo.CmsKit;
 using Order;
 using Inventory;
+using PaymentTransactions;
 
 namespace Abp.eCommerce;
 
@@ -47,6 +48,7 @@ namespace Abp.eCommerce;
     [DependsOn(typeof(CmsKitDomainModule))]
     [DependsOn(typeof(OrderDomainModule))]
     [DependsOn(typeof(InventoryDomainModule))]
+    [DependsOn(typeof(PaymentTransactionsDomainModule))]
     public class eCommerceDomainModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

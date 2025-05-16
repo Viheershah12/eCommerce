@@ -47,6 +47,7 @@
     "Menu:EditStockMovement": "Edit Stock Movement",
     "Menu:CreateStockBalance": "Create Stock Balance",
     "Menu:CreateStockMovement": "Create Stock Movement",
+    "Menu:PaymentTransaction": "Payment Transaction",
 
     //title
     "Title:ContentManagement": "Static Content",

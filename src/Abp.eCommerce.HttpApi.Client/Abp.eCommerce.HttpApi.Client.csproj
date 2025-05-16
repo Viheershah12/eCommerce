@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Abp.eCommerce.Application.Contracts\Abp.eCommerce.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\modules\Management\src\Management.HttpApi.Client\Management.HttpApi.Client.csproj" />
-  <ProjectReference Include="..\..\modules\Customer\src\Customer.HttpApi.Client\Customer.HttpApi.Client.csproj" /><ProjectReference Include="..\..\modules\Order\src\Order.HttpApi.Client\Order.HttpApi.Client.csproj" /><ProjectReference Include="..\..\modules\Inventory\src\Inventory.HttpApi.Client\Inventory.HttpApi.Client.csproj" /></ItemGroup>
+  <ProjectReference Include="..\..\modules\Customer\src\Customer.HttpApi.Client\Customer.HttpApi.Client.csproj" /><ProjectReference Include="..\..\modules\Order\src\Order.HttpApi.Client\Order.HttpApi.Client.csproj" /><ProjectReference Include="..\..\modules\Inventory\src\Inventory.HttpApi.Client\Inventory.HttpApi.Client.csproj" /><ProjectReference Include="..\..\modules\PaymentTransactions\src\PaymentTransactions.HttpApi.Client\PaymentTransactions.HttpApi.Client.csproj" /></ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi.Client" Version="9.0.3" />

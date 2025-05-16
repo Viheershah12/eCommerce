@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>PaymentTransactions</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="9.0.3" />
+    <ProjectReference Include="..\PaymentTransactions.Domain.Shared\PaymentTransactions.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abp.eCommerce.Domain.Shared\Abp.eCommerce.Domain.Shared.csproj" />
-  <ProjectReference Include="..\..\modules\Product\src\Product.Application.Contracts\Product.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.Application.Contracts\Management.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Customer\src\Customer.Application.Contracts\Customer.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Order\src\Order.Application.Contracts\Order.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Inventory\src\Inventory.Application.Contracts\Inventory.Application.Contracts.csproj" /></ItemGroup>
+  <ProjectReference Include="..\..\modules\Product\src\Product.Application.Contracts\Product.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.Application.Contracts\Management.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Customer\src\Customer.Application.Contracts\Customer.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Order\src\Order.Application.Contracts\Order.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Inventory\src\Inventory.Application.Contracts\Inventory.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\PaymentTransactions\src\PaymentTransactions.Application.Contracts\PaymentTransactions.Application.Contracts.csproj" /></ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="9.0.3" />

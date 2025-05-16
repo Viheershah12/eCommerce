@@ -1,0 +1,111 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "PaymentTransactions.Domain.Shared": {
+      "path": "src/PaymentTransactions.Domain.Shared/PaymentTransactions.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.Domain": {
+      "path": "src/PaymentTransactions.Domain/PaymentTransactions.Domain.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.Application.Contracts": {
+      "path": "src/PaymentTransactions.Application.Contracts/PaymentTransactions.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.Application": {
+      "path": "src/PaymentTransactions.Application/PaymentTransactions.Application.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.EntityFrameworkCore": {
+      "path": "src/PaymentTransactions.EntityFrameworkCore/PaymentTransactions.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.MongoDB": {
+      "path": "src/PaymentTransactions.MongoDB/PaymentTransactions.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.HttpApi": {
+      "path": "src/PaymentTransactions.HttpApi/PaymentTransactions.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.HttpApi.Client": {
+      "path": "src/PaymentTransactions.HttpApi.Client/PaymentTransactions.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.TestBase": {
+      "path": "test/PaymentTransactions.TestBase/PaymentTransactions.TestBase.abppkg",
+      "folder": "test"
+    },
+    "PaymentTransactions.EntityFrameworkCore.Tests": {
+      "path": "test/PaymentTransactions.EntityFrameworkCore.Tests/PaymentTransactions.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "PaymentTransactions.MongoDB.Tests": {
+      "path": "test/PaymentTransactions.MongoDB.Tests/PaymentTransactions.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "PaymentTransactions.Domain.Tests": {
+      "path": "test/PaymentTransactions.Domain.Tests/PaymentTransactions.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "PaymentTransactions.Application.Tests": {
+      "path": "test/PaymentTransactions.Application.Tests/PaymentTransactions.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "PaymentTransactions.HttpApi.Host": {
+      "path": "host/PaymentTransactions.HttpApi.Host/PaymentTransactions.HttpApi.Host.abppkg",
+      "folder": "host"
+    },
+    "PaymentTransactions.Web": {
+      "path": "src/PaymentTransactions.Web/PaymentTransactions.Web.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/PaymentTransactions.HttpApi.Client.ConsoleTestApp/PaymentTransactions.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "PaymentTransactions.Web.Host": {
+      "path": "host/PaymentTransactions.Web.Host/PaymentTransactions.Web.Host.abppkg",
+      "folder": "host"
+    },
+    "PaymentTransactions.AuthServer": {
+      "path": "host/PaymentTransactions.AuthServer/PaymentTransactions.AuthServer.abppkg",
+      "folder": "host"
+    },
+    "PaymentTransactions.Host.Shared": {
+      "path": "host/PaymentTransactions.Host.Shared/PaymentTransactions.Host.Shared.abppkg",
+      "folder": "host"
+    },
+    "PaymentTransactions.Web.Unified": {
+      "path": "host/PaymentTransactions.Web.Unified/PaymentTransactions.Web.Unified.abppkg",
+      "folder": "host"
+    },
+    "PaymentTransactions.Blazor": {
+      "path": "src/PaymentTransactions.Blazor/PaymentTransactions.Blazor.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.Blazor.Host": {
+      "path": "host/PaymentTransactions.Blazor.Host/PaymentTransactions.Blazor.Host.abppkg",
+      "folder": "host"
+    },
+    "PaymentTransactions.Blazor.Server": {
+      "path": "src/PaymentTransactions.Blazor.Server/PaymentTransactions.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.Blazor.WebAssembly": {
+      "path": "src/PaymentTransactions.Blazor.WebAssembly/PaymentTransactions.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "PaymentTransactions.Blazor.Server.Host": {
+      "path": "host/PaymentTransactions.Blazor.Server.Host/PaymentTransactions.Blazor.Server.Host.abppkg",
+      "folder": "host"
+    }
+  }
+}
