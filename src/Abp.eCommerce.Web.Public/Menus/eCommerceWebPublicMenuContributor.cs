@@ -57,13 +57,23 @@ public class eCommerceWebPublicMenuContributor : IMenuContributor
                 )
             );
 
+            context.Menu.AddItem(
+                new ApplicationMenuItem(
+                    eCommerceWebPublicMenus.Order,
+                    l["Menu:Order"],
+                    "~/Order",
+                    icon: "fa fa-receipt ",
+                    order: 3
+                )
+            );
+
             // Blog
             var blog = new ApplicationMenuItem(
                     eCommerceWebPublicMenus.Blog,
                     l["Menu:Blog"],
                     "~/Blog",
                     icon: "fa fa-blog",
-                    order: 3
+                    order: 4
                 );
 
             foreach (var item in list.Items)
@@ -85,7 +95,7 @@ public class eCommerceWebPublicMenuContributor : IMenuContributor
                     l["Menu:About"],
                     "~/About",
                     icon: "fa fa-home",
-                    order: 4
+                    order: 5
                 )
             );
         }

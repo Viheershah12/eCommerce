@@ -27,11 +27,12 @@
         <div class="col-lg-8 mb-4">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h4 class="fw-bold mb-4">@L["ReviewYourOrder"]</h4>
+                    <h4 class="fw-bold mb-4">@L["Title:ReviewYourOrder"]</h4>
 
                     @for (var i = 0; i < Model.CartItems.Count; i++)
                     {
                         <input asp-for="CartItems[i].Id" type="hidden" />
+                        <input asp-for="CartItems[i].CartItemId" type="hidden" />
                         <input asp-for="CartItems[i].Name" type="hidden" />
                         <input asp-for="CartItems[i].Quantity" type="hidden" />
                         <input asp-for="CartItems[i].Price" type="hidden" />
@@ -69,7 +70,7 @@
         <div class="col-lg-4">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="fw-bold mb-3">@L["SelectPaymentMethod"]</h5>
+                    <h5 class="fw-bold mb-3">@L["Title:SelectPaymentMethod"]</h5>
 
                     <abp-radio asp-for="PaymentMethod" asp-items="Model.PaymentMethodOptions" />
 
@@ -86,7 +87,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="mpesaModalLabel">@L["EnterPhoneNumber"]</h5>
+                    <h5 class="modal-title" id="mpesaModalLabel">@L["Title:EnterPhoneNumber"]</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Close"]"></button>
                 </div>
                 <div class="modal-body">

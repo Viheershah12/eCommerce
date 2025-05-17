@@ -1,0 +1,94 @@
+﻿@page
+@using Abp.eCommerce.Enums
+@using Abp.eCommerce.Localization
+@using Abp.eCommerce.Web.Public.Menus
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IPageLayout PageLayout
+@inject IStringLocalizer<eCommerceResource> L
+
+@model Abp.eCommerce.Web.Public.Pages.Orders.IndexModel
+
+@section styles {
+    <style>
+        .hover-shadow:hover {
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1) !important;
+            transition: box-shadow 0.3s ease-in-out !important;
+        }
+
+        .card .badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+}
+
+@{
+    PageLayout.Content.Title = L["Menu:Order"];
+    PageLayout.Content.MenuItemName = eCommerceWebPublicMenus.Order;
+}
+
+@section scripts {
+    <abp-script src="/Pages/Order/js/Index.js" />
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-bottom fw-bold">
+                <i class="fas fa-filter me-2 text-secondary"></i>@L["OrderStatus"]
+            </div>
+            <div class="card-body p-0">
+                <ul class="nav flex-column nav-pills p-2">
+                    <li class="nav-item mb-1">
+                        <a class="nav-link rounded-pill fw-semibold px-3 py-2 @(Model.SelectedStatus == null ? "active" : "") status-item" href="#" data-status="all" id="all">
+                            <i class="fas fa-list me-2"></i>@L["All"]
+                        </a>
+                    </li>
+                    <li class="nav-item mb-1">
+                        <a class="nav-link rounded-pill fw-semibold px-3 py-2 @(Model.SelectedStatus == OrderStatus.Pending ? "active" : "") status-item" href="#" data-status="@OrderStatus.Pending" id="@OrderStatus.Pending">
+                            <i class="fas fa-hourglass-start me-2"></i>@L["OrderStatus:Pending"]
+                        </a>
+                    </li>
+                    <li class="nav-item mb-1">
+                        <a class="nav-link rounded-pill fw-semibold px-3 py-2 @(Model.SelectedStatus == OrderStatus.Processing ? "active" : "") status-item" href="#" data-status="@OrderStatus.Processing" id="@OrderStatus.Processing">
+                            <i class="fas fa-cogs me-2"></i>@L["OrderStatus:Processing"]
+                        </a>
+                    </li>
+                    <li class="nav-item mb-1">
+                        <a class="nav-link rounded-pill fw-semibold px-3 py-2 @(Model.SelectedStatus == OrderStatus.Shipped ? "active" : "") status-item" href="#" data-status="@OrderStatus.Shipped" id="@OrderStatus.Shipped">
+                            <i class="fas fa-shipping-fast me-2"></i>@L["OrderStatus:Shipped"]
+                        </a>
+                    </li>
+                    <li class="nav-item mb-1">
+                        <a class="nav-link rounded-pill fw-semibold px-3 py-2 @(Model.SelectedStatus == OrderStatus.Completed ? "active" : "") status-item" href="#" data-status="@OrderStatus.Completed" id="@OrderStatus.Completed">
+                            <i class="fas fa-check-circle me-2"></i>@L["OrderStatus:Completed"]
+                        </a>
+                    </li>
+                    <li class="nav-item mb-1">
+                        <a class="nav-link rounded-pill fw-semibold px-3 py-2 @(Model.SelectedStatus == OrderStatus.Cancelled ? "active" : "") status-item" href="#" data-status="@OrderStatus.Cancelled" id="@OrderStatus.Cancelled">
+                            <i class="fas fa-circle-xmark me-2"></i>@L["OrderStatus:Cancelled"]
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-9">
+        @if (Model.Orders.TotalCount == 0)
+        {
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="fas fa-info-circle me-2"></i> @L["YouHaveNoOrders"]
+            </div>
+        }
+        else
+        {
+            <div id="orderTable">
+                <partial name="_Table" model="(Model.Orders, Model.SelectedStatus)" />
+            </div>
+        }
+    </div>
+</div>

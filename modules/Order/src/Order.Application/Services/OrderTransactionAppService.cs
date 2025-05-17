@@ -32,14 +32,14 @@ namespace Order.Services
         }
         #endregion 
 
-        public async Task<PagedResultDto<OrderDto>> GetListAsync(GetOrderListDto dto)
+        public async Task<BasePagedModel<OrderDto>> GetListAsync(GetOrderListDto dto)
         {
             try
             {
                 var (list, count) = await _orderManager.GetOrderListing(dto);
                 var items = ObjectMapper.Map<List<Models.Order>, List<OrderDto>>(list);
 
-                return new PagedResultDto<OrderDto>(count, items);
+                return new BasePagedModel<OrderDto>(count, items, dto.MaxResultCount, dto.SkipCount);
             }
             catch (Exception ex) 
             {

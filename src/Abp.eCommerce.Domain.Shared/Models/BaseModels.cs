@@ -64,11 +64,22 @@ namespace Abp.eCommerce.Models
     #region Pagination
     public class BasePagedModel<T> : PagedResultDto<T>
     {
-        public int PageNumber { get; set; } = 0;
+        public BasePagedModel()
+        {
+        }
 
-        public int PageSize { get; set; } = 10;
+        public BasePagedModel(long totalCount, IReadOnlyList<T> items, int pageSize, int skipCount)
+            : base(totalCount, items)
+        {
+            PageSize = pageSize;
+            PageNumber = (skipCount / pageSize) + 1;
+        }
 
-        public long TotalPages { get; set; } = 0;
+        public int PageSize { get; set; }
+
+        public int PageNumber { get; set; }
+
+        public long TotalPages => (long)Math.Ceiling((double)TotalCount / PageSize);
     }
 
     public class PaginationComponentDto 

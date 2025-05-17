@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Abp.eCommerce.Models;
+using Microsoft.AspNetCore.Mvc;
 using Order.Dtos.OrderTransaction;
 using Order.Interfaces;
 using System;
@@ -29,7 +30,7 @@ namespace Order.Controllers
 
         [HttpGet]
         [Route("getList")]
-        public async Task<PagedResultDto<OrderDto>> GetListAsync(GetOrderListDto dto)
+        public async Task<BasePagedModel<OrderDto>> GetListAsync(GetOrderListDto dto)
         {
             return await _orderTransactionAppService.GetListAsync(dto);
         }

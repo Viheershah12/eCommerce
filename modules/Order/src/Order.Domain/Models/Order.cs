@@ -12,10 +12,6 @@ namespace Order.Models
 {
     public class Order : FullAuditedAggregateRoot<Guid>
     {
-        public Order()
-        {
-        }
-
         public Guid CustomerId { get; set; }
 
         public required string CustomerName { get; set; }
@@ -42,6 +38,10 @@ namespace Order.Models
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
 
         public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.UnPaid;
+
+        public PaymentMethodEnum? PaymentMethod { get; set; }
+
+        public string? PaymentMethodSystemName { get; set; }
 
         public ShippingStatus ShippingStatus { get; set; } = ShippingStatus.Pending;
 

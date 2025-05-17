@@ -63,6 +63,8 @@ namespace Order.Services
                             if (cartItem != null)
                             {
                                 prod.Quantity = cartItem.Quantity;
+                                prod.CartItemId = cartItem.Id;
+
                                 res.ShoppingCartItems.Add(prod);
                             }
                         }

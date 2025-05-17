@@ -9,6 +9,7 @@ using Volo.Abp.Domain.Repositories.MongoDB;
 using Volo.Abp.MongoDB;
 using System.Linq.Dynamic.Core;
 using MongoDB.Driver;
+using Abp.eCommerce.Enums;
 
 namespace Order.Order
 {
@@ -20,13 +21,17 @@ namespace Order.Order
             int skipCount,
             int maxResultCount,
             string sorting,
-            string? filter = null)
+            string? filter = null, OrderStatus? status = null)
         {
             var queryable = await GetMongoQueryableAsync();
             return await queryable
                 .WhereIf<Models.Order, IMongoQueryable<Models.Order>>(
                     !string.IsNullOrEmpty(filter),
                     order => !string.IsNullOrEmpty(order.CustomerName) && order.CustomerName.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
+                )
+                .WhereIf<Models.Order, IMongoQueryable<Models.Order>>(
+                    status.HasValue,
+                    order => order.Status == status
                 )
                 .OrderBy(sorting)
                 .As<IMongoQueryable<Models.Order>>()

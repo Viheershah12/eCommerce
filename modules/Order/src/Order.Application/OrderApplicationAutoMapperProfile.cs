@@ -19,7 +19,7 @@ public class OrderApplicationAutoMapperProfile : Profile
         // Order
         CreateMap<Models.Order, OrderDto>();
         CreateMap<CreateUpdateOrderDto, Models.Order>()
-            .IgnoreFullAuditedObjectProperties()
+            .IgnoreDeletionAuditedObjectProperties()
             .Ignore(x => x.ExtraProperties)
             .Ignore(x => x.ConcurrencyStamp)
             .ReverseMap();
@@ -60,6 +60,7 @@ public class OrderApplicationAutoMapperProfile : Profile
 
         // Product
         CreateMap<StoreProductDto, ShoppingItemDto>()
+            .Ignore(x => x.CartItemId)
             .Ignore(x => x.Quantity);
     }
 }

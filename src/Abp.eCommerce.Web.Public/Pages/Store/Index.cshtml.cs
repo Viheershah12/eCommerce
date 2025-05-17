@@ -86,6 +86,7 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
                 });
 
                 Products = ObjectMapper.Map<PagedResultDto<StoreProductDto>, BasePagedModel<ProductItemViewModel>>(res);
+                Products.PageNumber = model.PageNumber;
 
                 return PartialView("_Table", Products);
             }

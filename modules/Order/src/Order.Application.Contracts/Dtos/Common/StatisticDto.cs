@@ -23,5 +23,7 @@ namespace Order.Dtos.Common
     public class ShoppingItemDto : StoreProductDto
     {
         public int Quantity { get; set; }
+
+        public Guid CartItemId { get; set; }
     }
 }

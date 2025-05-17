@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
 
 namespace Order.Dtos.OrderTransaction
 {
-    public class CreateUpdateOrderDto : BaseIdModel
+    public class CreateUpdateOrderDto : AuditedEntityDto<Guid>
     {
         public CreateUpdateOrderDto(string customerName) 
         {
@@ -41,6 +42,10 @@ namespace Order.Dtos.OrderTransaction
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
 
         public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.UnPaid;
+
+        public PaymentMethodEnum? PaymentMethod { get; set; }
+
+        public string? PaymentMethodSystemName { get; set; }
 
         public ShippingStatus ShippingStatus { get; set; } = ShippingStatus.Pending;
 

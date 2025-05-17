@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using Order.Dtos.Common;
 using Order.Dtos.OrderTransaction;
+using Order.Interfaces;
 using PaymentTransactions.Dtos.PaymentTransaction;
 using System;
 using System.Collections.Generic;
@@ -40,18 +41,21 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
         private readonly INotificationAppService _notificationAppService;
         private readonly ICheckoutAppService _checkoutAppService;
         private readonly IMpesaAppService _mpesaAppService;
+        private readonly IShoppingCartAppService _shoppingCartAppService;
 
         public CheckoutModel( 
             IStringLocalizer<eCommerceResource> localizer,
             INotificationAppService notificationAppService,
             ICheckoutAppService checkoutAppService,
-            IMpesaAppService mpesaAppService
+            IMpesaAppService mpesaAppService,
+            IShoppingCartAppService shoppingCartAppService
         )
         {
             _localizer = localizer;
             _notificationAppService = notificationAppService;
             _checkoutAppService = checkoutAppService;
             _mpesaAppService = mpesaAppService;
+            _shoppingCartAppService = shoppingCartAppService;
         }   
 
         public async Task<IActionResult> OnPostAsync()
@@ -73,8 +77,10 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
                         Quantity = x.Quantity,
                         Price = x.Price ?? 0
                     }).ToList(),
-                    Status = OrderStatus.Pending,
-                    PaymentStatus = PaymentStatus.Pending
+                    Status = PaymentMethod == PaymentMethodEnum.CashOnDelivery ? OrderStatus.Processing : OrderStatus.Pending,
+                    PaymentStatus = PaymentMethod == PaymentMethodEnum.CashOnDelivery ? PaymentStatus.Paid : PaymentStatus.Pending,
+                    PaymentMethod = PaymentMethod == PaymentMethodEnum.CashOnDelivery ? PaymentMethod : null,
+                    PaymentMethodSystemName = PaymentMethod == PaymentMethodEnum.CashOnDelivery ? PaymentMethod.ToString() : null,
                 };
 
                 var paymentTransaction = new CreateUpdatePaymentTransactionDto
@@ -106,7 +112,10 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
                     return RedirectToPage("/ShoppingCart/Pending", new { transactionId = paymentTransactionId });
                 }
 
-                return Redirect("/");
+                // Delete Cart Item(s)
+                await _shoppingCartAppService.DeleteShoppingCartItemsAsync(CartItems.Select(x => x.CartItemId).ToList());
+
+                return Redirect("/Order/");
             }
             catch (AbpValidationException ex)
             {

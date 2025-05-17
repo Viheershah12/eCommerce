@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Abp.eCommerce.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,6 @@ namespace Order.Order
             int skipCount,
             int maxResultCount,
             string sorting,
-            string? filter = null);
+            string? filter = null, OrderStatus? status = null);
     }
 }

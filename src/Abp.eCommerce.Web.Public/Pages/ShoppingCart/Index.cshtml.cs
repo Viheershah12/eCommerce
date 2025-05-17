@@ -52,7 +52,6 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
             try
             {
                 var cartItems = CartItems.Where(x => x.Id != Guid.Empty).ToList();
-
                 return Redirect("/ShoppingCart/");
             }
             catch (Exception ex)

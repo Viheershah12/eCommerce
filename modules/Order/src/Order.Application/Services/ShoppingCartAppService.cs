@@ -175,5 +175,20 @@ namespace Order.Services
                 throw new BusinessException(ex.Message);
             }
         }
+
+        public async Task DeleteShoppingCartItemsAsync(List<Guid> cartItemIds)
+        {
+            try
+            {
+                var shoppingCart = await _shoppingCartRepository.GetAsync(x => x.UserId == CurrentUser.Id);
+                shoppingCart.Items.RemoveAll(x => cartItemIds.Contains(x.Id));
+
+                await _shoppingCartRepository.UpdateAsync(shoppingCart);
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
     }
 }

@@ -211,6 +211,9 @@ namespace Abp.eCommerce.Services
                                     order.PaymentStatus = PaymentStatus.Paid;
                                     order.Status = OrderStatus.Processing;
 
+                                    order.PaymentMethod = PaymentMethodEnum.MpesaStk;
+                                    order.PaymentMethodSystemName = PaymentMethodEnum.MpesaStk.ToString();
+
                                     order.PaidDate = DateTime.Now;
                                     break;
                                 case 1:

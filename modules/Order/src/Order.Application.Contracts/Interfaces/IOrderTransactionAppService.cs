@@ -1,4 +1,5 @@
-﻿using Order.Dtos.OrderTransaction;
+﻿using Abp.eCommerce.Models;
+using Order.Dtos.OrderTransaction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Order.Interfaces
 {
     public interface IOrderTransactionAppService : IApplicationService
     {
-        Task<PagedResultDto<OrderDto>> GetListAsync(GetOrderListDto dto);
+        Task<BasePagedModel<OrderDto>> GetListAsync(GetOrderListDto dto);
 
         Task<Guid> CreateAsync(CreateUpdateOrderDto dto);
 

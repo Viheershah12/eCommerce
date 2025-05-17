@@ -15,6 +15,13 @@
     "RememberMe": "Remember Me",
     "ForgotPassword": "Forgot Password",
 
+    // Side Menus
+    "OrderStatus:Pending": "Pending",
+    "OrderStatus:Processing": "Processing",
+    "OrderStatus:Shipped": "Shipped",
+    "OrderStatus:Completed": "Completed",
+    "OrderStatus:Cancelled": "Cancelled",
+
     //menu
     "Menu:Management": "Management",
     "Menu:ContentManagement": "Static Content",
@@ -48,6 +55,7 @@
     "Menu:CreateStockBalance": "Create Stock Balance",
     "Menu:CreateStockMovement": "Create Stock Movement",
     "Menu:PaymentTransaction": "Payment Transaction",
+    "Menu:Order": "Orders",
 
     //title
     "Title:ContentManagement": "Static Content",
@@ -77,6 +85,9 @@
     "Title:EditStockMovement": "Edit Stock Movement",
     "Title:CreateStockBalance": "Create Stock Balance",
     "Title:CreateStockMovement": "Create Stock Movement",
+    "Title:ReviewYourOrder": "Review Your Order",
+    "Title:SelectPaymentMethod": "Select Payment Method",
+    "Title:EnterPhoneNumber": "Enter Phone Number",
 
     //notification
     "SuccessfullyAdded": "Successfully Added!",
@@ -85,6 +96,7 @@
     "AddToCartFailed": "Add To Cart Failed!",
     "AddedToCart": "Product Added To Cart Successfully!",
     "AddedToWishlist": "Product Added To Wishlist Successfully!",
+    "YouHaveNoOrders": "You have no orders!",
 
     //delete confirmation
     "ContentDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Content!",
@@ -139,6 +151,16 @@
     "AllowBackorder": "Allow Backorder",
     "CartSummary": "Cart Summary",
     "SubTotal": "Sub-Total",
+    "Total": "Total",
+    "ViewDetail": "View Detail",
+    "OrderStatus": "Order Status",
+    "ConfirmAndPay": "Confirm and Pay",
+    "PhoneNumber": "Phone Number",
+    "ProceedWithPayment": "Proceed With Payment",
+
+    // Enums
+    "CashOnDelivery": "Cash On Delivery",
+    "MpesaStk": "Mpesa",
 
     //permissions
     "Permission:Management": "Management",

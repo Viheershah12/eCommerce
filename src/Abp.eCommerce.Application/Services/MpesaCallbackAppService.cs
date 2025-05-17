@@ -107,9 +107,14 @@ namespace Abp.eCommerce.Services
 
                     // Update Order
                     var order = await _orderTransactionAppService.GetAsync(paymentTransaction.OrderId);
+
                     order.PaidDate = DateTime.Now;
                     order.PaymentStatus = PaymentStatus.Paid;
                     order.Status = OrderStatus.Processing;
+                    order.PaymentMethod = PaymentMethodEnum.MpesaStk;
+                    order.PaymentMethodSystemName = PaymentMethodEnum.MpesaStk.ToString();
+
+                    await _orderTransactionAppService.UpdateAsync(order);
                 }
 
                 await _mpesaTransactionAppService.UpdateAsync(transaction);

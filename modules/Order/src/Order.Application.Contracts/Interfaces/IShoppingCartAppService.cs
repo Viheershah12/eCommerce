@@ -24,5 +24,7 @@ namespace Order.Interfaces
         Task UpdateAsync(CreateUpdateShoppingCartDto dto);
 
         Task DeleteAsync(Guid id);
+
+        Task DeleteShoppingCartItemsAsync(List<Guid> cartItemIds);
     }
 }

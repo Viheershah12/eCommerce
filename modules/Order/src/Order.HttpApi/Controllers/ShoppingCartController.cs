@@ -77,5 +77,12 @@ namespace Order.Controllers
         {
             await _shoppingCartAppService.DeleteAsync(id);
         }
+
+        [HttpDelete]
+        [Route("deleteShoppingCartItems")]
+        public async Task DeleteShoppingCartItemsAsync(List<Guid> cartItemIds)
+        {
+            await _shoppingCartAppService.DeleteShoppingCartItemsAsync(cartItemIds);
+        }
     }
 }

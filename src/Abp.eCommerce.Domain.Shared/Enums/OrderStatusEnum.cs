@@ -15,11 +15,14 @@ namespace Abp.eCommerce.Enums
         [Description("Processing")]
         Processing = 20,
 
+        [Description("Shipped")]
+        Shipped = 30,
+
         [Description("Completed")]
-        Completed = 30,
+        Completed = 40,
 
         [Description("Cancelled")]
-        Cancelled = 40
+        Cancelled = 50
     }
 
     public enum PaymentStatus
