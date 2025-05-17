@@ -31,8 +31,17 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.VirtualFileSystem;
 using Abp.eCommerce.MongoDB;
 using Abp.eCommerce.MultiTenancy;
+using Volo.Abp.BackgroundWorkers.Hangfire;
+using Hangfire;
+using Hangfire.Mongo;
+using Hangfire.Mongo.Migration.Strategies.Backup;
+using Hangfire.Mongo.Migration.Strategies;
+using Volo.Abp.BackgroundJobs;
+using Volo.Abp.BackgroundWorkers;
+using Abp.eCommerce.HttpApi.Host.HangfireServices;
+using System.Threading.Tasks;
 
-namespace Abp.eCommerce;
+namespace Abp.eCommerce.HttpApi.Host;
 
 [DependsOn(
     typeof(eCommerceHttpApiModule),
@@ -44,9 +53,9 @@ namespace Abp.eCommerce;
     typeof(eCommerceApplicationModule),
     typeof(eCommerceMongoDbModule),
     typeof(AbpAspNetCoreSerilogModule),
-    typeof(AbpSwashbuckleModule)
+    typeof(AbpSwashbuckleModule),
+    typeof(AbpBackgroundWorkersHangfireModule)
 )]
-
 public class eCommerceHttpApiHostModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -62,6 +71,37 @@ public class eCommerceHttpApiHostModule : AbpModule
         ConfigureDistributedLocking(context, configuration);
         ConfigureCors(context, configuration);
         ConfigureSwaggerServices(context, configuration);
+        ConfigureHangfire(context, configuration);  
+    }
+
+    private void ConfigureHangfire(ServiceConfigurationContext context, IConfiguration configuration)
+    {
+        Configure<AbpBackgroundJobOptions>(options =>
+        {
+            options.IsJobExecutionEnabled = false; //Disables job execution
+        });
+
+        var migrationOptions = new MongoMigrationOptions
+        {
+            MigrationStrategy = new MigrateMongoMigrationStrategy(),
+            BackupStrategy = new CollectionMongoBackupStrategy()
+        };
+
+        var storageOptions = new MongoStorageOptions
+        {
+            MigrationOptions = migrationOptions,
+            SlidingInvisibilityTimeout = TimeSpan.FromMinutes(30)
+        };
+
+        var connString = configuration.GetConnectionString("Default");
+
+        context.Services.AddHangfire(x => x.UseMongoStorage(
+            connString,
+            storageOptions
+        ));
+
+        //var containerBuilder = context.Services.GetContainerBuilder();
+        //containerBuilder.RegisterType<AbpDashboardOptionsProvider>();
     }
 
     private void ConfigureCache(IConfiguration configuration)
@@ -177,7 +217,7 @@ public class eCommerceHttpApiHostModule : AbpModule
         });
     }
 
-    public override void OnApplicationInitialization(ApplicationInitializationContext context)
+    public override async Task OnApplicationInitializationAsync(ApplicationInitializationContext context)
     {
         var app = context.GetApplicationBuilder();
         var env = context.GetEnvironment();
@@ -215,6 +255,11 @@ public class eCommerceHttpApiHostModule : AbpModule
 
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
+
+        // Hangfire
+        app.UseHangfireDashboard();
+        await context.AddBackgroundWorkerAsync<MpesaBackgroundWorker>();
+
         app.UseConfiguredEndpoints();
     }
 }

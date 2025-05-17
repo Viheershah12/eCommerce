@@ -9,22 +9,11 @@
     Layout = ThemeManager.CurrentTheme.GetEmptyLayout();
 }
 
-@section Scripts {
-    <script>
-        const transactionId = "@Model.TransactionId";
-        setInterval(async () => {
-            const response = await fetch(`/api/paymenttransactions/paymenttransaction/status?transactionId=${transactionId}`);
-            const data = await response.json();
-
-            if (data === "15") {
-                window.location.href = '/ShoppingCart/Index';
-            }
-            else if (data === "20") {
-                window.location.href = '/ShoppingCart/Index';
-            }
-        }, 3000);
-    </script>
+@section scripts {
+    <abp-script src="/Pages/ShoppingCart/js/Pending.js" />
 }
+
+<input asp-for="TransactionId" type="hidden" />
 
 <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="card shadow-lg p-4 text-center">

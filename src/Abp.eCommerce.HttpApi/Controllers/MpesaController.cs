@@ -37,5 +37,12 @@ namespace Abp.eCommerce.Controllers
         {
             return await _mpesaAppService.InitiateSTKPushAsync(input);
         }
+
+        [HttpGet]
+        [Route("checkTransactionStatus")]
+        public async Task CheckTransactionStatusAsync()
+        {
+            await _mpesaAppService.CheckTransactionStatusAsync();   
+        }
     }
 }

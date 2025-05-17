@@ -13,5 +13,7 @@ namespace Abp.eCommerce.Interfaces
         Task<string> GetAccessTokenAsync();
 
         Task<string> InitiateSTKPushAsync(MpesaStkPushRequestDto input);
+
+        Task CheckTransactionStatusAsync();
     }
 }

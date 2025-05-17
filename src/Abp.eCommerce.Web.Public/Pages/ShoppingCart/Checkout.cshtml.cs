@@ -106,7 +106,7 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
                     return RedirectToPage("/ShoppingCart/Pending", new { transactionId = paymentTransactionId });
                 }
 
-                return Page();
+                return Redirect("/");
             }
             catch (AbpValidationException ex)
             {

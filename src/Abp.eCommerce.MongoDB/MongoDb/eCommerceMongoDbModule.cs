@@ -35,10 +35,10 @@ namespace Abp.eCommerce.MongoDB;
 [DependsOn(typeof(ProductMongoDbModule))]
 [DependsOn(typeof(ManagementMongoDbModule))]
 [DependsOn(typeof(CustomerMongoDbModule))]
-    [DependsOn(typeof(CmsKitMongoDbModule))]
-    [DependsOn(typeof(OrderMongoDbModule))]
-    [DependsOn(typeof(InventoryMongoDbModule))]
-    [DependsOn(typeof(PaymentTransactionsMongoDbModule))]
+[DependsOn(typeof(CmsKitMongoDbModule))]
+[DependsOn(typeof(OrderMongoDbModule))]
+[DependsOn(typeof(InventoryMongoDbModule))]
+[DependsOn(typeof(PaymentTransactionsMongoDbModule))]
     public class eCommerceMongoDbModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
