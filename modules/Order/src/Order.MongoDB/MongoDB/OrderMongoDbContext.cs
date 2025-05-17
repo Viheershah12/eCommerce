@@ -15,6 +15,8 @@ public class OrderMongoDbContext : AbpMongoDbContext, IOrderMongoDbContext
 
     public IMongoCollection<Models.WishList> WishList => Collection<Models.WishList>();
 
+    public IMongoCollection<Models.Order> Order => Collection<Models.Order>();
+
     protected override void CreateModel(IMongoModelBuilder modelBuilder)
     {
         base.CreateModel(modelBuilder);

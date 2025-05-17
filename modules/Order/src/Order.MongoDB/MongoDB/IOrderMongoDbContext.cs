@@ -13,5 +13,7 @@ public interface IOrderMongoDbContext : IAbpMongoDbContext
 
     IMongoCollection<Models.ShoppingCart> ShoppingCart { get; }    
 
-    IMongoCollection<Models.WishList> WishList { get; }    
+    IMongoCollection<Models.WishList> WishList { get; }   
+    
+    IMongoCollection<Models.Order> Order { get; }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Order.Dtos.Common;
+using Order.Dtos.OrderTransaction;
 using Order.Dtos.ShoppingCart;
 using Order.Dtos.WishList;
 using Product.Dtos.Product;
@@ -14,6 +15,17 @@ public class OrderApplicationAutoMapperProfile : Profile
         /* You can configure your AutoMapper mapping configuration here.
          * Alternatively, you can split your mapping configurations
          * into multiple profile classes for a better organization. */
+
+        // Order
+        CreateMap<Models.Order, OrderDto>();
+        CreateMap<CreateUpdateOrderDto, Models.Order>()
+            .IgnoreFullAuditedObjectProperties()
+            .Ignore(x => x.ExtraProperties)
+            .Ignore(x => x.ConcurrencyStamp)
+            .ReverseMap();
+
+        CreateMap<Models.Order.OrderItem, CreateUpdateOrderDto.OrderItemDto>().ReverseMap();
+        CreateMap<Models.Order.Address, CreateUpdateOrderDto.AddressDto>().ReverseMap();
 
         // Shopping Cart
         CreateMap<Models.ShoppingCart, ShoppingCartDto>()
