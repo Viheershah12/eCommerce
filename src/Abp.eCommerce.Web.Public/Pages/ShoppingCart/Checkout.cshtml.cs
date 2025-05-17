@@ -1,12 +1,19 @@
+using Abp.eCommerce.Dtos.Checkout;
+using Abp.eCommerce.Dtos.Mpesa;
 using Abp.eCommerce.Enums;
+using Abp.eCommerce.Interfaces;
 using Abp.eCommerce.Localization;
+using Abp.eCommerce.Services;
 using Abp.eCommerce.Web.Common.Interfaces;
 using Abp.eCommerce.Web.Public.Models.Common;
+using IdentityModel.OidcClient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using Order.Dtos.Common;
+using Order.Dtos.OrderTransaction;
+using PaymentTransactions.Dtos.PaymentTransaction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,21 +38,73 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
 
         private readonly IStringLocalizer<eCommerceResource> _localizer;
         private readonly INotificationAppService _notificationAppService;
+        private readonly ICheckoutAppService _checkoutAppService;
+        private readonly IMpesaAppService _mpesaAppService;
 
         public CheckoutModel( 
             IStringLocalizer<eCommerceResource> localizer,
-            INotificationAppService notificationAppService
+            INotificationAppService notificationAppService,
+            ICheckoutAppService checkoutAppService,
+            IMpesaAppService mpesaAppService
         )
         {
             _localizer = localizer;
             _notificationAppService = notificationAppService;
+            _checkoutAppService = checkoutAppService;
+            _mpesaAppService = mpesaAppService;
         }   
 
         public async Task<IActionResult> OnPostAsync()
         {
             try
             {
+                if (!CurrentUser.IsAuthenticated || CurrentUser.Id == null || string.IsNullOrEmpty(CurrentUser.UserName))
+                    return Redirect("/Account/Login");
 
+                var order = new CreateUpdateOrderDto(CurrentUser.UserName)
+                {
+                    CustomerName = CurrentUser.UserName,
+                    CustomerId = CurrentUser.Id.Value,
+                    OrderItems = CartItems.Select(x => new CreateUpdateOrderDto.OrderItemDto
+                    {
+                        Id = Guid.NewGuid(),
+                        ProductId = x.Id,
+                        ProductName = x.Name,
+                        Quantity = x.Quantity,
+                        Price = x.Price ?? 0
+                    }).ToList(),
+                    Status = OrderStatus.Pending,
+                    PaymentStatus = PaymentStatus.Pending
+                };
+
+                var paymentTransaction = new CreateUpdatePaymentTransactionDto
+                {
+                    Amount = CartItems.Sum(x => x.Quantity * x.Price) ?? 0,
+                    PaymentMethod = PaymentMethod,
+                    Status = PaymentMethod == PaymentMethodEnum.CashOnDelivery ? PaymentTransactionStatus.PendingConfirmed : PaymentTransactionStatus.Pending,
+                    PaymentDate = DateTime.Now, 
+                };
+
+                var checkoutDto = new CheckoutDto(order, paymentTransaction);
+                var paymentTransactionId = await _checkoutAppService.CheckoutAsync(checkoutDto);
+
+                // Handle STK Push if needed
+                if (PaymentMethod == PaymentMethodEnum.MpesaStk)
+                {
+                    var phoneNumber = PhoneNumber; // Fetch from form or user profile
+
+                    var stkInput = new MpesaStkPushRequestDto
+                    {
+                        PaymentTransactionId = paymentTransactionId,
+                        PhoneNumber = phoneNumber,
+                        Amount = paymentTransaction.Amount,
+                        AccountReference = "eCommerce",
+                        TransactionDescription = "eCommerce"
+                    };
+
+                    var stkResponse = await _mpesaAppService.InitiateSTKPushAsync(stkInput);
+                    return RedirectToPage("/ShoppingCart/Pending", new { transactionId = paymentTransactionId });
+                }
 
                 return Page();
             }

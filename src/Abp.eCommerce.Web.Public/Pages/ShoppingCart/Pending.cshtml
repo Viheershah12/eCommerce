@@ -1,0 +1,44 @@
+﻿@page
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+
+@inject IThemeManager ThemeManager
+
+@model Abp.eCommerce.Web.Public.Pages.ShoppingCart.PendingModel
+
+@{
+    Layout = ThemeManager.CurrentTheme.GetEmptyLayout();
+}
+
+@section Scripts {
+    <script>
+        const transactionId = "@Model.TransactionId";
+        setInterval(async () => {
+            const response = await fetch(`/api/paymenttransactions/paymenttransaction/status?transactionId=${transactionId}`);
+            const data = await response.json();
+
+            if (data === "15") {
+                window.location.href = '/ShoppingCart/Index';
+            }
+            else if (data === "20") {
+                window.location.href = '/ShoppingCart/Index';
+            }
+        }, 3000);
+    </script>
+}
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4 text-center">
+        <div class="card-body">
+            <div class="mb-4">
+                <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Processing...</span>
+                </div>
+                <h4 class="card-title mb-3">Processing Payment</h4>
+                <p class="card-text text-muted">Please confirm the payment on your mobile device. This may take a few seconds.</p>
+            </div>
+            <div class="alert alert-info small mb-0">
+                Do not close this window.
+            </div>
+        </div>
+    </div>
+</div>

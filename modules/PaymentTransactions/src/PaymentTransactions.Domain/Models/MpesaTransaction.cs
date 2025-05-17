@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Abp.eCommerce.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,21 @@ namespace PaymentTransactions.Models
     {
         public Guid PaymentTransactionId { get; set; }
 
+        public MpesaTransactionStatusEnum Status { get; set; }
+
+        public DateTime SentOn { get; set; }
+
+        public DateTime? ConfirmedOn { get; set; }
+
         public required string MerchantRequestId { get; set; }
 
         public required string CheckoutRequestId { get; set; }
+
+        public required int ResponseCode { get; set; }
+
+        public required string ResponseDecription { get; set; }
+
+        public required string CustomerMessage { get; set; }
 
         public required int ResultCode { get; set; }
 

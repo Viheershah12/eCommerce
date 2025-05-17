@@ -31,6 +31,13 @@ namespace PaymentTransactions.Controllers
         #endregion 
 
         [HttpGet]
+        [Route("status")]
+        public async Task<int> GetStatusAsync(Guid transactionId)
+        {
+            return await _paymentTransactionAppService.GetStatusAsync(transactionId);
+        }
+
+        [HttpGet]
         [Route("getList")]
         public async Task<PagedResultDto<PaymentTransactionDto>> GetListAsync(GetPaymentTransactionListDto dto)
         {

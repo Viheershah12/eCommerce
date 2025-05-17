@@ -1,8 +1,11 @@
 ﻿using Abp.eCommerce.Dtos.Mpesa;
+using Abp.eCommerce.Enums;
 using Abp.eCommerce.Interfaces;
 using Amazon.Runtime;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using PaymentTransactions.Dtos.MpesaTransaction;
+using PaymentTransactions.Interfaces;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -13,36 +16,55 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Volo.Abp;
 using ZstdSharp.Unsafe;
 
 namespace Abp.eCommerce.Services
 {
     public class MpesaAppService : eCommerceAppService, IMpesaAppService
     {
+        #region Fields
         private readonly IConfiguration _config;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IMpesaTransactionAppService _mpesaTransactionAppService;
+        #endregion
 
+        #region CTOR
         public MpesaAppService(
             IConfiguration config,
-            IHttpClientFactory httpClientFactory
+            IMpesaTransactionAppService mpesaTransactionAppService
         )
         {
             _config = config;
-            _httpClientFactory = httpClientFactory;
+            _mpesaTransactionAppService = mpesaTransactionAppService;
         }
+        #endregion 
 
         public async Task<string> GetAccessTokenAsync()
         {
-            var client = _httpClientFactory.CreateClient();
             var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(
                 $"{_config["Mpesa:ConsumerKey"]}:{_config["Mpesa:ConsumerSecret"]}"));
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+            var client = new RestClient(_config["Mpesa:BaseUrl"] ?? string.Empty);
 
-            var response = await client.GetAsync($"{_config["Mpesa:BaseUrl"]}/oauth/v1/generate?grant_type=client_credentials");
-            var content = await response.Content.ReadFromJsonAsync<JsonElement>();
+            var request = new RestRequest("oauth/v1/generate?grant_type=client_credentials", Method.Get);
+            request.AddHeader("Authorization", $"Basic {credentials}");
 
-            return content.GetProperty("access_token").GetString();
+            var response = await client.ExecuteAsync(request);
+
+            if (!response.IsSuccessful || string.IsNullOrEmpty(response.Content))
+            {
+                throw new Exception($"Failed to get access token: {response.StatusCode} - {response.Content}");
+            }
+
+            using var document = JsonDocument.Parse(response.Content);
+            var root = document.RootElement;
+
+            if (root.TryGetProperty("access_token", out var tokenElement))
+            {
+                return tokenElement.GetString() ?? string.Empty;
+            }
+
+            throw new Exception("access_token not found in the response.");
         }
 
         public async Task<string> InitiateSTKPushAsync(MpesaStkPushRequestDto input)
@@ -80,6 +102,49 @@ namespace Abp.eCommerce.Services
             request.AddParameter("application/json", json, ParameterType.RequestBody);
 
             var response = await client.ExecuteAsync(request);
+
+            if (response.IsSuccessStatusCode && !string.IsNullOrWhiteSpace(response.Content))
+            {
+                var responseDto = JsonConvert.DeserializeObject<MpesaStkPushResponse>(response.Content);
+
+                if (responseDto is not null && responseDto.ResponseCode == 0)
+                {
+                    var transaction = new CreateUpdateMpesaTransactionDto
+                    {
+                        PaymentTransactionId = input.PaymentTransactionId,
+                        MerchantRequestId = responseDto.MerchantRequestId,
+                        CheckoutRequestId = responseDto.CheckoutRequestId,
+                        ResponseCode = responseDto.ResponseCode,
+                        ResponseDecription = responseDto.ResponseDecription,
+                        CustomerMessage = responseDto.CustomerMessage,
+                        Status = MpesaTransactionStatusEnum.Sent
+                    };
+
+                    await _mpesaTransactionAppService.CreateAsync(transaction);
+                }
+                else
+                {
+                    // Save as failed or log a problem if ResponseCode is not success (usually "0")
+                    await _mpesaTransactionAppService.CreateAsync(new CreateUpdateMpesaTransactionDto
+                    {
+                        PaymentTransactionId = input.PaymentTransactionId,
+                        ResponseCode = responseDto?.ResponseCode,
+                        ResponseDecription = responseDto?.ResponseDecription ?? "Invalid Response",
+                        Status = MpesaTransactionStatusEnum.Failed
+                    });
+                }
+            }
+            else
+            {
+                // Log or persist failure
+                await _mpesaTransactionAppService.CreateAsync(new CreateUpdateMpesaTransactionDto
+                {
+                    PaymentTransactionId = input.PaymentTransactionId,
+                    ResponseDecription = $"HTTP Error: {(int)response.StatusCode} - {response.Content}",
+                    Status = MpesaTransactionStatusEnum.Error
+                });
+            }
+
             return response.Content ?? string.Empty; 
         }
     }

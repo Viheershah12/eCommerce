@@ -10,9 +10,14 @@ namespace Order.Dtos.OrderTransaction
 {
     public class CreateUpdateOrderDto : BaseIdModel
     {
+        public CreateUpdateOrderDto(string customerName) 
+        {
+            CustomerName = customerName;
+        }
+
         public Guid CustomerId { get; set; }
 
-        public required string CustomerName { get; set; }
+        public required string CustomerName { get; set; } = string.Empty;
 
         #region Order Items
         public List<OrderItemDto> OrderItems { get; set; } = [];
@@ -31,7 +36,7 @@ namespace Order.Dtos.OrderTransaction
         }
         #endregion 
 
-        public decimal TotalAmount { get; set; }
+        public decimal TotalAmount => OrderItems.Sum(x => x.Total);
 
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
 

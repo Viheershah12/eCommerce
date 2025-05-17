@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp;
 using PaymentTransactions.Dtos.PaymentTransaction;
+using Microsoft.Extensions.Logging;
+using Abp.eCommerce.Enums;
 
 namespace PaymentTransactions.Services
 {
@@ -18,18 +20,35 @@ namespace PaymentTransactions.Services
         #region Fields
         private readonly IPaymentTransactionRepository _paymentTransactionRepository;
         private readonly PaymentTransactionManager _paymentTransactionManager;
+        private readonly ILogger<PaymentTransactionAppService> _logger;
         #endregion
 
         #region CTOR
         public PaymentTransactionAppService(
            IPaymentTransactionRepository paymentTransactionRepository,
-           PaymentTransactionManager paymentTransactionManager  
+           PaymentTransactionManager paymentTransactionManager,
+           ILogger<PaymentTransactionAppService> logger
         ) 
         {
             _paymentTransactionManager = paymentTransactionManager;
             _paymentTransactionRepository = paymentTransactionRepository;
+            _logger = logger;
         }
         #endregion 
+
+        public async Task<int> GetStatusAsync(Guid transactionId)
+        {
+            try
+            {
+                var paymentTransaction = await _paymentTransactionRepository.GetAsync(transactionId);
+                return (int)paymentTransaction.Status;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                return (int)PaymentTransactionStatus.Failed;
+            }
+        }
 
         public async Task<PagedResultDto<PaymentTransactionDto>> GetListAsync(GetPaymentTransactionListDto dto)
         {

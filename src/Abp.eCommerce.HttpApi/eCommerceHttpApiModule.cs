@@ -29,11 +29,11 @@ namespace Abp.eCommerce;
     )]
 [DependsOn(typeof(ProductHttpApiModule))]
 [DependsOn(typeof(ManagementHttpApiModule))]
-    [DependsOn(typeof(CustomerHttpApiModule))]
-    [DependsOn(typeof(CmsKitHttpApiModule))]
-    [DependsOn(typeof(OrderHttpApiModule))]
-    [DependsOn(typeof(InventoryHttpApiModule))]
-    [DependsOn(typeof(PaymentTransactionsHttpApiModule))]
+[DependsOn(typeof(CustomerHttpApiModule))]
+[DependsOn(typeof(CmsKitHttpApiModule))]
+[DependsOn(typeof(OrderHttpApiModule))]
+[DependsOn(typeof(InventoryHttpApiModule))]
+[DependsOn(typeof(PaymentTransactionsHttpApiModule))]
     public class eCommerceHttpApiModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

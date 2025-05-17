@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Volo.Abp.Users;
 
 namespace Abp.eCommerce.Web.Public.Models.Common;
 

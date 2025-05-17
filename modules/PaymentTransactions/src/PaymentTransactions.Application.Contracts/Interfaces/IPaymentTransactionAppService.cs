@@ -12,6 +12,8 @@ namespace PaymentTransactions.Interfaces
 {
     public interface IPaymentTransactionAppService : IApplicationService
     {
+        Task<int> GetStatusAsync(Guid transactionId);
+
         Task<PagedResultDto<PaymentTransactionDto>> GetListAsync(GetPaymentTransactionListDto dto);
 
         Task<Guid> CreateAsync(CreateUpdatePaymentTransactionDto dto);

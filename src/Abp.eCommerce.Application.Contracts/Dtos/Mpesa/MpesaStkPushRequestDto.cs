@@ -12,6 +12,8 @@ namespace Abp.eCommerce.Dtos.Mpesa
         public decimal Amount { get; set; }
         public string AccountReference { get; set; }
         public string TransactionDescription { get; set; }
+
+        public Guid PaymentTransactionId { get; set; }  
     }
 
     public class MpesaStkPushPayload
@@ -27,5 +29,18 @@ namespace Abp.eCommerce.Dtos.Mpesa
         public string CallBackURL { get; set; }
         public string AccountReference { get; set; }
         public string TransactionDesc { get; set; }
+    }
+
+    public class MpesaStkPushResponse
+    {
+        public required string MerchantRequestId { get; set; }
+
+        public required string CheckoutRequestId { get; set; }
+
+        public required int ResponseCode { get; set; }
+
+        public required string ResponseDecription { get; set; }
+
+        public required string CustomerMessage { get; set; }
     }
 }

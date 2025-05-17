@@ -16,7 +16,7 @@ namespace PaymentTransactions.Dtos.PaymentTransaction
 
         public PaymentMethodEnum PaymentMethod { get; set; }
 
-        public required string PaymentMethodSystemName { get; set; }
+        public string PaymentMethodSystemName => PaymentMethod.ToString();
 
         public PaymentTransactionStatus Status { get; set; } = PaymentTransactionStatus.Pending;
 

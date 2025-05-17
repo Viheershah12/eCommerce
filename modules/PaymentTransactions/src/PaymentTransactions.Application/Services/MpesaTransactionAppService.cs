@@ -74,6 +74,21 @@ namespace PaymentTransactions.Services
             }
         }
 
+        public async Task<CreateUpdateMpesaTransactionDto> GetByCheckoutRequestIdAsync(string id)
+        {
+            try
+            {
+                var querable = await _mpesaTransactionRepository.GetQueryableAsync();
+                var transaction = querable.FirstOrDefault(x => x.CheckoutRequestId == id);
+
+                return ObjectMapper.Map<Models.MpesaTransaction?, CreateUpdateMpesaTransactionDto>(transaction);
+            }
+            catch (Exception ex) 
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
         public async Task UpdateAsync(CreateUpdateMpesaTransactionDto dto)
         {
             try

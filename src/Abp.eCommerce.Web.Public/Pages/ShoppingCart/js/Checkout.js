@@ -9,6 +9,9 @@ form.addEventListener('submit', function (e) {
         e.preventDefault(); // stop normal form submission
         mpesaModal.show();  // show modal
     }
+    else {
+        e.currentTarget.submit();
+    }
 });
 
 confirmMpesaBtn.addEventListener('click', function () {
