@@ -19,28 +19,52 @@
 
 
 $(function () {
+    const transactionId = $('#TransactionId').val();
+    var transactionReceived = false;
+
     var connection = new signalR.HubConnectionBuilder()
-        .withUrl("https://localhost:44321/signalr-hubs/transaction", {
-            withCredentials: true
-        })
+        .withUrl("/signalr-hubs/transaction")
+        .withAutomaticReconnect()
         .build();
 
     connection.on("ReceiveTransactionStatus", function (data) {
-        if (data === 15) {
-            clearInterval(intervalId); // Stop the interval
+        transactionReceived = true;
+        console.info("Status is:" + data);
+
+        if (data === '15') {
             abp.message.success('Payment successful!', 'Success').then(() => {
                 window.location.href = '/Order/';
             });
         }
-        else if (data === 20 || data === 25) {
-            clearInterval(intervalId); // Stop the interval
+        else if (data === '20' || data === '25') {
             abp.message.warn('Payment failed or was cancelled.', 'Warning').then(() => {
                 window.location.href = '/Order/';
             });
         }
     });
 
-    connection.start().catch(function (err) {
-        return console.error("SignalR connection failed: ", err.toString());
+    function invokeCheckTransaction() {
+        connection.invoke("CheckMpesaTransactionStatus", transactionId)
+            .then(function () {
+                console.info("Triggered CheckMpesaTransactionStatus");
+            })
+            .catch(function (err) {
+                console.error("Invoke error:", err.toString());
+            });
+    }
+
+    connection.start().then(function () {
+        //invokeCheckTransaction();
+
+        // Wait 30 seconds, then re-invoke if no response was received
+        setTimeout(function () {
+            if (!transactionReceived) {
+                console.warn("No transaction status received in 30 seconds. Retrying...");
+                invokeCheckTransaction();
+            }
+        }, 30000); // 30,000 ms = 30 seconds
+    })
+    .catch(function (err) {
+        console.error("SignalR connection failed:", err.toString());
     });
 });

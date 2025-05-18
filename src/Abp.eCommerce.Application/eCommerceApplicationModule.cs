@@ -13,7 +13,6 @@ using Volo.CmsKit;
 using Order;
 using Inventory;
 using PaymentTransactions;
-using Volo.Abp.AspNetCore.SignalR;
 using Volo.Abp.Hangfire;
 using Volo.Abp.BackgroundWorkers.Hangfire;
 using Volo.Abp.BackgroundJobs.Hangfire;
@@ -25,7 +24,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using Volo.Abp.BackgroundJobs;
 using Microsoft.Extensions.DependencyInjection;
-using DeviceDetectorNET.Parser.Device;
 
 namespace Abp.eCommerce;
 
@@ -38,7 +36,6 @@ namespace Abp.eCommerce;
     typeof(AbpAccountApplicationModule),
     typeof(AbpTenantManagementApplicationModule),
     typeof(AbpSettingManagementApplicationModule),
-    typeof(AbpAspNetCoreSignalRModule),
     typeof(AbpHangfireModule),
     typeof(AbpBackgroundWorkersHangfireModule),
     typeof(AbpBackgroundJobsHangfireModule)
@@ -67,6 +64,10 @@ public class eCommerceApplicationModule : AbpModule
 
     private void ConfigureHangfire(ServiceConfigurationContext context, IConfiguration configuration)
     {
+        Configure<AbpBackgroundJobOptions>(options => {
+            options.IsJobExecutionEnabled = false;
+        });
+
         Configure<AbpHangfireOptions>(options =>
         {
             options.ServerOptions = new BackgroundJobServerOptions()

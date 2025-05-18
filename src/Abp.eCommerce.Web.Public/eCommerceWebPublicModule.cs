@@ -59,6 +59,9 @@ using Abp.eCommerce.Web.Public.Toolbars;
 using Abp.eCommerce.Web.Public.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Bundling;
 using Microsoft.AspNetCore.Http;
+using Volo.Abp.EventBus.RabbitMq;
+using Volo.Abp.RabbitMQ;
+using Volo.Abp.AspNetCore.SignalR;
 
 namespace Abp.eCommerce.Web.Public
 {
@@ -75,7 +78,9 @@ namespace Abp.eCommerce.Web.Public
         typeof(AbpSwashbuckleModule),
         typeof(AbpAspNetCoreSerilogModule),
         typeof(eCommerceWebCommonModule),
-        typeof(CmsKitWebModule)
+        typeof(CmsKitWebModule),
+        typeof(AbpEventBusRabbitMqModule),
+        typeof(AbpAspNetCoreSignalRModule)
     )]
     public class eCommerceWebPublicModule : AbpModule
     {
@@ -127,6 +132,14 @@ namespace Abp.eCommerce.Web.Public
         {
             var hostingEnvironment = context.Services.GetHostingEnvironment();
             var configuration = context.Services.GetConfiguration();
+
+            Configure<AbpRabbitMqOptions>(options =>
+            {
+                options.Connections.Default.UserName = "guest";
+                options.Connections.Default.Password = "guest";
+                options.Connections.Default.HostName = "127.0.0.1";
+                options.Connections.Default.Port = 5672;
+            });
 
             if (!configuration.GetValue<bool>("App:DisablePII"))
             {

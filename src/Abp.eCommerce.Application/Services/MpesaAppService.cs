@@ -1,7 +1,7 @@
 ﻿using Abp.eCommerce.Dtos.Mpesa;
 using Abp.eCommerce.Enums;
+using Abp.eCommerce.Etos.MpesaTransaction;
 using Abp.eCommerce.HangfireJobArgs;
-using Abp.eCommerce.Hubs;
 using Abp.eCommerce.Interfaces;
 using Amazon.Runtime.Internal.Util;
 using Hangfire;
@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Volo.Abp;
 using Volo.Abp.BackgroundJobs;
+using Volo.Abp.EventBus.Distributed;
 using Volo.Abp.EventBus.Local;
 
 namespace Abp.eCommerce.Services
@@ -37,9 +38,8 @@ namespace Abp.eCommerce.Services
         private readonly ILogger<MpesaAppService> _logger;
         private readonly IPaymentTransactionAppService _paymentTransactionAppService;
         private readonly IOrderTransactionAppService _orderTransactionAppService;
-        private readonly IHubContext<TransactionHub> _hubContext;
         private readonly IBackgroundJobManager _backgroundJobManager;
-        //private readonly IBackgroundJobClient _backgroundJobClient;
+        private readonly IDistributedEventBus _distributedEventBus;
         #endregion
 
         #region CTOR
@@ -49,9 +49,8 @@ namespace Abp.eCommerce.Services
             ILogger<MpesaAppService> logger,
             IPaymentTransactionAppService paymentTransactionAppService,
             IOrderTransactionAppService orderTransactionAppService,
-            IHubContext<TransactionHub> hubContext,
-            IBackgroundJobManager backgroundJobManager
-            //IBackgroundJobClient backgroundJobClient
+            IBackgroundJobManager backgroundJobManager,
+            IDistributedEventBus distributedEventBus
         )
         {
             _config = config;
@@ -59,9 +58,8 @@ namespace Abp.eCommerce.Services
             _logger = logger;
             _paymentTransactionAppService = paymentTransactionAppService;
             _orderTransactionAppService = orderTransactionAppService;
-            _hubContext = hubContext;
             _backgroundJobManager = backgroundJobManager;
-            //_backgroundJobClient = backgroundJobClient;
+            _distributedEventBus = distributedEventBus; 
         }
         #endregion 
 
@@ -147,10 +145,15 @@ namespace Abp.eCommerce.Services
                     };
 
                     await _mpesaTransactionAppService.CreateAsync(transaction);
-                    await _backgroundJobManager.EnqueueAsync(new MpesaTransactionCheckArgs
+                    //await _backgroundJobManager.EnqueueAsync(new MpesaTransactionCheckArgs
+                    //{
+                    //    PaymentTransactionId = transaction.PaymentTransactionId
+                    //}, BackgroundJobPriority.High, delay: TimeSpan.FromSeconds(30));
+
+                    await _distributedEventBus.PublishAsync(new CheckMpesaTransactionEto
                     {
-                        PaymentTransactionId = transaction.PaymentTransactionId
-                    }, BackgroundJobPriority.High, delay: TimeSpan.FromSeconds(30));
+                        PaymentTransactionId = transaction.PaymentTransactionId,
+                    });
                 }
                 else
                 {
@@ -270,9 +273,10 @@ namespace Abp.eCommerce.Services
                         await _paymentTransactionAppService.UpdateAsync(paymentTransaction);
                         await _orderTransactionAppService.UpdateAsync(order);
 
-                        await _hubContext.Clients
-                            .User(order.CustomerId.ToString())
-                            .SendAsync("ReceiveTransactionStatus", tx.Status);
+                        await _distributedEventBus.PublishAsync(new MpesaTransactionStatusEto{
+                            Status = paymentTransaction.Status,
+                            CustomerId = order.CustomerId
+                        });
                     }
                     else
                     {
@@ -391,9 +395,11 @@ namespace Abp.eCommerce.Services
                             await _paymentTransactionAppService.UpdateAsync(paymentTransaction);
                             await _orderTransactionAppService.UpdateAsync(order);
 
-                            await _hubContext.Clients
-                                .User(order.CustomerId.ToString())
-                                .SendAsync("ReceiveTransactionStatus", tx.Status);
+                            await _distributedEventBus.PublishAsync(new MpesaTransactionStatusEto
+                            {
+                                Status = paymentTransaction.Status,
+                                CustomerId = order.CustomerId
+                            });
                         }
                         else
                         {

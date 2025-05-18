@@ -35,6 +35,8 @@ using System.Threading.Tasks;
 using Abp.eCommerce.HangfireServices;
 using Abp.eCommerce.Controllers;
 using Microsoft.AspNetCore.SignalR;
+using Volo.Abp.EventBus.RabbitMq;
+using Volo.Abp.RabbitMQ;
 
 namespace Abp.eCommerce.HttpApi.Host;
 
@@ -48,7 +50,8 @@ namespace Abp.eCommerce.HttpApi.Host;
     typeof(eCommerceApplicationModule),
     typeof(eCommerceMongoDbModule),
     typeof(AbpAspNetCoreSerilogModule),
-    typeof(AbpSwashbuckleModule)
+    typeof(AbpSwashbuckleModule),
+    typeof(AbpEventBusRabbitMqModule)
 )]
 public class eCommerceHttpApiHostModule : AbpModule
 {
@@ -56,6 +59,14 @@ public class eCommerceHttpApiHostModule : AbpModule
     {
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
+
+        Configure<AbpRabbitMqOptions>(options =>
+        {
+            options.Connections.Default.UserName = "guest";
+            options.Connections.Default.Password = "guest";
+            options.Connections.Default.HostName = "127.0.0.1";
+            options.Connections.Default.Port = 5672;
+        });
 
         ConfigureConventionalControllers();
         ConfigureAuthentication(context, configuration);

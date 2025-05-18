@@ -1,4 +1,6 @@
-﻿using Abp.eCommerce.Interfaces;
+﻿using Abp.eCommerce.Enums;
+using Abp.eCommerce.Interfaces;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -6,7 +8,7 @@ using System;
 using System.Threading.Tasks;
 using Volo.Abp.AspNetCore.SignalR;
 
-namespace Abp.eCommerce.Hubs
+namespace Abp.eCommerce.Web.Public.Hubs
 {
     [Authorize]
     public class TransactionHub : AbpHub
@@ -27,18 +29,7 @@ namespace Abp.eCommerce.Hubs
         }
         #endregion
 
-        public override Task OnConnectedAsync()
-        {
-            var user = CurrentUser;
-
-            _logger.LogInformation("Client connected: {ConnectionId}, User: {User}",
-                Context.ConnectionId,
-                Context.UserIdentifier);
-
-            return base.OnConnectedAsync();
-        }
-
-        public async Task CheckMpesaTransactionStatus(Guid transactionId, Guid targetUserId)
+        public async Task CheckMpesaTransactionStatus(Guid transactionId)
         {
             await _mpesaAppService.CheckTransactionAsync(transactionId);
         }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Volo.Abp.AspNetCore.SignalR;
 using Volo.Abp.Identity;
 
-namespace Abp.eCommerce.Hubs
+namespace Abp.eCommerce.Web.Public.Hubs
 {
     public class MessagingHub : AbpHub
     {
