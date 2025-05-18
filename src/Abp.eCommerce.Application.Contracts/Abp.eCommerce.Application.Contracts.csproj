@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\common.props" />
 
@@ -13,12 +13,15 @@
   <ProjectReference Include="..\..\modules\Product\src\Product.Application.Contracts\Product.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.Application.Contracts\Management.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Customer\src\Customer.Application.Contracts\Customer.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Order\src\Order.Application.Contracts\Order.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Inventory\src\Inventory.Application.Contracts\Inventory.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\PaymentTransactions\src\PaymentTransactions.Application.Contracts\PaymentTransactions.Application.Contracts.csproj" /></ItemGroup>
   
   <ItemGroup>
+    <PackageReference Include="Hangfire.Core" Version="1.8.14" />
+    <PackageReference Include="Volo.Abp.EventBus" Version="9.0.3" />
     <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="9.0.3" />
     <PackageReference Include="Volo.Abp.FeatureManagement.Application.Contracts" Version="9.0.3" />
     <PackageReference Include="Volo.Abp.SettingManagement.Application.Contracts" Version="9.0.3" />
     <PackageReference Include="Volo.Abp.Identity.Application.Contracts" Version="9.0.3" />
     <PackageReference Include="Volo.Abp.Account.Application.Contracts" Version="9.0.3" />
     <PackageReference Include="Volo.Abp.TenantManagement.Application.Contracts" Version="9.0.3" />
+    <PackageReference Include="Volo.Abp.BackgroundJobs" Version="9.0.3" />
     <PackageReference Include="Volo.CmsKit.Application.Contracts" Version="9.0.3" />
   </ItemGroup>
 

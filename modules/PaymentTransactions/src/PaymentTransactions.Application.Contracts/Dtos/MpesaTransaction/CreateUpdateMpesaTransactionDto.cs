@@ -18,9 +18,9 @@ namespace PaymentTransactions.Dtos.MpesaTransaction
 
         public DateTime? ConfirmedOn { get; set; }
 
-        public string? MerchantRequestId { get; set; }
+        public string MerchantRequestId { get; set; }
 
-        public string? CheckoutRequestId { get; set; }
+        public string CheckoutRequestId { get; set; }
 
         public int? ResponseCode { get; set; }
 

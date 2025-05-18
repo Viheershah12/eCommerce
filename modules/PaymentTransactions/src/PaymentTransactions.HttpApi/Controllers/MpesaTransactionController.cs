@@ -49,6 +49,13 @@ namespace PaymentTransactions.Controllers
         }
 
         [HttpGet]
+        [Route("getByTransactionId")]
+        public async Task<CreateUpdateMpesaTransactionDto> GetByTransactionIdAysnc(Guid transactionId)
+        {
+            return await _mpesaTransactionAppService.GetByTransactionIdAysnc(transactionId);
+        }
+
+        [HttpGet]
         [Route("getByCheckoutRequestId")]
         public async Task<CreateUpdateMpesaTransactionDto> GetByCheckoutRequestIdAsync(string id)
         {

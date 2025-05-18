@@ -1,4 +1,5 @@
 ﻿using Abp.eCommerce.Dtos.Mpesa;
+using Abp.eCommerce.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace Abp.eCommerce.Interfaces
         Task<string> GetAccessTokenAsync();
 
         Task<string> InitiateSTKPushAsync(MpesaStkPushRequestDto input);
+
+        Task CheckTransactionAsync(Guid transactionId);
 
         Task CheckTransactionStatusAsync();
     }

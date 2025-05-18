@@ -41,9 +41,7 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
                     MaxResultCount = 5,
                 });
 
-                Products = ObjectMapper.Map<PagedResultDto<StoreProductDto>, BasePagedModel<ProductItemViewModel>>(res);
-                Products.PageSize = 5;
-
+                Products = ObjectMapper.Map<BasePagedModel<StoreProductDto>, BasePagedModel<ProductItemViewModel>>(res);
                 return Page();
             }
             catch (Exception ex)
@@ -64,7 +62,6 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
                 });
 
                 Products = ObjectMapper.Map<PagedResultDto<StoreProductDto>, BasePagedModel<ProductItemViewModel>>(res);
-
                 return PartialView("_Table", Products);
             }
             catch (Exception ex)

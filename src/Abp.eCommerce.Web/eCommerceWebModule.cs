@@ -59,261 +59,262 @@ using Order.Web;
 using Inventory.Web;
 using PaymentTransactions.Web;
 
-namespace Abp.eCommerce.Web;
-
-[DependsOn(
-    typeof(eCommerceHttpApiModule),
-    typeof(eCommerceApplicationModule),
-    typeof(eCommerceMongoDbModule),
-    typeof(AbpAutofacModule),
-    typeof(AbpStudioClientAspNetCoreModule),
-    typeof(AbpIdentityWebModule),
-    typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
-    typeof(AbpAccountWebOpenIddictModule),
-    typeof(AbpTenantManagementWebModule),
-    typeof(AbpFeatureManagementWebModule),
-    typeof(AbpSwashbuckleModule),
-    typeof(AbpAspNetCoreSerilogModule)
-)]
-[DependsOn(typeof(ProductWebModule))]
-[DependsOn(typeof(ManagementWebModule))]
-[DependsOn(typeof(eCommerceWebCommonModule))]
-[DependsOn(typeof(CustomerWebModule))]
-[DependsOn(typeof(CmsKitWebModule))]
-[DependsOn(typeof(OrderWebModule))]
-[DependsOn(typeof(InventoryWebModule))]
-[DependsOn(typeof(PaymentTransactionsWebModule))]
-    public class eCommerceWebModule : AbpModule
+namespace Abp.eCommerce.Web
 {
-    public override void PreConfigureServices(ServiceConfigurationContext context)
+    [DependsOn(
+        typeof(eCommerceHttpApiModule),
+        typeof(eCommerceApplicationModule),
+        typeof(eCommerceMongoDbModule),
+        typeof(AbpAutofacModule),
+        typeof(AbpStudioClientAspNetCoreModule),
+        typeof(AbpIdentityWebModule),
+        typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
+        typeof(AbpAccountWebOpenIddictModule),
+        typeof(AbpTenantManagementWebModule),
+        typeof(AbpFeatureManagementWebModule),
+        typeof(AbpSwashbuckleModule),
+        typeof(AbpAspNetCoreSerilogModule),
+        typeof(ProductWebModule),
+        typeof(CustomerWebModule),
+        typeof(OrderWebModule), 
+        typeof(InventoryWebModule),
+        typeof(PaymentTransactionsWebModule),
+        typeof(CmsKitWebModule),
+        typeof(ManagementWebModule),
+        typeof(eCommerceWebCommonModule)
+    )]
+    public class eCommerceWebModule : AbpModule
     {
-        var hostingEnvironment = context.Services.GetHostingEnvironment();
-        var configuration = context.Services.GetConfiguration();
-
-        context.Services.PreConfigure<AbpMvcDataAnnotationsLocalizationOptions>(options =>
+        public override void PreConfigureServices(ServiceConfigurationContext context)
         {
-            options.AddAssemblyResource(
-                typeof(eCommerceResource),
-                typeof(eCommerceDomainModule).Assembly,
-                typeof(eCommerceDomainSharedModule).Assembly,
-                typeof(eCommerceApplicationModule).Assembly,
-                typeof(eCommerceApplicationContractsModule).Assembly,
-                typeof(eCommerceWebModule).Assembly
-            );
-        });
+            var hostingEnvironment = context.Services.GetHostingEnvironment();
+            var configuration = context.Services.GetConfiguration();
 
-        PreConfigure<OpenIddictBuilder>(builder =>
-        {
-            builder.AddValidation(options =>
+            context.Services.PreConfigure<AbpMvcDataAnnotationsLocalizationOptions>(options =>
             {
-                options.AddAudiences("eCommerce");
-                options.UseLocalServer();
-                options.UseAspNetCore();
-            });
-        });
-
-        if (!hostingEnvironment.IsDevelopment())
-        {
-            PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
-            {
-                options.AddDevelopmentEncryptionAndSigningCertificate = false;
+                options.AddAssemblyResource(
+                    typeof(eCommerceResource),
+                    typeof(eCommerceDomainModule).Assembly,
+                    typeof(eCommerceDomainSharedModule).Assembly,
+                    typeof(eCommerceApplicationModule).Assembly,
+                    typeof(eCommerceApplicationContractsModule).Assembly,
+                    typeof(eCommerceWebModule).Assembly
+                );
             });
 
-            PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
+            PreConfigure<OpenIddictBuilder>(builder =>
             {
-                serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", configuration["AuthServer:CertificatePassPhrase"]!);
-                serverBuilder.SetIssuer(new Uri(configuration["AuthServer:Authority"]!));
-            });
-        }
-    }
-
-    public override void ConfigureServices(ServiceConfigurationContext context)
-    {
-        var hostingEnvironment = context.Services.GetHostingEnvironment();
-        var configuration = context.Services.GetConfiguration();
-
-        if (!configuration.GetValue<bool>("App:DisablePII"))
-        {
-            Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
-            Microsoft.IdentityModel.Logging.IdentityModelEventSource.LogCompleteSecurityArtifact = true;
-        }
-
-        if (!configuration.GetValue<bool>("AuthServer:RequireHttpsMetadata"))
-        {
-            Configure<OpenIddictServerAspNetCoreOptions>(options =>
-            {
-                options.DisableTransportSecurityRequirement = true;
-            });
-            
-            Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
-            });
-        }
-
-        ConfigureBundles();
-        ConfigureUrls(configuration);
-        ConfigureAuthentication(context);
-        ConfigureAutoMapper();
-        ConfigureVirtualFileSystem(hostingEnvironment);
-        ConfigureNavigationServices();
-        ConfigureAutoApiControllers();
-        ConfigureSwaggerServices(context.Services);
-        ConfigureCustom();
-
-        Configure<PermissionManagementOptions>(options =>
-        {
-            options.IsDynamicPermissionStoreEnabled = true;
-        });
-    }
-
-
-    private void ConfigureBundles()
-    {
-        Configure<AbpBundlingOptions>(options =>
-        {
-            options.StyleBundles.Configure(
-                LeptonXLiteThemeBundles.Styles.Global,
-                bundle =>
+                builder.AddValidation(options =>
                 {
-                    bundle.AddFiles("/global-scripts.js");
-                    bundle.AddFiles("/global-styles.css");
+                    options.AddAudiences("eCommerce");
+                    options.UseLocalServer();
+                    options.UseAspNetCore();
+                });
+            });
+
+            if (!hostingEnvironment.IsDevelopment())
+            {
+                PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
+                {
+                    options.AddDevelopmentEncryptionAndSigningCertificate = false;
+                });
+
+                PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
+                {
+                    serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", configuration["AuthServer:CertificatePassPhrase"]!);
+                    serverBuilder.SetIssuer(new Uri(configuration["AuthServer:Authority"]!));
+                });
+            }
+        }
+
+        public override void ConfigureServices(ServiceConfigurationContext context)
+        {
+            var hostingEnvironment = context.Services.GetHostingEnvironment();
+            var configuration = context.Services.GetConfiguration();
+
+            if (!configuration.GetValue<bool>("App:DisablePII"))
+            {
+                Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+                Microsoft.IdentityModel.Logging.IdentityModelEventSource.LogCompleteSecurityArtifact = true;
+            }
+
+            if (!configuration.GetValue<bool>("AuthServer:RequireHttpsMetadata"))
+            {
+                Configure<OpenIddictServerAspNetCoreOptions>(options =>
+                {
+                    options.DisableTransportSecurityRequirement = true;
+                });
+
+                Configure<ForwardedHeadersOptions>(options =>
+                {
+                    options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
+                });
+            }
+
+            ConfigureBundles();
+            ConfigureUrls(configuration);
+            ConfigureAuthentication(context);
+            ConfigureAutoMapper();
+            ConfigureVirtualFileSystem(hostingEnvironment);
+            ConfigureNavigationServices();
+            ConfigureAutoApiControllers();
+            ConfigureSwaggerServices(context.Services);
+            ConfigureCustom();
+
+            Configure<PermissionManagementOptions>(options =>
+            {
+                options.IsDynamicPermissionStoreEnabled = true;
+            });
+        }
+
+
+        private void ConfigureBundles()
+        {
+            Configure<AbpBundlingOptions>(options =>
+            {
+                options.StyleBundles.Configure(
+                    LeptonXLiteThemeBundles.Styles.Global,
+                    bundle =>
+                    {
+                        bundle.AddFiles("/global-scripts.js");
+                        bundle.AddFiles("/global-styles.css");
+                    }
+                );
+            });
+        }
+
+        private void ConfigureCustom()
+        {
+            Configure<AbpLayoutHookOptions>(options =>
+            {
+                options.Add(
+                    LayoutHooks.Body.Last,
+                        typeof(NotifyViewComponent)
+                );
+            });
+        }
+
+        private void ConfigureUrls(IConfiguration configuration)
+        {
+            Configure<AppUrlOptions>(options =>
+            {
+                options.Applications["MVC"].RootUrl = configuration["App:SelfUrl"];
+            });
+        }
+
+        private void ConfigureAuthentication(ServiceConfigurationContext context)
+        {
+            context.Services.ForwardIdentityAuthenticationForBearer(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+            context.Services.Configure<AbpClaimsPrincipalFactoryOptions>(options =>
+            {
+                options.IsDynamicClaimsEnabled = true;
+            });
+        }
+
+        private void ConfigureAutoMapper()
+        {
+            Configure<AbpAutoMapperOptions>(options =>
+            {
+                options.AddMaps<eCommerceWebModule>();
+            });
+        }
+
+        private void ConfigureVirtualFileSystem(IWebHostEnvironment hostingEnvironment)
+        {
+            Configure<AbpVirtualFileSystemOptions>(options =>
+            {
+                options.FileSets.AddEmbedded<eCommerceWebModule>();
+
+                if (hostingEnvironment.IsDevelopment())
+                {
+                    options.FileSets.ReplaceEmbeddedByPhysical<eCommerceDomainSharedModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Abp.eCommerce.Domain.Shared", Path.DirectorySeparatorChar)));
+                    options.FileSets.ReplaceEmbeddedByPhysical<eCommerceDomainModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Abp.eCommerce.Domain", Path.DirectorySeparatorChar)));
+                    options.FileSets.ReplaceEmbeddedByPhysical<eCommerceApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Abp.eCommerce.Application.Contracts", Path.DirectorySeparatorChar)));
+                    options.FileSets.ReplaceEmbeddedByPhysical<eCommerceApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Abp.eCommerce.Application", Path.DirectorySeparatorChar)));
+                    options.FileSets.ReplaceEmbeddedByPhysical<eCommerceHttpApiModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}Abp.eCommerce.HttpApi", Path.DirectorySeparatorChar)));
+                    options.FileSets.ReplaceEmbeddedByPhysical<eCommerceWebModule>(hostingEnvironment.ContentRootPath);
+                }
+            });
+        }
+
+        private void ConfigureNavigationServices()
+        {
+            Configure<AbpNavigationOptions>(options =>
+            {
+                options.MenuContributors.Add(new eCommerceMenuContributor());
+            });
+
+            Configure<AbpToolbarOptions>(options =>
+            {
+                options.Contributors.Add(new eCommerceToolbarContributor());
+            });
+        }
+
+        private void ConfigureAutoApiControllers()
+        {
+            Configure<AbpAspNetCoreMvcOptions>(options =>
+            {
+                options.ConventionalControllers.Create(typeof(eCommerceApplicationModule).Assembly);
+            });
+        }
+
+        private void ConfigureSwaggerServices(IServiceCollection services)
+        {
+            services.AddAbpSwaggerGen(
+                options =>
+                {
+                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "eCommerce API", Version = "v1" });
+                    options.DocInclusionPredicate((docName, description) => true);
+                    options.CustomSchemaIds(type => type.FullName);
                 }
             );
-        });
-    }
+        }
 
-    private void ConfigureCustom()
-    {
-        Configure<AbpLayoutHookOptions>(options =>
+
+        public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
-            options.Add(
-                LayoutHooks.Body.Last,
-                    typeof(NotifyViewComponent)
-            );
-        });
-    }
+            var app = context.GetApplicationBuilder();
+            var env = context.GetEnvironment();
 
-private void ConfigureUrls(IConfiguration configuration)
-    {
-        Configure<AppUrlOptions>(options =>
-        {
-            options.Applications["MVC"].RootUrl = configuration["App:SelfUrl"];
-        });
-    }
+            app.UseForwardedHeaders();
 
-    private void ConfigureAuthentication(ServiceConfigurationContext context)
-    {
-        context.Services.ForwardIdentityAuthenticationForBearer(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
-        context.Services.Configure<AbpClaimsPrincipalFactoryOptions>(options =>
-        {
-            options.IsDynamicClaimsEnabled = true;
-        });
-    }
-
-    private void ConfigureAutoMapper()
-    {
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<eCommerceWebModule>();
-        });
-    }
-
-    private void ConfigureVirtualFileSystem(IWebHostEnvironment hostingEnvironment)
-    {
-        Configure<AbpVirtualFileSystemOptions>(options =>
-        {
-            options.FileSets.AddEmbedded<eCommerceWebModule>();
-
-            if (hostingEnvironment.IsDevelopment())
+            if (env.IsDevelopment())
             {
-                options.FileSets.ReplaceEmbeddedByPhysical<eCommerceDomainSharedModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Abp.eCommerce.Domain.Shared", Path.DirectorySeparatorChar)));
-                options.FileSets.ReplaceEmbeddedByPhysical<eCommerceDomainModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Abp.eCommerce.Domain", Path.DirectorySeparatorChar)));
-                options.FileSets.ReplaceEmbeddedByPhysical<eCommerceApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Abp.eCommerce.Application.Contracts", Path.DirectorySeparatorChar)));
-                options.FileSets.ReplaceEmbeddedByPhysical<eCommerceApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Abp.eCommerce.Application", Path.DirectorySeparatorChar)));
-                options.FileSets.ReplaceEmbeddedByPhysical<eCommerceHttpApiModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}Abp.eCommerce.HttpApi", Path.DirectorySeparatorChar)));
-                options.FileSets.ReplaceEmbeddedByPhysical<eCommerceWebModule>(hostingEnvironment.ContentRootPath);
+                app.UseDeveloperExceptionPage();
             }
-        });
-    }
 
-    private void ConfigureNavigationServices()
-    {
-        Configure<AbpNavigationOptions>(options =>
-        {
-            options.MenuContributors.Add(new eCommerceMenuContributor());
-        });
+            app.UseAbpRequestLocalization();
 
-        Configure<AbpToolbarOptions>(options =>
-        {
-            options.Contributors.Add(new eCommerceToolbarContributor());
-        });
-    }
-
-    private void ConfigureAutoApiControllers()
-    {
-        Configure<AbpAspNetCoreMvcOptions>(options =>
-        {
-            options.ConventionalControllers.Create(typeof(eCommerceApplicationModule).Assembly);
-        });
-    }
-
-    private void ConfigureSwaggerServices(IServiceCollection services)
-    {
-        services.AddAbpSwaggerGen(
-            options =>
+            if (!env.IsDevelopment())
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "eCommerce API", Version = "v1" });
-                options.DocInclusionPredicate((docName, description) => true);
-                options.CustomSchemaIds(type => type.FullName);
+                app.UseErrorPage();
+                app.UseHsts();
             }
-        );
-    }
 
+            app.UseCorrelationId();
+            app.MapAbpStaticAssets();
+            app.UseAbpStudioLink();
+            app.UseRouting();
+            app.UseAbpSecurityHeaders();
+            app.UseAuthentication();
+            app.UseAbpOpenIddictValidation();
 
-    public override void OnApplicationInitialization(ApplicationInitializationContext context)
-    {
-        var app = context.GetApplicationBuilder();
-        var env = context.GetEnvironment();
+            if (MultiTenancyConsts.IsEnabled)
+            {
+                app.UseMultiTenancy();
+            }
 
-        app.UseForwardedHeaders();
-
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
+            app.UseUnitOfWork();
+            app.UseDynamicClaims();
+            app.UseAuthorization();
+            app.UseSwagger();
+            app.UseAbpSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "eCommerce API");
+            });
+            app.UseAuditing();
+            app.UseAbpSerilogEnrichers();
+            app.UseConfiguredEndpoints();
         }
-
-        app.UseAbpRequestLocalization();
-
-        if (!env.IsDevelopment())
-        {
-            app.UseErrorPage();
-            app.UseHsts();
-        }
-
-        app.UseCorrelationId();
-        app.MapAbpStaticAssets();
-        app.UseAbpStudioLink();
-        app.UseRouting();
-        app.UseAbpSecurityHeaders();
-        app.UseAuthentication();
-        app.UseAbpOpenIddictValidation();
-
-        if (MultiTenancyConsts.IsEnabled)
-        {
-            app.UseMultiTenancy();
-        }
-
-        app.UseUnitOfWork();
-        app.UseDynamicClaims();
-        app.UseAuthorization();
-        app.UseSwagger();
-        app.UseAbpSwaggerUI(options =>
-        {
-            options.SwaggerEndpoint("/swagger/v1/swagger.json", "eCommerce API");
-        });
-        app.UseAuditing();
-        app.UseAbpSerilogEnrichers();
-        app.UseConfiguredEndpoints();
     }
 }

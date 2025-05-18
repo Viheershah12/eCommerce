@@ -4,6 +4,7 @@
 @using Abp.eCommerce.Web.Public.Menus
 @using Microsoft.Extensions.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Packages.SignalR
 
 @inject IPageLayout PageLayout
 @inject IStringLocalizer<eCommerceResource> L
@@ -30,8 +31,12 @@
 }
 
 @section scripts {
+    <abp-script type="typeof(SignalRBrowserScriptContributor)" />
     <abp-script src="/Pages/Order/js/Index.js" />
 }
+
+<abp-button button-type="Primary" text="SendMessage" id="SendMessageButton" />
+<div id="MessageList"></div>
 
 <div class="row">
     <div class="col-md-3">

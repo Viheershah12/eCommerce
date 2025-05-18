@@ -23,23 +23,18 @@ using Volo.Abp.Autofac;
 using Volo.Abp.Caching;
 using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.DistributedLocking;
-using Volo.Abp.Identity;
-using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.VirtualFileSystem;
 using Abp.eCommerce.MongoDB;
 using Abp.eCommerce.MultiTenancy;
-using Volo.Abp.BackgroundWorkers.Hangfire;
 using Hangfire;
-using Hangfire.Mongo;
-using Hangfire.Mongo.Migration.Strategies.Backup;
-using Hangfire.Mongo.Migration.Strategies;
-using Volo.Abp.BackgroundJobs;
 using Volo.Abp.BackgroundWorkers;
-using Abp.eCommerce.HttpApi.Host.HangfireServices;
 using System.Threading.Tasks;
+using Abp.eCommerce.HangfireServices;
+using Abp.eCommerce.Controllers;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Abp.eCommerce.HttpApi.Host;
 
@@ -53,8 +48,7 @@ namespace Abp.eCommerce.HttpApi.Host;
     typeof(eCommerceApplicationModule),
     typeof(eCommerceMongoDbModule),
     typeof(AbpAspNetCoreSerilogModule),
-    typeof(AbpSwashbuckleModule),
-    typeof(AbpBackgroundWorkersHangfireModule)
+    typeof(AbpSwashbuckleModule)
 )]
 public class eCommerceHttpApiHostModule : AbpModule
 {
@@ -71,37 +65,6 @@ public class eCommerceHttpApiHostModule : AbpModule
         ConfigureDistributedLocking(context, configuration);
         ConfigureCors(context, configuration);
         ConfigureSwaggerServices(context, configuration);
-        ConfigureHangfire(context, configuration);  
-    }
-
-    private void ConfigureHangfire(ServiceConfigurationContext context, IConfiguration configuration)
-    {
-        Configure<AbpBackgroundJobOptions>(options =>
-        {
-            options.IsJobExecutionEnabled = false; //Disables job execution
-        });
-
-        var migrationOptions = new MongoMigrationOptions
-        {
-            MigrationStrategy = new MigrateMongoMigrationStrategy(),
-            BackupStrategy = new CollectionMongoBackupStrategy()
-        };
-
-        var storageOptions = new MongoStorageOptions
-        {
-            MigrationOptions = migrationOptions,
-            SlidingInvisibilityTimeout = TimeSpan.FromMinutes(30)
-        };
-
-        var connString = configuration.GetConnectionString("Default");
-
-        context.Services.AddHangfire(x => x.UseMongoStorage(
-            connString,
-            storageOptions
-        ));
-
-        //var containerBuilder = context.Services.GetContainerBuilder();
-        //containerBuilder.RegisterType<AbpDashboardOptionsProvider>();
     }
 
     private void ConfigureCache(IConfiguration configuration)

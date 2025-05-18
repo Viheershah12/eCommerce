@@ -17,6 +17,8 @@ namespace PaymentTransactions.Interfaces
 
         Task<CreateUpdateMpesaTransactionDto> GetAsync(Guid id);
 
+        Task<CreateUpdateMpesaTransactionDto> GetByTransactionIdAysnc(Guid transactionId);
+
         Task<CreateUpdateMpesaTransactionDto> GetByCheckoutRequestIdAsync(string id);
 
         Task UpdateAsync(CreateUpdateMpesaTransactionDto dto);

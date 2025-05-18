@@ -14,6 +14,9 @@
   <ProjectReference Include="..\..\modules\Product\src\Product.Application\Product.Application.csproj" /><ProjectReference Include="..\..\modules\Management\src\Management.Application\Management.Application.csproj" /><ProjectReference Include="..\..\modules\Customer\src\Customer.Application\Customer.Application.csproj" /><ProjectReference Include="..\..\modules\Order\src\Order.Application\Order.Application.csproj" /><ProjectReference Include="..\..\modules\Inventory\src\Inventory.Application\Inventory.Application.csproj" /><ProjectReference Include="..\..\modules\PaymentTransactions\src\PaymentTransactions.Application\PaymentTransactions.Application.csproj" /></ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.Core" Version="1.8.14" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.2.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore.SignalR" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
     <PackageReference Include="RestSharp" Version="112.1.0" />
     <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="9.0.3" />
@@ -23,6 +26,9 @@
     <PackageReference Include="Volo.Abp.Identity.Application" Version="9.0.3" />
     <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="9.0.3" />
     <PackageReference Include="Volo.CmsKit.Application" Version="9.0.3" />
+    <PackageReference Include="Volo.Abp.BackgroundJobs.HangFire" Version="9.0.3" />
+    <PackageReference Include="Volo.Abp.BackgroundWorkers.Hangfire" Version="9.0.3" />
+    <PackageReference Include="Hangfire.Mongo" Version="1.10.9" />
   </ItemGroup>
 
 </Project>

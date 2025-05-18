@@ -1,4 +1,5 @@
-﻿using Product.Dtos.Product;
+﻿using Abp.eCommerce.Models;
+using Product.Dtos.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Product.Interfaces
         #region Product
         Task<PagedResultDto<ProductDto>> GetListAsync(GetProductListDto dto);
 
-        Task<PagedResultDto<StoreProductDto>> GetListByCategoryAsync(Dtos.Product.GetProductCategoryListDto dto);
+        Task<BasePagedModel<StoreProductDto>> GetListByCategoryAsync(Dtos.Product.GetProductCategoryListDto dto);
 
         Task<List<StoreProductDto>> GetProductByMultipleIdAsync(List<Guid> ids);
 

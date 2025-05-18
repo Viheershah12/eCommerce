@@ -1,4 +1,5 @@
 ﻿using Abp.eCommerce.Dtos.Mpesa;
+using Abp.eCommerce.Enums;
 using Abp.eCommerce.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -36,6 +37,13 @@ namespace Abp.eCommerce.Controllers
         public async Task<string> InitiateSTKPushAsync(MpesaStkPushRequestDto input)
         {
             return await _mpesaAppService.InitiateSTKPushAsync(input);
+        }
+
+        [HttpGet]
+        [Route("checkTransaction")]
+        public async Task CheckTransactionAsync(Guid transactionId)
+        {
+            await _mpesaAppService.CheckTransactionAsync(transactionId);
         }
 
         [HttpGet]

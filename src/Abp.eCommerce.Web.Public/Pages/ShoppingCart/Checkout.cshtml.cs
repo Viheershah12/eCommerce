@@ -94,6 +94,9 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
                 var checkoutDto = new CheckoutDto(order, paymentTransaction);
                 var paymentTransactionId = await _checkoutAppService.CheckoutAsync(checkoutDto);
 
+                // Delete Cart Item(s)
+                await _shoppingCartAppService.DeleteShoppingCartItemsAsync(CartItems.Select(x => x.CartItemId).ToList());
+
                 // Handle STK Push if needed
                 if (PaymentMethod == PaymentMethodEnum.MpesaStk)
                 {
@@ -111,9 +114,6 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
                     var stkResponse = await _mpesaAppService.InitiateSTKPushAsync(stkInput);
                     return RedirectToPage("/ShoppingCart/Pending", new { transactionId = paymentTransactionId });
                 }
-
-                // Delete Cart Item(s)
-                await _shoppingCartAppService.DeleteShoppingCartItemsAsync(CartItems.Select(x => x.CartItemId).ToList());
 
                 return Redirect("/Order/");
             }

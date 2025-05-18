@@ -74,7 +74,7 @@ namespace Product.Services
             }
         }
 
-        public async Task<PagedResultDto<StoreProductDto>> GetListByCategoryAsync(Dtos.Product.GetProductCategoryListDto dto)
+        public async Task<BasePagedModel<StoreProductDto>> GetListByCategoryAsync(Dtos.Product.GetProductCategoryListDto dto)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace Product.Services
                     list.Add(prod);
                 }
 
-                return new PagedResultDto<StoreProductDto>(totalCount, list);
+                return new BasePagedModel<StoreProductDto>(totalCount, list, dto.MaxResultCount, dto.SkipCount);
             }
             catch (Exception ex)
             {

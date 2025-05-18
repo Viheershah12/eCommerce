@@ -1,7 +1,11 @@
 ﻿using Abp.eCommerce.Dtos.Mpesa;
 using Abp.eCommerce.Enums;
+using Abp.eCommerce.HangfireJobArgs;
+using Abp.eCommerce.Hubs;
 using Abp.eCommerce.Interfaces;
 using Amazon.Runtime.Internal.Util;
+using Hangfire;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -20,6 +24,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 using Volo.Abp;
+using Volo.Abp.BackgroundJobs;
+using Volo.Abp.EventBus.Local;
 
 namespace Abp.eCommerce.Services
 {
@@ -31,6 +37,9 @@ namespace Abp.eCommerce.Services
         private readonly ILogger<MpesaAppService> _logger;
         private readonly IPaymentTransactionAppService _paymentTransactionAppService;
         private readonly IOrderTransactionAppService _orderTransactionAppService;
+        private readonly IHubContext<TransactionHub> _hubContext;
+        private readonly IBackgroundJobManager _backgroundJobManager;
+        //private readonly IBackgroundJobClient _backgroundJobClient;
         #endregion
 
         #region CTOR
@@ -39,7 +48,10 @@ namespace Abp.eCommerce.Services
             IMpesaTransactionAppService mpesaTransactionAppService,
             ILogger<MpesaAppService> logger,
             IPaymentTransactionAppService paymentTransactionAppService,
-            IOrderTransactionAppService orderTransactionAppService
+            IOrderTransactionAppService orderTransactionAppService,
+            IHubContext<TransactionHub> hubContext,
+            IBackgroundJobManager backgroundJobManager
+            //IBackgroundJobClient backgroundJobClient
         )
         {
             _config = config;
@@ -47,6 +59,9 @@ namespace Abp.eCommerce.Services
             _logger = logger;
             _paymentTransactionAppService = paymentTransactionAppService;
             _orderTransactionAppService = orderTransactionAppService;
+            _hubContext = hubContext;
+            _backgroundJobManager = backgroundJobManager;
+            //_backgroundJobClient = backgroundJobClient;
         }
         #endregion 
 
@@ -132,6 +147,10 @@ namespace Abp.eCommerce.Services
                     };
 
                     await _mpesaTransactionAppService.CreateAsync(transaction);
+                    await _backgroundJobManager.EnqueueAsync(new MpesaTransactionCheckArgs
+                    {
+                        PaymentTransactionId = transaction.PaymentTransactionId
+                    }, BackgroundJobPriority.High, delay: TimeSpan.FromSeconds(30));
                 }
                 else
                 {
@@ -157,6 +176,120 @@ namespace Abp.eCommerce.Services
             }
 
             return response.Content ?? string.Empty; 
+        }
+
+        public async Task CheckTransactionAsync(Guid transactionId)
+        {
+            try
+            {
+                string token = await GetAccessTokenAsync();
+                var tx = await _mpesaTransactionAppService.GetByTransactionIdAysnc(transactionId);
+
+                var client = new RestClient(_config["Mpesa:BaseUrl"] ?? string.Empty);
+                var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                var password = Convert.ToBase64String(
+                    Encoding.UTF8.GetBytes(_config["Mpesa:Shortcode"] + _config["Mpesa:Passkey"] + timestamp)
+                );
+
+                var queryPayload = new MpesaStkPushQueryRequest
+                {
+                    BusinessShortCode = _config["Mpesa:Shortcode"]?.To<long>() ?? 0,
+                    Password = password,
+                    Timestamp = timestamp,
+                    CheckoutRequestID = tx.CheckoutRequestId
+                };
+
+                var request = new RestRequest("mpesa/stkpushquery/v1/query", Method.Post);
+                var json = JsonConvert.SerializeObject(queryPayload);
+
+                request.AddHeader("Authorization", $"Bearer {token}");
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("application/json", json, ParameterType.RequestBody);
+
+                var response = await client.ExecuteAsync(request);
+
+                if (response.IsSuccessStatusCode && !string.IsNullOrEmpty(response.Content))
+                {
+                    var result = JsonConvert.DeserializeObject<MpesaStkPushQueryResponse>(response.Content);
+
+                    if (result != null && result.ResponseCode == 0)
+                    {
+                        var paymentTransaction = await _paymentTransactionAppService.GetAsync(tx.PaymentTransactionId);
+                        var order = await _orderTransactionAppService.GetAsync(paymentTransaction.OrderId);
+
+                        switch (result.ResultCode)
+                        {
+                            case 0:
+                                tx.Status = MpesaTransactionStatusEnum.Confirmed;
+                                paymentTransaction.Status = PaymentTransactionStatus.Completed;
+                                order.PaymentStatus = PaymentStatus.Paid;
+                                order.Status = OrderStatus.Processing;
+
+                                order.PaymentMethod = PaymentMethodEnum.MpesaStk;
+                                order.PaymentMethodSystemName = PaymentMethodEnum.MpesaStk.ToString();
+
+                                order.PaidDate = DateTime.Now;
+                                break;
+                            case 1:
+                                tx.Status = MpesaTransactionStatusEnum.Failed;
+                                paymentTransaction.Status = PaymentTransactionStatus.Failed;
+                                order.PaymentStatus = PaymentStatus.UnPaid;
+                                order.Status = OrderStatus.Pending;
+                                break;
+                            case 1032:
+                                tx.Status = MpesaTransactionStatusEnum.Cancelled;
+                                paymentTransaction.Status = PaymentTransactionStatus.Cancelled;
+                                order.PaymentStatus = PaymentStatus.UnPaid;
+                                order.Status = OrderStatus.Pending;
+                                break;
+                            case 1037:
+                                tx.Status = MpesaTransactionStatusEnum.Timeout;
+                                paymentTransaction.Status = PaymentTransactionStatus.Cancelled;
+                                order.PaymentStatus = PaymentStatus.UnPaid;
+                                order.Status = OrderStatus.Pending;
+                                break;
+                            case 2001:
+                                tx.Status = MpesaTransactionStatusEnum.Error;
+                                paymentTransaction.Status = PaymentTransactionStatus.Failed;
+                                order.PaymentStatus = PaymentStatus.UnPaid;
+                                order.Status = OrderStatus.Pending;
+                                break;
+                            default:
+                                tx.Status = MpesaTransactionStatusEnum.Failed;
+                                paymentTransaction.Status = PaymentTransactionStatus.Failed;
+                                order.PaymentStatus = PaymentStatus.UnPaid;
+                                order.Status = OrderStatus.Pending;
+                                break;
+                        }
+
+                        tx.ConfirmedOn = DateTime.Now;
+                        tx.ResultCode = result.ResultCode;
+                        tx.ResultDesc = result.ResultDesc;
+
+                        await _mpesaTransactionAppService.UpdateAsync(tx);
+                        await _paymentTransactionAppService.UpdateAsync(paymentTransaction);
+                        await _orderTransactionAppService.UpdateAsync(order);
+
+                        await _hubContext.Clients
+                            .User(order.CustomerId.ToString())
+                            .SendAsync("ReceiveTransactionStatus", tx.Status);
+                    }
+                    else
+                    {
+                        // log failure or retry later
+                        _logger.Log(LogLevel.Warning, response.Content);
+                    }
+                }
+                else
+                {
+                    // log HTTP error
+                    _logger.Log(LogLevel.Error, response.Content);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
         }
 
         public async Task CheckTransactionStatusAsync()
@@ -257,6 +390,10 @@ namespace Abp.eCommerce.Services
                             await _mpesaTransactionAppService.UpdateAsync(dto);
                             await _paymentTransactionAppService.UpdateAsync(paymentTransaction);
                             await _orderTransactionAppService.UpdateAsync(order);
+
+                            await _hubContext.Clients
+                                .User(order.CustomerId.ToString())
+                                .SendAsync("ReceiveTransactionStatus", tx.Status);
                         }
                         else
                         {

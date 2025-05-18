@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Abp.eCommerce.Models;
+using Microsoft.AspNetCore.Mvc;
 using Product.Dtos.Product;
 using Product.Interfaces;
 using System;
@@ -39,7 +40,7 @@ namespace Product.Controllers
 
         [HttpGet]
         [Route("getListByCategory")]
-        public async Task<PagedResultDto<StoreProductDto>> GetListByCategoryAsync(GetProductCategoryListDto dto)
+        public async Task<BasePagedModel<StoreProductDto>> GetListByCategoryAsync(GetProductCategoryListDto dto)
         {
             return await _productAppService.GetListByCategoryAsync(dto);    
         }

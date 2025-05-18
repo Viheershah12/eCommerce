@@ -6,7 +6,7 @@ using System;
 using Volo.Abp.BackgroundWorkers.Hangfire;
 using Abp.eCommerce.Interfaces;
 
-namespace Abp.eCommerce.HttpApi.Host.HangfireServices
+namespace Abp.eCommerce.HangfireServices
 {
     public class MpesaBackgroundWorker : HangfireBackgroundWorkerBase
     {
@@ -17,7 +17,7 @@ namespace Abp.eCommerce.HttpApi.Host.HangfireServices
             _mpesaAppService = mpessaAppService;
 
             RecurringJobId = nameof(MpesaBackgroundWorker);
-            CronExpression = Cron.Minutely();
+            CronExpression = Cron.Never();
         }
 
         public override async Task DoWorkAsync(CancellationToken cancellationToken = default)

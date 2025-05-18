@@ -74,6 +74,21 @@ namespace PaymentTransactions.Services
             }
         }
 
+        public async Task<CreateUpdateMpesaTransactionDto> GetByTransactionIdAysnc(Guid transactionId)
+        {
+            try
+            {
+                var mpesaTransaction = await _mpesaTransactionRepository.GetAsync(x => x.PaymentTransactionId == transactionId);
+                var res = ObjectMapper.Map<Models.MpesaTransaction, CreateUpdateMpesaTransactionDto>(mpesaTransaction);
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
         public async Task<CreateUpdateMpesaTransactionDto> GetByCheckoutRequestIdAsync(string id)
         {
             try
