@@ -14,6 +14,6 @@ namespace Order.Order
             int skipCount,
             int maxResultCount,
             string sorting,
-            string? filter = null, OrderStatus? status = null);
+            string? filter = null, OrderStatus? status = null, DateTime? startDate = null, DateTime? endDate = null);
     }
 }

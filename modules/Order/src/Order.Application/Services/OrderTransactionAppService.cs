@@ -1,4 +1,5 @@
-﻿using Abp.eCommerce.Models;
+﻿using Abp.eCommerce.Enums;
+using Abp.eCommerce.Models;
 using Order.Dtos.OrderTransaction;
 using Order.Interfaces;
 using Order.Order;
@@ -100,6 +101,21 @@ namespace Order.Services
             {
                 var order = await _orderRepository.GetAsync(id);
                 await _orderRepository.DeleteAsync(order);
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public async Task CancelAsync(Guid orderId)
+        {
+            try
+            {
+                var order = await _orderRepository.GetAsync(orderId);
+                order.Status = OrderStatus.Cancelled;
+
+                await _orderRepository.UpdateAsync(order);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Order.Dtos.OrderTransaction;
 using Order.Dtos.ShoppingCart;
 using Order.Interfaces;
 using System;
@@ -80,9 +81,9 @@ namespace Order.Controllers
 
         [HttpDelete]
         [Route("deleteShoppingCartItems")]
-        public async Task DeleteShoppingCartItemsAsync(List<Guid> cartItemIds)
+        public async Task DeleteShoppingCartItemsAsync(List<CartItemDto> cartItems)
         {
-            await _shoppingCartAppService.DeleteShoppingCartItemsAsync(cartItemIds);
+            await _shoppingCartAppService.DeleteShoppingCartItemsAsync(cartItems);
         }
     }
 }

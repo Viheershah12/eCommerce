@@ -10,6 +10,6 @@ namespace Abp.eCommerce.Interfaces
 {
     public interface ICheckoutAppService : IApplicationService
     {
-        Task<Guid> CheckoutAsync(CheckoutDto dto);
+        Task<CheckoutResDto> CheckoutAsync(CheckoutDto dto);
     }
 }

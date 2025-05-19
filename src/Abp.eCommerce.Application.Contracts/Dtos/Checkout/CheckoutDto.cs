@@ -23,4 +23,11 @@ namespace Abp.eCommerce.Dtos.Checkout
         [Required]
         public CreateUpdatePaymentTransactionDto PaymentTransaction { get; set; }
     }
+
+    public class CheckoutResDto 
+    {
+        public Guid OrderId { get; set; }   
+
+        public Guid PaymentTransactionId { get; set; }
+    }
 }

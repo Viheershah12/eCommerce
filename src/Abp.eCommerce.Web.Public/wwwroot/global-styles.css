@@ -199,9 +199,9 @@
 /* Ellipsis */
 .page-link.ellipsis {
     cursor: default;
-    font-size: 1.2rem;
-    pointer-events: none;
-    background-color: transparent;
+    /*font-size: 1.2rem;*/
+    /*pointer-events: none;
+    background-color: transparent;*/
     border: none;
 }
 

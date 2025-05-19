@@ -32,7 +32,7 @@ namespace Abp.eCommerce.Controllers
 
         [HttpPost]
         [Route("checkout")]
-        public async Task<Guid> CheckoutAsync(CheckoutDto dto)
+        public async Task<CheckoutResDto> CheckoutAsync(CheckoutDto dto)
         {
             return await _checkoutAppService.CheckoutAsync(dto);
         }

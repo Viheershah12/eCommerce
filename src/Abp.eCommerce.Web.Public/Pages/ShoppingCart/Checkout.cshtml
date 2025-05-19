@@ -60,7 +60,7 @@
 
                     <div class="d-flex justify-content-between mt-4">
                         <span class="fw-bold">@L["Total"]:</span>
-                        <span class="fw-bold fs-5 text-success">KES @string.Format("{0:N2}", Model.CartItems.Sum(x => x.Price))</span>
+                        <span class="fw-bold fs-5 text-success">KES @string.Format("{0:N2}", Model.CartItems.Sum(x => x.Price * x.Quantity))</span>
                     </div>
                 </div>
             </div>

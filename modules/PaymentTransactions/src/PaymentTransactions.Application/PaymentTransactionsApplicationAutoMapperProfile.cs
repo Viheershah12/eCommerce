@@ -30,6 +30,10 @@ public class PaymentTransactionsApplicationAutoMapperProfile : Profile
             .ReverseMap();
 
         CreateMap<Models.MpesaTransaction.CallbackMetadata, CreateUpdateMpesaTransactionDto.CallbackMetadataDto>().ReverseMap();
-        CreateMap<Models.MpesaTransaction.CallbackMetadata.CallbackItem, CreateUpdateMpesaTransactionDto.CallbackMetadataDto.CallbackItemDto>().ReverseMap();   
+        CreateMap<Models.MpesaTransaction.CallbackMetadata.CallbackItem, CreateUpdateMpesaTransactionDto.CallbackMetadataDto.CallbackItemDto>().ReverseMap();
+
+        // Order Detail
+        CreateMap<Models.PaymentTransaction, PaymentTransactionDto>();
+        CreateMap<Models.MpesaTransaction, MpesaTransactionDto>();
     }
 }

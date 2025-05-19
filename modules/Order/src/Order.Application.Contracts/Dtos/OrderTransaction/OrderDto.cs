@@ -16,6 +16,10 @@ namespace Order.Dtos.OrderTransaction
         public string? Sorting { get; set; }
 
         public OrderStatus? Status { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
     }
 
     public class OrderDto : BaseIdModel
@@ -41,5 +45,12 @@ namespace Order.Dtos.OrderTransaction
         public DateTime? PaidDate { get; set; }
 
         public DateTime? ShippingDate { get; set; }
+    }
+
+    public class CartItemDto
+    {
+        public Guid CartItemId { get; set; }
+        
+        public int Quantity { get; set; }
     }
 }

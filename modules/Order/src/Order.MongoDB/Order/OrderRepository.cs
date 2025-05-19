@@ -21,7 +21,7 @@ namespace Order.Order
             int skipCount,
             int maxResultCount,
             string sorting,
-            string? filter = null, OrderStatus? status = null)
+            string? filter = null, OrderStatus? status = null, DateTime? startDate = null, DateTime? endDate = null)
         {
             var queryable = await GetMongoQueryableAsync();
             return await queryable
@@ -32,6 +32,14 @@ namespace Order.Order
                 .WhereIf<Models.Order, IMongoQueryable<Models.Order>>(
                     status.HasValue,
                     order => order.Status == status
+                )
+                .WhereIf<Models.Order, IMongoQueryable<Models.Order>>(
+                    startDate.HasValue,
+                    order => order.CreationTime >= startDate.Value
+                )
+                .WhereIf<Models.Order, IMongoQueryable<Models.Order>>(
+                    endDate.HasValue,
+                    order => order.CreationTime <= endDate.Value
                 )
                 .OrderBy(sorting)
                 .As<IMongoQueryable<Models.Order>>()

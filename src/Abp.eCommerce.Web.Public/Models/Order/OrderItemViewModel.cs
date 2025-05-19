@@ -30,5 +30,18 @@ namespace Abp.eCommerce.Web.Public.Models.Order
     public class OrderPaginationModel : BasePaginationModel
     {
         public OrderStatus? Status { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
+    }
+
+    public class OrderFilterModel
+    {
+        public OrderStatus? Status { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
     }
 }

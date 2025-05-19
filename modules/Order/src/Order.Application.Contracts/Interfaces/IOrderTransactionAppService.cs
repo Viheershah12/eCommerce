@@ -21,5 +21,7 @@ namespace Order.Interfaces
         Task UpdateAsync(CreateUpdateOrderDto dto);
 
         Task DeleteAsync(Guid id);
+
+        Task CancelAsync(Guid orderId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Order.Dtos.ShoppingCart;
+﻿using Order.Dtos.OrderTransaction;
+using Order.Dtos.ShoppingCart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,6 @@ namespace Order.Interfaces
 
         Task DeleteAsync(Guid id);
 
-        Task DeleteShoppingCartItemsAsync(List<Guid> cartItemIds);
+        Task DeleteShoppingCartItemsAsync(List<CartItemDto> cartItems);
     }
 }

@@ -22,8 +22,14 @@ namespace Abp.eCommerce.Web.Public.Pages.Orders
         [BindProperty]
         public BasePagedModel<OrderItemViewModel> Orders { get; set; }
 
-        [BindProperty]
-        public OrderStatus? SelectedStatus { get; set; } = null;
+        [BindProperty(SupportsGet = true)]
+        public DateTime? StartDate { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public DateTime? EndDate { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public OrderStatus? SelectedStatus { get; set; }
 
         private readonly IOrderTransactionAppService _orderTransactionAppService;
         private readonly INotificationAppService _notificationAppService;
@@ -44,8 +50,16 @@ namespace Abp.eCommerce.Web.Public.Pages.Orders
         {
             try
             {
-                var res = await _orderTransactionAppService.GetListAsync(new GetOrderListDto());
+                var res = await _orderTransactionAppService.GetListAsync(new GetOrderListDto
+                {
+                    Status = SelectedStatus,
+                    StartDate = StartDate,
+                    EndDate = EndDate,
+                    MaxResultCount = 5
+                });
+
                 Orders = ObjectMapper.Map<BasePagedModel<OrderDto>, BasePagedModel<OrderItemViewModel>>(res);
+                Orders.PageSize = 5;
 
                 return Page();
             }
@@ -70,12 +84,19 @@ namespace Abp.eCommerce.Web.Public.Pages.Orders
                     MaxResultCount = model.MaxResultCount,
                     SkipCount = model.SkipCount,
                     Status = model.Status,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate
                 });
 
                 Orders = ObjectMapper.Map<BasePagedModel<OrderDto>, BasePagedModel<OrderItemViewModel>>(res);
-                SelectedStatus = model.Status;
+                var filters = new OrderFilterModel
+                {
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    Status = model.Status
+                };
 
-                return PartialView("_Table", (Orders, SelectedStatus));
+                return PartialView("_Table", (Orders, filters));
             }
             catch (Exception ex)
             {
@@ -90,13 +111,34 @@ namespace Abp.eCommerce.Web.Public.Pages.Orders
             {
                 var res = await _orderTransactionAppService.GetListAsync(new GetOrderListDto
                 {
-                    Status = status,    
+                    Status = status,
+                    StartDate = StartDate,
+                    EndDate = EndDate
                 });
 
                 Orders = ObjectMapper.Map<BasePagedModel<OrderDto>, BasePagedModel<OrderItemViewModel>>(res);
-                SelectedStatus = status;
+                var filters = new OrderFilterModel
+                {
+                    Status = status,
+                    StartDate = StartDate,
+                    EndDate = EndDate
+                };
 
-                return PartialView("_Table", (Orders, SelectedStatus));
+                return PartialView("_Table", (Orders, filters));
+            }
+            catch (Exception ex)
+            {
+                _notificationAppService.ShowErrorPopupNotification(TempData, ex.Message);
+                return Page();
+            }
+        }
+
+        public async Task<IActionResult> OnGetCancelOrderAsync(Guid orderId)
+        {
+            try
+            {
+                await _orderTransactionAppService.CancelAsync(orderId);
+                return Redirect("/Orders/");
             }
             catch (Exception ex)
             {

@@ -61,7 +61,7 @@ public class eCommerceWebPublicMenuContributor : IMenuContributor
                 new ApplicationMenuItem(
                     eCommerceWebPublicMenus.Order,
                     l["Menu:Order"],
-                    "~/Order",
+                    "~/Orders",
                     icon: "fa fa-receipt ",
                     order: 3
                 )

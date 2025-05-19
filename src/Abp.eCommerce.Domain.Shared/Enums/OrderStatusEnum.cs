@@ -42,22 +42,22 @@ namespace Abp.eCommerce.Enums
 
     public enum ShippingStatus
     {
-        [Description("UnPaid")]
+        [Description("ShippingNotRequired")]
         ShippingNotRequired = 10,
 
-        [Description("UnPaid")]
+        [Description("Pending")]
         Pending = 20,
 
-        [Description("UnPaid")]
+        [Description("PreparedToShipped")]
         PreparedToShipped = 30,
 
-        [Description("UnPaid")]
+        [Description("PartiallyShipped")]
         PartiallyShipped = 40,
 
-        [Description("UnPaid")]
+        [Description("Shipped")]
         Shipped = 50,
 
-        [Description("UnPaid")]
+        [Description("Delivered")]
         Delivered = 60,
     }
 

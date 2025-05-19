@@ -4,6 +4,9 @@ using Abp.eCommerce.Web.Public.Models.Store;
 using AngleSharp.Css.Dom;
 using AutoMapper;
 using Order.Dtos.OrderTransaction;
+using PaymentTransactions.Dtos.MpesaTransaction;
+using PaymentTransactions.Dtos.OrderTransaction;
+using PaymentTransactions.Dtos.PaymentTransaction;
 using Product.Dtos.Product;
 using Volo.Abp.Application.Dtos;
 
@@ -23,5 +26,13 @@ public class eCommerceWebPublicAutoMapperProfile : Profile
         // Order
         CreateMap<BasePagedModel<OrderDto>, BasePagedModel<OrderItemViewModel>>();
         CreateMap<OrderDto, OrderItemViewModel>();
+
+        CreateMap<CreateUpdateOrderDto, OrderDetailViewModel>();
+        CreateMap<CreateUpdateOrderDto.AddressDto, AddressViewModel>();
+        CreateMap<CreateUpdateOrderDto.OrderItemDto, OrderDetailViewModel.OrderItemViewModel>();
+
+        CreateMap<GetOrderPaymentDetailDto, PaymentDetailViewModel>();
+        CreateMap<PaymentTransactionDto, PaymentTransactionViewModel>();
+        CreateMap<MpesaTransactionDto, MpesaTransactionViewModel>();
     }
 }

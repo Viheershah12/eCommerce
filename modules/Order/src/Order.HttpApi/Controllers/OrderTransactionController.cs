@@ -62,5 +62,12 @@ namespace Order.Controllers
         {
             await _orderTransactionAppService.DeleteAsync(id);
         }
+
+        [HttpPut]
+        [Route("cancel")]
+        public async Task CancelAsync(Guid orderId)
+        {
+            await _orderTransactionAppService.CancelAsync(orderId);
+        }
     }
 }

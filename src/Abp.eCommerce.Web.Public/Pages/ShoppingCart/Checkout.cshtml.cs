@@ -88,23 +88,23 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
                     Amount = CartItems.Sum(x => x.Quantity * x.Price) ?? 0,
                     PaymentMethod = PaymentMethod,
                     Status = PaymentMethod == PaymentMethodEnum.CashOnDelivery ? PaymentTransactionStatus.PendingConfirmed : PaymentTransactionStatus.Pending,
-                    PaymentDate = DateTime.Now, 
+                    PaymentDate = DateTime.Now 
                 };
 
                 var checkoutDto = new CheckoutDto(order, paymentTransaction);
-                var paymentTransactionId = await _checkoutAppService.CheckoutAsync(checkoutDto);
+                var checkResponse = await _checkoutAppService.CheckoutAsync(checkoutDto);
 
                 // Delete Cart Item(s)
-                await _shoppingCartAppService.DeleteShoppingCartItemsAsync(CartItems.Select(x => x.CartItemId).ToList());
+                await _shoppingCartAppService.DeleteShoppingCartItemsAsync(CartItems.Select(x => new CartItemDto { CartItemId = x.CartItemId, Quantity = x.Quantity }).ToList());
 
                 // Handle STK Push if needed
                 if (PaymentMethod == PaymentMethodEnum.MpesaStk)
                 {
-                    var phoneNumber = PhoneNumber; // Fetch from form or user profile
+                    var phoneNumber = PhoneNumber; 
 
                     var stkInput = new MpesaStkPushRequestDto
                     {
-                        PaymentTransactionId = paymentTransactionId,
+                        PaymentTransactionId = checkResponse.PaymentTransactionId,
                         PhoneNumber = phoneNumber,
                         Amount = paymentTransaction.Amount,
                         AccountReference = "eCommerce",
@@ -112,10 +112,10 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
                     };
 
                     var stkResponse = await _mpesaAppService.InitiateSTKPushAsync(stkInput);
-                    return RedirectToPage("/ShoppingCart/Pending", new { transactionId = paymentTransactionId });
+                    return RedirectToPage("/Orders/Detail", new { id = checkResponse.OrderId });
                 }
 
-                return Redirect("/Order/");
+                return RedirectToPage("/Orders/Detail", new { id = checkResponse.OrderId });
             }
             catch (AbpValidationException ex)
             {

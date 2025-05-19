@@ -29,7 +29,7 @@ namespace Abp.eCommerce.Services
         }
         #endregion
 
-        public async Task<Guid> CheckoutAsync(CheckoutDto dto)
+        public async Task<CheckoutResDto> CheckoutAsync(CheckoutDto dto)
         {
             try
             {
@@ -38,7 +38,13 @@ namespace Abp.eCommerce.Services
                 dto.PaymentTransaction.OrderId = orderId;
                 var paymentTransactionId = await _paymentTransactionAppService.CreateAsync(dto.PaymentTransaction);
 
-                return paymentTransactionId;
+                var res = new CheckoutResDto
+                {
+                    PaymentTransactionId = paymentTransactionId,
+                    OrderId = orderId
+                };
+
+                return res;
             }
             catch (Exception ex)
             {

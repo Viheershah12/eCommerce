@@ -1,4 +1,5 @@
-﻿using Order.Dtos.ShoppingCart;
+﻿using Order.Dtos.OrderTransaction;
+using Order.Dtos.ShoppingCart;
 using Order.Interfaces;
 using Order.ShoppingCart;
 using System;
@@ -176,12 +177,21 @@ namespace Order.Services
             }
         }
 
-        public async Task DeleteShoppingCartItemsAsync(List<Guid> cartItemIds)
+        public async Task DeleteShoppingCartItemsAsync(List<CartItemDto> cartItems)
         {
             try
             {
                 var shoppingCart = await _shoppingCartRepository.GetAsync(x => x.UserId == CurrentUser.Id);
-                shoppingCart.Items.RemoveAll(x => cartItemIds.Contains(x.Id));
+
+                foreach (var cartItem in cartItems)
+                {
+                    var item = shoppingCart.Items.First(x => x.Id == cartItem.CartItemId);
+                    shoppingCart.Items.RemoveAll(x => x.Id == cartItem.CartItemId);
+                    item.Quantity -= cartItem.Quantity;
+
+                    if (item.Quantity > 0)
+                        shoppingCart.Items.Add(item);
+                }
 
                 await _shoppingCartRepository.UpdateAsync(shoppingCart);
             }

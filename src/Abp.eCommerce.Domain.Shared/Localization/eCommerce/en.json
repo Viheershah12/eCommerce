@@ -56,6 +56,7 @@
     "Menu:CreateStockMovement": "Create Stock Movement",
     "Menu:PaymentTransaction": "Payment Transaction",
     "Menu:Order": "Orders",
+    "Menu:OrderDetail": "Order Detail",
 
     //title
     "Title:ContentManagement": "Static Content",
@@ -88,6 +89,11 @@
     "Title:ReviewYourOrder": "Review Your Order",
     "Title:SelectPaymentMethod": "Select Payment Method",
     "Title:EnterPhoneNumber": "Enter Phone Number",
+    "Title:CustomerInformation": "Customer Information",
+    "Title:OrderDetails": "Order Detail",
+    "Title:PaymentDetails": "Payment Detail",
+    "Title:OrderProgress": "Order Progress",
+    "Title:MpesaTransactionDetails": "Mpesa Transaction Information",
 
     //notification
     "SuccessfullyAdded": "Successfully Added!",
@@ -132,6 +138,8 @@
     "CustomerGroup": "Customer Group",
     "MinimumQuantity": "Minimum Quantity",
     "CreateTierPrice": "Create Tier Price",
+
+    // Web Public Store
     "ViewDetails": "View Details",
     "AddToCart": "Add To Cart",
     "AddToWishlist": "Add To Wishlist",
@@ -142,6 +150,8 @@
     "ViewWishlist": "View Wish List",
     "ProductName": "Product Name",
     "MovementType": "Movement Type",
+
+    // Web Public Orders
     "QuantityChanged": "Quantity Changed",
     "QuantityBeforeChange": "Before Change",
     "QuantityAfterChange": "After Change",
@@ -158,9 +168,52 @@
     "PhoneNumber": "Phone Number",
     "ProceedWithPayment": "Proceed With Payment",
 
+    // Web Public Order Detail
+    "CustomerName": "Customer Name",
+    "PaymentDate": "Payment Date",
+    "PaymentStatus": "Payment Status",
+    "ShippingStatus": "Shipping Status",
+    "TotalAmount": "Total Amount",
+    "SentOn": "Sent On",
+    "ConfirmedOn": "Confirmed On",
+    "MpesaReceiptNumber": "Receipt Number",
+    "DateRange": "Date Range",
+
     // Enums
+
+    // Payment Method
     "CashOnDelivery": "Cash On Delivery",
-    "MpesaStk": "Mpesa",
+    "MpesaStk": "Mpesa Stk Push",
+
+    // Payment Status
+    "Pending": "Pending",
+    "UnPaid": "Un-Paid",
+    "PartiallyPaid": "Partially Paid",
+    "Paid": "Paid",
+
+    // Order Status
+    "Processing": "Processing",
+    "Shipped": "Shipped",
+    "Completed": "Completed",
+    "Cancelled": "Cancelled",
+
+    // Shipping Status
+    "ShippingNotRequired": "Shipping Not Required",
+    "PreparedToShipped": "Prepared To Shipped",
+    "Delivered": "Delivered",
+
+    // Payment Transaction Status
+    "PendingConfirmed": "Pending Confirmed",
+    "Failed": "Failed",
+
+    // Mpesa Transaction Status
+    "Sent": "Sent",
+    "AwaitingUserInput": "Awaiting User Input",
+    "Success": "Success",
+    "Timeout": "Timeout",
+    "Error": "Error",
+    "Confirmed": "Confirmed",
+    "Reversed": "Reversed",
 
     //permissions
     "Permission:Management": "Management",

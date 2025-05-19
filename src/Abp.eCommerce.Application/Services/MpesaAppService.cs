@@ -138,15 +138,11 @@ namespace Abp.eCommerce.Services
                         ResponseCode = responseDto.ResponseCode,
                         ResponseDecription = responseDto.ResponseDecription,
                         CustomerMessage = responseDto.CustomerMessage,
-                        Status = MpesaTransactionStatusEnum.Sent
+                        Status = MpesaTransactionStatusEnum.Sent,
+                        SentOn = DateTime.Now
                     };
 
                     await _mpesaTransactionAppService.CreateAsync(transaction);
-                    //await _backgroundJobManager.EnqueueAsync(new MpesaTransactionCheckArgs
-                    //{
-                    //    PaymentTransactionId = transaction.PaymentTransactionId
-                    //}, BackgroundJobPriority.High, delay: TimeSpan.FromSeconds(30));
-
                     await _distributedEventBus.PublishAsync(new CheckMpesaTransactionEto
                     {
                         PaymentTransactionId = transaction.PaymentTransactionId,
@@ -160,7 +156,8 @@ namespace Abp.eCommerce.Services
                         PaymentTransactionId = input.PaymentTransactionId,
                         ResponseCode = responseDto?.ResponseCode,
                         ResponseDecription = responseDto?.ResponseDecription ?? "Invalid Response",
-                        Status = MpesaTransactionStatusEnum.Failed
+                        Status = MpesaTransactionStatusEnum.Failed,
+                        SentOn = DateTime.Now
                     });
                 }
             }
@@ -171,7 +168,8 @@ namespace Abp.eCommerce.Services
                 {
                     PaymentTransactionId = input.PaymentTransactionId,
                     ResponseDecription = $"HTTP Error: {(int)response.StatusCode} - {response.Content}",
-                    Status = MpesaTransactionStatusEnum.Error
+                    Status = MpesaTransactionStatusEnum.Error,
+                    SentOn = DateTime.Now
                 });
             }
 
