@@ -32,7 +32,6 @@ using Abp.eCommerce.MultiTenancy;
 using Hangfire;
 using Volo.Abp.BackgroundWorkers;
 using System.Threading.Tasks;
-using Abp.eCommerce.HangfireServices;
 using Abp.eCommerce.Controllers;
 using Microsoft.AspNetCore.SignalR;
 using Volo.Abp.EventBus.RabbitMq;
@@ -231,8 +230,8 @@ public class eCommerceHttpApiHostModule : AbpModule
         app.UseAbpSerilogEnrichers();
 
         // Hangfire
-        app.UseHangfireDashboard();
-        await context.AddBackgroundWorkerAsync<MpesaBackgroundWorker>();
+        //app.UseHangfireDashboard();
+        //await context.AddBackgroundWorkerAsync<MpesaBackgroundWorker>();
 
         app.UseConfiguredEndpoints();
     }

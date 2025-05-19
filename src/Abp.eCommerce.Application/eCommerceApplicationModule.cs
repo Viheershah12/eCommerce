@@ -13,12 +13,6 @@ using Volo.CmsKit;
 using Order;
 using Inventory;
 using PaymentTransactions;
-using Volo.Abp.Hangfire;
-using Volo.Abp.BackgroundWorkers.Hangfire;
-using Volo.Abp.BackgroundJobs.Hangfire;
-using Hangfire.Mongo.Migration.Strategies.Backup;
-using Hangfire.Mongo.Migration.Strategies;
-using Hangfire.Mongo;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -35,10 +29,10 @@ namespace Abp.eCommerce;
     typeof(AbpIdentityApplicationModule),
     typeof(AbpAccountApplicationModule),
     typeof(AbpTenantManagementApplicationModule),
-    typeof(AbpSettingManagementApplicationModule),
-    typeof(AbpHangfireModule),
-    typeof(AbpBackgroundWorkersHangfireModule),
-    typeof(AbpBackgroundJobsHangfireModule)
+    typeof(AbpSettingManagementApplicationModule)
+    //typeof(AbpHangfireModule),
+    //typeof(AbpBackgroundWorkersHangfireModule),
+    //typeof(AbpBackgroundJobsHangfireModule)
     )]
 [DependsOn(typeof(ProductApplicationModule))]
 [DependsOn(typeof(ManagementApplicationModule))]
@@ -58,45 +52,44 @@ public class eCommerceApplicationModule : AbpModule
             options.AddMaps<eCommerceApplicationModule>();
         });
 
-        ConfigureHangfire(context, configuration);
-        context.Services.AddSignalR();
+        //ConfigureHangfire(context, configuration);
     }
 
-    private void ConfigureHangfire(ServiceConfigurationContext context, IConfiguration configuration)
-    {
-        Configure<AbpBackgroundJobOptions>(options => {
-            options.IsJobExecutionEnabled = false;
-        });
+    //private void ConfigureHangfire(ServiceConfigurationContext context, IConfiguration configuration)
+    //{
+    //    Configure<AbpBackgroundJobOptions>(options => {
+    //        options.IsJobExecutionEnabled = false;
+    //    });
 
-        Configure<AbpHangfireOptions>(options =>
-        {
-            options.ServerOptions = new BackgroundJobServerOptions()
-            {
-                Queues = ["default", "mpesatransaction"]
-            };
-        });
+    //    Configure<AbpHangfireOptions>(options =>
+    //    {
+    //        options.ServerOptions = new BackgroundJobServerOptions()
+    //        {
+    //            Queues = ["default", "mpesatransaction"]
+    //        };
+    //    });
 
-        var migrationOptions = new MongoMigrationOptions
-        {
-            MigrationStrategy = new MigrateMongoMigrationStrategy(),
-            BackupStrategy = new CollectionMongoBackupStrategy()
-        };
+    //    var migrationOptions = new MongoMigrationOptions
+    //    {
+    //        MigrationStrategy = new MigrateMongoMigrationStrategy(),
+    //        BackupStrategy = new CollectionMongoBackupStrategy()
+    //    };
 
-        var storageOptions = new MongoStorageOptions
-        {
-            MigrationOptions = migrationOptions,
-            SlidingInvisibilityTimeout = TimeSpan.FromMinutes(30)
-        };
+    //    var storageOptions = new MongoStorageOptions
+    //    {
+    //        MigrationOptions = migrationOptions,
+    //        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(30)
+    //    };
 
-        var connString = configuration.GetConnectionString("Default");
+    //    var connString = configuration.GetConnectionString("Default");
 
-        context.Services.AddHangfire(x => x.UseMongoStorage(
-            connString,
-            storageOptions
-        ));
+    //    context.Services.AddHangfire(x => x.UseMongoStorage(
+    //        connString,
+    //        storageOptions
+    //    ));
 
-        //context.Services.AddHangfireServer();
-        //var containerBuilder = context.Services.GetContainerBuilder();
-        //containerBuilder.RegisterType<AbpDashboardOptionsProvider>();
-    }
+    //    //context.Services.AddHangfireServer();
+    //    //var containerBuilder = context.Services.GetContainerBuilder();
+    //    //containerBuilder.RegisterType<AbpDashboardOptionsProvider>();
+    //}
 }
