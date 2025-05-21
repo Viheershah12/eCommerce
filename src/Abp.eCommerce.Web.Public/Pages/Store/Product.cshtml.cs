@@ -3,6 +3,7 @@ using Abp.eCommerce.Web.Public.Models.Common;
 using Abp.eCommerce.Web.Public.Models.Store;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using Order.Dtos.ShoppingCart;
 using Order.Dtos.WishList;
 using Order.Interfaces;
@@ -30,6 +31,7 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
         private readonly IShoppingCartAppService _shoppingCartAppService;
         private readonly Order.Interfaces.ICommonAppService _orderCommonAppService;
         private readonly IWishListAppService _wishListAppService;
+        private readonly IConfiguration _configuration;
         #endregion
 
         #region CTOR
@@ -38,7 +40,8 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
             IProductAppService productAppService,
             IShoppingCartAppService shoppingCartAppService,
             Order.Interfaces.ICommonAppService orderCommonAppService,
-            IWishListAppService wishListAppService  
+            IWishListAppService wishListAppService,
+            IConfiguration configuration
         )
         {
             _notificationAppService = notificationAppService;
@@ -46,6 +49,7 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
             _shoppingCartAppService = shoppingCartAppService;
             _orderCommonAppService = orderCommonAppService;
             _wishListAppService = wishListAppService;
+            _configuration = configuration;
         }
         #endregion
 
@@ -57,8 +61,11 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
                 Product = ObjectMapper.Map<CreateUpdateProductDto, ProductViewModel>(product);
 
                 // Similar Products
-                var similarProducts = await _productAppService.GetProductSuggestionsAsync(id);
-                SimilarProduct = ObjectMapper.Map<List<StoreProductDto>, List<ProductItemViewModel>>(similarProducts);
+                if (_configuration["App:AiEnabled"]?.To<bool>() ?? false)
+                {
+                    var similarProducts = await _productAppService.GetProductSuggestionsAsync(id);
+                    SimilarProduct = ObjectMapper.Map<List<StoreProductDto>, List<ProductItemViewModel>>(similarProducts);
+                }
 
                 return Page();
             }

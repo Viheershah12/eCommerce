@@ -19,6 +19,7 @@ using Abp.eCommerce.Interfaces;
 using System.Collections;
 using System.Xml.Linq;
 using Abp.eCommerce.AiFilterBuilder;
+using Microsoft.Extensions.Configuration;
 
 namespace Product.Services
 {
@@ -35,6 +36,7 @@ namespace Product.Services
         private readonly IStockBalanceAppService _stockBalanceAppService;
         private readonly IOpenAIAppService _openAiAppService;
         private readonly IAiSearchAppService _aiSearchAppService;
+        private readonly IConfiguration _configuration;
         #endregion
 
         #region CTOR
@@ -48,7 +50,8 @@ namespace Product.Services
             IProductCategoryRepository productCategoryRepository,
             IStockBalanceAppService stockBalanceAppService,
             IOpenAIAppService openAIAppService,
-            IAiSearchAppService aiSearchAppService
+            IAiSearchAppService aiSearchAppService,
+            IConfiguration configuration
         )
         {
             _productRepository = productRepository;
@@ -61,6 +64,7 @@ namespace Product.Services
             _stockBalanceAppService = stockBalanceAppService;
             _openAiAppService = openAIAppService;
             _aiSearchAppService = aiSearchAppService;
+            _configuration = configuration;
         }
         #endregion
 
@@ -194,42 +198,46 @@ namespace Product.Services
                 }
 
                 var product = await _productRepository.InsertAsync(productDto);
-                var productCategory = await _productCategoryRepository.GetAsync(x => x.Id == product.Category);
-                var attributes = await _openAiAppService.ExtractProductAttributesAsync(product.Name);
 
-                // Build enhanced content
-                var contentBuilder = new StringBuilder();
-                contentBuilder.Append(product.Name);
-                contentBuilder.Append($", Category: {productCategory.Name}");
-                contentBuilder.Append($", Brand: {attributes.Brand ?? "Unknown"}");
-                contentBuilder.Append($", Color: {attributes.Color ?? "N/A"}");
-                contentBuilder.Append($", Size: {attributes.Size ?? "N/A"}");
-
-                if (product.ProductTags.Any())
+                if (_configuration["App:AiEnabled"]?.To<bool>() ?? false)
                 {
-                    contentBuilder.Append($", Tags: {string.Join(", ", product.ProductTags.Select(x => x.Name))}");
+                    var productCategory = await _productCategoryRepository.GetAsync(x => x.Id == product.Category);
+                    var attributes = await _openAiAppService.ExtractProductAttributesAsync(product.Name);
+
+                    // Build enhanced content
+                    var contentBuilder = new StringBuilder();
+                    contentBuilder.Append(product.Name);
+                    contentBuilder.Append($", Category: {productCategory.Name}");
+                    contentBuilder.Append($", Brand: {attributes.Brand ?? "Unknown"}");
+                    contentBuilder.Append($", Color: {attributes.Color ?? "N/A"}");
+                    contentBuilder.Append($", Size: {attributes.Size ?? "N/A"}");
+
+                    if (product.ProductTags.Any())
+                    {
+                        contentBuilder.Append($", Tags: {string.Join(", ", product.ProductTags.Select(x => x.Name))}");
+                    }
+
+                    // Build payload with all extracted attributes
+                    var payload = new Dictionary<string, object>
+                    {
+                        { "type", "product" },
+                        { "name", product.Name },
+                        { "category", productCategory.Name },
+                        { "price", product.Price },
+                        { "brand", attributes.Brand ?? "Unknown" },
+                        { "color", attributes.Color ?? "N/A" },
+                        { "size", attributes.Size ?? "N/A" },
+                        { "material", attributes.Material ?? "N/A" },
+                        { "product_type", attributes.Type ?? productCategory.Name },
+                        { "tags", product.ProductTags.Select(t => t.Name).ToList() }
+                    };
+
+                    await _aiSearchAppService.AddDataPointAsync(
+                        product.Id.ToString(),
+                        contentBuilder.ToString(),
+                        payload
+                    );
                 }
-
-                // Build payload with all extracted attributes
-                var payload = new Dictionary<string, object>
-                {
-                    { "type", "product" },
-                    { "name", product.Name },
-                    { "category", productCategory.Name },
-                    { "price", product.Price },
-                    { "brand", attributes.Brand ?? "Unknown" },
-                    { "color", attributes.Color ?? "N/A" },
-                    { "size", attributes.Size ?? "N/A" },
-                    { "material", attributes.Material ?? "N/A" },
-                    { "product_type", attributes.Type ?? productCategory.Name },
-                    { "tags", product.ProductTags.Select(t => t.Name).ToList() }
-                };
-
-                await _aiSearchAppService.AddDataPointAsync(
-                    product.Id.ToString(),
-                    contentBuilder.ToString(),
-                    payload
-                );
 
                 return product.Id;
             }
@@ -319,42 +327,46 @@ namespace Product.Services
                 }
 
                 await _productRepository.UpdateAsync(updatedProduct);
-                var productCategory = await _productCategoryRepository.GetAsync(x => x.Id == product.Category);
-                var attributes = await _openAiAppService.ExtractProductAttributesAsync(product.Name);
 
-                // Build enhanced content
-                var contentBuilder = new StringBuilder();
-                contentBuilder.Append(product.Name);
-                contentBuilder.Append($", Category: {productCategory.Name}");
-                contentBuilder.Append($", Brand: {attributes.Brand ?? "Unknown"}");
-                contentBuilder.Append($", Color: {attributes.Color ?? "N/A"}");
-                contentBuilder.Append($", Size: {attributes.Size ?? "N/A"}");
-
-                if (product.ProductTags.Any())
+                if (_configuration["App:AiEnabled"]?.To<bool>() ?? false)
                 {
-                    contentBuilder.Append($", Tags: {string.Join(", ", product.ProductTags.Select(x => x.Name))}");
+                    var productCategory = await _productCategoryRepository.GetAsync(x => x.Id == product.Category);
+                    var attributes = await _openAiAppService.ExtractProductAttributesAsync(product.Name);
+
+                    // Build enhanced content
+                    var contentBuilder = new StringBuilder();
+                    contentBuilder.Append(product.Name);
+                    contentBuilder.Append($", Category: {productCategory.Name}");
+                    contentBuilder.Append($", Brand: {attributes.Brand ?? "Unknown"}");
+                    contentBuilder.Append($", Color: {attributes.Color ?? "N/A"}");
+                    contentBuilder.Append($", Size: {attributes.Size ?? "N/A"}");
+
+                    if (product.ProductTags.Any())
+                    {
+                        contentBuilder.Append($", Tags: {string.Join(", ", product.ProductTags.Select(x => x.Name))}");
+                    }
+
+                    // Build payload with all extracted attributes
+                    var payload = new Dictionary<string, object>
+                    {
+                        { "type", "product" },
+                        { "name", product.Name },
+                        { "category", productCategory.Name },
+                        { "price", product.Price },
+                        { "brand", attributes.Brand ?? "Unknown" },
+                        { "color", attributes.Color ?? "N/A" },
+                        { "size", attributes.Size ?? "N/A" },
+                        { "material", attributes.Material ?? "N/A" },
+                        { "product_type", attributes.Type ?? productCategory.Name },
+                        { "tags", product.ProductTags.Select(t => t.Name).ToList() }
+                    };
+
+                    await _aiSearchAppService.AddDataPointAsync(
+                        product.Id.ToString(),
+                        contentBuilder.ToString(),
+                        payload
+                    );
                 }
-
-                // Build payload with all extracted attributes
-                var payload = new Dictionary<string, object>
-                {
-                    { "type", "product" },
-                    { "name", product.Name },
-                    { "category", productCategory.Name },
-                    { "price", product.Price },
-                    { "brand", attributes.Brand ?? "Unknown" },
-                    { "color", attributes.Color ?? "N/A" },
-                    { "size", attributes.Size ?? "N/A" },
-                    { "material", attributes.Material ?? "N/A" },
-                    { "product_type", attributes.Type ?? productCategory.Name },
-                    { "tags", product.ProductTags.Select(t => t.Name).ToList() }
-                };
-
-                await _aiSearchAppService.AddDataPointAsync(
-                    product.Id.ToString(),
-                    contentBuilder.ToString(),
-                    payload
-                );
             }
             catch (Exception ex) 
             {
