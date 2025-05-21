@@ -47,3 +47,37 @@ function changePageSize(pagesize, pageNumber, page, pageHandler, partialId, filt
         }
     });
 }
+
+$(function () {
+    var connection = new signalR.HubConnectionBuilder()
+        .withUrl("/signalr-hubs/transaction")
+        .withAutomaticReconnect()
+        .build();
+
+    connection.on("ReceiveNotification", function (data) {
+        console.info("Notification received:", data);
+        showToastWithProgress(data.message, data.type, data.redirectUrl);
+    });
+
+    connection.start().then(function () {
+        
+    })
+    .catch(function (err) {
+        console.error("SignalR connection failed:", err.toString());
+    });
+
+    function showToastWithProgress(message, type = 'info', redirectUrl = null) {
+        const $toast = toastr[type](message, '', {
+            closeButton: true,
+            timeOut: 10000,
+            extendedTimeOut: 5000,
+            progressBar: true
+        });
+
+        if (redirectUrl) {
+            $toast.on('click', function () {
+                window.location.href = redirectUrl;
+            });
+        }
+    }
+});

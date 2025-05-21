@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Order.Interfaces;
 using PaymentTransactions.Dtos.MpesaTransaction;
 using PaymentTransactions.Interfaces;
+using PaymentTransactions.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ using Volo.Abp;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.EventBus.Distributed;
 using Volo.Abp.EventBus.Local;
+using static Hangfire.Storage.JobStorageFeatures;
 
 namespace Abp.eCommerce.Services
 {
@@ -123,6 +125,7 @@ namespace Abp.eCommerce.Services
             request.AddParameter("application/json", json, ParameterType.RequestBody);
 
             var response = await client.ExecuteAsync(request);
+            CreateUpdateMpesaTransactionDto? transaction;
 
             if (response.IsSuccessStatusCode && !string.IsNullOrWhiteSpace(response.Content))
             {
@@ -130,7 +133,7 @@ namespace Abp.eCommerce.Services
 
                 if (responseDto is not null && responseDto.ResponseCode == 0)
                 {
-                    var transaction = new CreateUpdateMpesaTransactionDto
+                    transaction = new CreateUpdateMpesaTransactionDto
                     {
                         PaymentTransactionId = input.PaymentTransactionId,
                         MerchantRequestId = responseDto.MerchantRequestId,
@@ -143,35 +146,40 @@ namespace Abp.eCommerce.Services
                     };
 
                     await _mpesaTransactionAppService.CreateAsync(transaction);
-                    await _distributedEventBus.PublishAsync(new CheckMpesaTransactionEto
-                    {
-                        PaymentTransactionId = transaction.PaymentTransactionId,
-                    });
                 }
                 else
                 {
                     // Save as failed or log a problem if ResponseCode is not success (usually "0")
-                    await _mpesaTransactionAppService.CreateAsync(new CreateUpdateMpesaTransactionDto
+                    transaction = new CreateUpdateMpesaTransactionDto
                     {
                         PaymentTransactionId = input.PaymentTransactionId,
                         ResponseCode = responseDto?.ResponseCode,
                         ResponseDecription = responseDto?.ResponseDecription ?? "Invalid Response",
                         Status = MpesaTransactionStatusEnum.Failed,
                         SentOn = DateTime.Now
-                    });
+                    };
+
+                    await _mpesaTransactionAppService.CreateAsync(transaction);
                 }
             }
             else
             {
                 // Log or persist failure
-                await _mpesaTransactionAppService.CreateAsync(new CreateUpdateMpesaTransactionDto
+                transaction = new CreateUpdateMpesaTransactionDto
                 {
                     PaymentTransactionId = input.PaymentTransactionId,
                     ResponseDecription = $"HTTP Error: {(int)response.StatusCode} - {response.Content}",
                     Status = MpesaTransactionStatusEnum.Error,
                     SentOn = DateTime.Now
-                });
+                };
+
+                await _mpesaTransactionAppService.CreateAsync(transaction);
             }
+
+            await _distributedEventBus.PublishAsync(new CheckMpesaTransactionEto
+            {
+                PaymentTransactionId = transaction.PaymentTransactionId,
+            });
 
             return response.Content ?? string.Empty; 
         }
@@ -268,9 +276,37 @@ namespace Abp.eCommerce.Services
                         await _paymentTransactionAppService.UpdateAsync(paymentTransaction);
                         await _orderTransactionAppService.UpdateAsync(order);
 
-                        await _distributedEventBus.PublishAsync(new MpesaTransactionStatusEto{
+                        var message = "";
+
+                        switch (paymentTransaction.Status)
+                        {
+                            case PaymentTransactionStatus.Pending:
+                                message = L["PaymentPending"];
+                                break;
+
+                            case PaymentTransactionStatus.PendingConfirmed:
+                                message = L["PaymentPendingConfirmed"];
+                                break;
+
+                            case PaymentTransactionStatus.Completed:
+                                message = L["PaymentCompleted"];
+                                break;
+
+                            case PaymentTransactionStatus.Failed:
+                                message = L["PaymentFailed"];
+                                break;
+
+                            case PaymentTransactionStatus.Cancelled:
+                                message = L["PaymentCancelled"];
+                                break;
+                        }
+
+                        await _distributedEventBus.PublishAsync(new MpesaTransactionStatusEto 
+                        {
                             Status = paymentTransaction.Status,
-                            CustomerId = order.CustomerId
+                            CustomerId = order.CustomerId,
+                            OrderId = order.Id,
+                            Message = message
                         });
                     }
                     else
@@ -390,10 +426,37 @@ namespace Abp.eCommerce.Services
                             await _paymentTransactionAppService.UpdateAsync(paymentTransaction);
                             await _orderTransactionAppService.UpdateAsync(order);
 
+                            var message = "";
+
+                            switch (paymentTransaction.Status)
+                            {
+                                case PaymentTransactionStatus.Pending:
+                                    message = L["PaymentPending"];
+                                    break;
+
+                                case PaymentTransactionStatus.PendingConfirmed:
+                                    message = L["PaymentPendingConfirmed"];
+                                    break;
+
+                                case PaymentTransactionStatus.Completed:
+                                    message = L["PaymentCompleted"];
+                                    break;
+
+                                case PaymentTransactionStatus.Failed:
+                                    message = L["PaymentFailed"];
+                                    break;
+
+                                case PaymentTransactionStatus.Cancelled:
+                                    message = L["PaymentCancelled"];
+                                    break;
+                            }
+
                             await _distributedEventBus.PublishAsync(new MpesaTransactionStatusEto
                             {
                                 Status = paymentTransaction.Status,
-                                CustomerId = order.CustomerId
+                                CustomerId = order.CustomerId,
+                                OrderId = order.Id,
+                                Message = message
                             });
                         }
                         else

@@ -1,11 +1,14 @@
 ﻿using Abp.eCommerce.Dtos.MpesaCallback;
 using Abp.eCommerce.Enums;
+using Abp.eCommerce.Etos.MpesaTransaction;
 using Abp.eCommerce.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Order.Interfaces;
+using Order.Models;
 using PaymentTransactions.Dtos.MpesaTransaction;
 using PaymentTransactions.Interfaces;
+using PaymentTransactions.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +16,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
+using Volo.Abp.EventBus.Distributed;
 
 namespace Abp.eCommerce.Services
 {
@@ -23,6 +27,7 @@ namespace Abp.eCommerce.Services
         private readonly IPaymentTransactionAppService _paymentTransactionAppService;
         private readonly IOrderTransactionAppService _orderTransactionAppService;
         private readonly ILogger<MpesaCallbackAppService> _logger;
+        private readonly IDistributedEventBus _distributedEventBus;
         #endregion
 
         #region CTOR
@@ -30,13 +35,15 @@ namespace Abp.eCommerce.Services
             IMpesaTransactionAppService mpesaTransactionAppService,
             IPaymentTransactionAppService paymentTransactionAppService,
             IOrderTransactionAppService orderTransactionAppService,
-            ILogger<MpesaCallbackAppService> logger
+            ILogger<MpesaCallbackAppService> logger,
+            IDistributedEventBus distributedEventBus
         )
         {
             _mpesaTransactionAppService = mpesaTransactionAppService;
             _paymentTransactionAppService = paymentTransactionAppService;
             _orderTransactionAppService = orderTransactionAppService;   
             _logger = logger;
+            _distributedEventBus = distributedEventBus;
         }
         #endregion 
 
@@ -55,6 +62,8 @@ namespace Abp.eCommerce.Services
 
                 // Try to locate the MpesaTransaction using CheckoutRequestId
                 var transaction = await _mpesaTransactionAppService.GetByCheckoutRequestIdAsync(stk.CheckoutRequestID);
+                var paymentTransaction = await _paymentTransactionAppService.GetAsync(transaction.PaymentTransactionId);
+                var order = await _orderTransactionAppService.GetAsync(paymentTransaction.OrderId);
 
                 // Update transaction details
                 transaction.ResultCode = stk.ResultCode;
@@ -99,15 +108,12 @@ namespace Abp.eCommerce.Services
                     };
 
                     // Update linked PaymentTransaction status
-                    var paymentTransaction = await _paymentTransactionAppService.GetAsync(transaction.PaymentTransactionId);
                     paymentTransaction.Status = PaymentTransactionStatus.Completed;
                     paymentTransaction.PaymentDate = DateTime.Now;
 
                     await _paymentTransactionAppService.UpdateAsync(paymentTransaction);
 
                     // Update Order
-                    var order = await _orderTransactionAppService.GetAsync(paymentTransaction.OrderId);
-
                     order.PaidDate = DateTime.Now;
                     order.PaymentStatus = PaymentStatus.Paid;
                     order.Status = OrderStatus.Processing;
@@ -118,6 +124,40 @@ namespace Abp.eCommerce.Services
                 }
 
                 await _mpesaTransactionAppService.UpdateAsync(transaction);
+
+                var message = "";
+
+                switch (paymentTransaction.Status)
+                {
+                    case PaymentTransactionStatus.Pending:
+                        message = L["PaymentPending"];
+                        break;
+
+                    case PaymentTransactionStatus.PendingConfirmed:
+                        message = L["PaymentPendingConfirmed"];
+                        break;
+
+                    case PaymentTransactionStatus.Completed:
+                        message = L["PaymentCompleted"];
+                        break;
+
+                    case PaymentTransactionStatus.Failed:
+                        message = L["PaymentFailed"];
+                        break;
+
+                    case PaymentTransactionStatus.Cancelled:
+                        message = L["PaymentCancelled"];
+                        break;
+                }
+
+                await _distributedEventBus.PublishAsync(new MpesaTransactionStatusEto
+                {
+                    Status = paymentTransaction.Status,
+                    CustomerId = order.CustomerId,
+                    OrderId = order.Id,
+                    Message = message
+                });
+
                 await Task.CompletedTask;
             }
             catch (Exception ex)

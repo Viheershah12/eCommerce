@@ -13,6 +13,10 @@ namespace Abp.eCommerce.Etos.MpesaTransaction
     {
         public PaymentTransactionStatus Status { get; set; }  
 
+        public Guid OrderId { get; set; }
+
         public Guid CustomerId { get; set; }
+
+        public string Message { get; set; }
     }
 }
