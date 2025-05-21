@@ -38,7 +38,7 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
             {
                 var res = await _productAppService.GetListByCategoryAsync(new GetProductCategoryListDto
                 {
-                    MaxResultCount = 5,
+                    MaxResultCount = 5
                 });
 
                 Products = ObjectMapper.Map<BasePagedModel<StoreProductDto>, BasePagedModel<ProductItemViewModel>>(res);

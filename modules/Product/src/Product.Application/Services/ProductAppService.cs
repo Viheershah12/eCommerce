@@ -12,13 +12,13 @@ using Volo.Abp.Application.Dtos;
 using Customer.Interfaces;
 using Abp.eCommerce.Models;
 using Management.Dtos.File;
-using Product.Dtos.ProductCategory;
 using Management.Interfaces;
-using Product.Dtos.Common;
-using Volo.Abp.ObjectMapping;
-using static Product.Models.Product;
 using Product.ProductCategory;
 using Inventory.Interfaces;
+using Abp.eCommerce.Interfaces;
+using System.Collections;
+using System.Xml.Linq;
+using Abp.eCommerce.AiFilterBuilder;
 
 namespace Product.Services
 {
@@ -33,6 +33,8 @@ namespace Product.Services
         private readonly ICustomerGroupAppService _customerGroupAppService;
         private readonly IProductCategoryRepository _productCategoryRepository;
         private readonly IStockBalanceAppService _stockBalanceAppService;
+        private readonly IOpenAIAppService _openAiAppService;
+        private readonly IAiSearchAppService _aiSearchAppService;
         #endregion
 
         #region CTOR
@@ -44,7 +46,9 @@ namespace Product.Services
             IFileAppService fileAppService,
             ICustomerGroupAppService customerGroupAppService,
             IProductCategoryRepository productCategoryRepository,
-            IStockBalanceAppService stockBalanceAppService
+            IStockBalanceAppService stockBalanceAppService,
+            IOpenAIAppService openAIAppService,
+            IAiSearchAppService aiSearchAppService
         )
         {
             _productRepository = productRepository;
@@ -55,6 +59,8 @@ namespace Product.Services
             _customerGroupAppService = customerGroupAppService;
             _productCategoryRepository = productCategoryRepository; 
             _stockBalanceAppService = stockBalanceAppService;
+            _openAiAppService = openAIAppService;
+            _aiSearchAppService = aiSearchAppService;
         }
         #endregion
 
@@ -74,13 +80,14 @@ namespace Product.Services
             }
         }
 
-        public async Task<BasePagedModel<StoreProductDto>> GetListByCategoryAsync(Dtos.Product.GetProductCategoryListDto dto)
+        public async Task<BasePagedModel<StoreProductDto>> GetListByCategoryAsync(GetProductCategoryListDto dto)
         {
             try
             {
                 if (dto.Category == null)
                 {
                     var category = (await _productCategoryRepository.GetListAsync())
+                        .Where(x => x.IsActive)
                         .OrderBy(x => x.DisplayOrder)
                         .FirstOrDefault();
 
@@ -187,6 +194,42 @@ namespace Product.Services
                 }
 
                 var product = await _productRepository.InsertAsync(productDto);
+                var productCategory = await _productCategoryRepository.GetAsync(x => x.Id == product.Category);
+                var attributes = await _openAiAppService.ExtractProductAttributesAsync(product.Name);
+
+                // Build enhanced content
+                var contentBuilder = new StringBuilder();
+                contentBuilder.Append(product.Name);
+                contentBuilder.Append($", Category: {productCategory.Name}");
+                contentBuilder.Append($", Brand: {attributes.Brand ?? "Unknown"}");
+                contentBuilder.Append($", Color: {attributes.Color ?? "N/A"}");
+                contentBuilder.Append($", Size: {attributes.Size ?? "N/A"}");
+
+                if (product.ProductTags.Any())
+                {
+                    contentBuilder.Append($", Tags: {string.Join(", ", product.ProductTags.Select(x => x.Name))}");
+                }
+
+                // Build payload with all extracted attributes
+                var payload = new Dictionary<string, object>
+                {
+                    { "type", "product" },
+                    { "name", product.Name },
+                    { "category", productCategory.Name },
+                    { "price", product.Price },
+                    { "brand", attributes.Brand ?? "Unknown" },
+                    { "color", attributes.Color ?? "N/A" },
+                    { "size", attributes.Size ?? "N/A" },
+                    { "material", attributes.Material ?? "N/A" },
+                    { "product_type", attributes.Type ?? productCategory.Name },
+                    { "tags", product.ProductTags.Select(t => t.Name).ToList() }
+                };
+
+                await _aiSearchAppService.AddDataPointAsync(
+                    product.Id.ToString(),
+                    contentBuilder.ToString(),
+                    payload
+                );
 
                 return product.Id;
             }
@@ -276,6 +319,42 @@ namespace Product.Services
                 }
 
                 await _productRepository.UpdateAsync(updatedProduct);
+                var productCategory = await _productCategoryRepository.GetAsync(x => x.Id == product.Category);
+                var attributes = await _openAiAppService.ExtractProductAttributesAsync(product.Name);
+
+                // Build enhanced content
+                var contentBuilder = new StringBuilder();
+                contentBuilder.Append(product.Name);
+                contentBuilder.Append($", Category: {productCategory.Name}");
+                contentBuilder.Append($", Brand: {attributes.Brand ?? "Unknown"}");
+                contentBuilder.Append($", Color: {attributes.Color ?? "N/A"}");
+                contentBuilder.Append($", Size: {attributes.Size ?? "N/A"}");
+
+                if (product.ProductTags.Any())
+                {
+                    contentBuilder.Append($", Tags: {string.Join(", ", product.ProductTags.Select(x => x.Name))}");
+                }
+
+                // Build payload with all extracted attributes
+                var payload = new Dictionary<string, object>
+                {
+                    { "type", "product" },
+                    { "name", product.Name },
+                    { "category", productCategory.Name },
+                    { "price", product.Price },
+                    { "brand", attributes.Brand ?? "Unknown" },
+                    { "color", attributes.Color ?? "N/A" },
+                    { "size", attributes.Size ?? "N/A" },
+                    { "material", attributes.Material ?? "N/A" },
+                    { "product_type", attributes.Type ?? productCategory.Name },
+                    { "tags", product.ProductTags.Select(t => t.Name).ToList() }
+                };
+
+                await _aiSearchAppService.AddDataPointAsync(
+                    product.Id.ToString(),
+                    contentBuilder.ToString(),
+                    payload
+                );
             }
             catch (Exception ex) 
             {
@@ -449,6 +528,99 @@ namespace Product.Services
                 }
 
                 return res;
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Sugested Products
+        public async Task<List<StoreProductDto>> GetProductSuggestionsAsync(Guid currentProductId)
+        {
+            try
+            {
+                var currentProduct = await _productRepository.GetAsync(currentProductId);
+                var allProducts = await _productRepository.GetListAsync();
+                var otherProducts = allProducts.Where(p => p.Id != currentProduct.Id).ToList();
+
+                var prompt = new StringBuilder();
+                prompt.AppendLine($"Product:");
+                prompt.AppendLine($"- Name: {currentProduct.Name}");
+                prompt.AppendLine($"- Category: {currentProduct.Category}");
+                prompt.AppendLine($"- Tags: {string.Join(", ", currentProduct.ProductTags.Select(tag => tag.Name))}");
+                prompt.AppendLine();
+                prompt.AppendLine("Other Products:");
+                foreach (var p in otherProducts)
+                {
+                    prompt.AppendLine($"- {p.Name}, Category: {p.Category}, Tags: {string.Join(", ", p.ProductTags.Select(tag => tag.Name))}");
+                }
+                prompt.AppendLine("Suggest 5 similar products and return only their names in a comma-separated list.");
+
+                var aiResponse = await _openAiAppService.GetSuggestedProductsAsync(prompt.ToString());
+
+                var names = aiResponse.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                      .Select(n => n.Trim())
+                                      .ToList();
+
+                var matches = otherProducts
+                    .Where(p => names.Any(name => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase)))
+                    .Take(5)
+                    .ToList();
+
+                var res = new List<StoreProductDto>();
+                foreach (var item in matches)
+                {
+                    var prod = ObjectMapper.Map<Models.Product, StoreProductDto>(item);
+
+                    // Get Files
+                    if (item.Media != null)
+                    {
+                        var files = await _fileAppService.DownloadMultipleFileByIdAsync(item.Media.Select(x => x.Id).ToList());
+                        prod.Media = ObjectMapper.Map<List<FileDto>, List<UserFileDto>>(files);
+                    }
+
+                    res.Add(prod);
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Search Products
+        public async Task<List<ProductResultDto>> SearchProductAsync(string productName)
+        {
+            try
+            {
+                // Extract attributes from search query
+                var queryAttributes = await _openAiAppService.ExtractProductAttributesAsync(productName);
+
+                // Build filters
+                var filter = new ProductFilterBuilder()
+                    .WithBrand(queryAttributes.Brand)
+                    .WithColor(queryAttributes.Color)
+                    .WithSize(queryAttributes.Size)
+                    .WithMaterial(queryAttributes.Material)
+                    .WithType(queryAttributes.Type)
+                    //.WithTags(queryAttributes.Tags?.ToArray())
+                    .Build();
+
+                // Add semantic search with the original query
+                var searchResults = await _aiSearchAppService.ProductSearchAsync(new ProductSearchDto
+                {
+                    Query = productName,
+                    Filter = filter
+                });
+
+                return searchResults ?? [];
             }
             catch (Exception ex)
             {

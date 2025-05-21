@@ -127,5 +127,23 @@ namespace Product.Controllers
             return await _productAppService.GetSimilarProductAsync(tagIds, limit);
         }
         #endregion
+
+        #region Product Suggestion
+        [HttpGet]
+        [Route("getProductSuggestions")]
+        public async Task<List<StoreProductDto>> GetProductSuggestionsAsync(Guid currentProductId)
+        {
+            return await _productAppService.GetProductSuggestionsAsync(currentProductId);
+        }
+        #endregion
+
+        #region Product Search 
+        [HttpGet]
+        [Route("productSearch")]
+        public async Task<List<ProductResultDto>> SearchProductAsync(string productName)
+        {
+            return await _productAppService.SearchProductAsync(productName);
+        }
+        #endregion
     }
 }

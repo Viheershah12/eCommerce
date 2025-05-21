@@ -57,9 +57,7 @@ namespace Abp.eCommerce.Web.Public.Pages.Store
                 Product = ObjectMapper.Map<CreateUpdateProductDto, ProductViewModel>(product);
 
                 // Similar Products
-                var similarProducts = await _productAppService.GetSimilarProductAsync(product.ProductTags.Select(x => x.Id).ToList());
-                similarProducts = similarProducts.Where(x => x.Id != id).ToList();
-
+                var similarProducts = await _productAppService.GetProductSuggestionsAsync(id);
                 SimilarProduct = ObjectMapper.Map<List<StoreProductDto>, List<ProductItemViewModel>>(similarProducts);
 
                 return Page();

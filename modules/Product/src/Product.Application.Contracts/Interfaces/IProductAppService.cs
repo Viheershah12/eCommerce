@@ -45,5 +45,13 @@ namespace Product.Interfaces
         #region Similar Products
         Task<List<StoreProductDto>> GetSimilarProductAsync(List<Guid> tagIds, int limit = 10);
         #endregion
+
+        #region Product Suggestion
+        Task<List<StoreProductDto>> GetProductSuggestionsAsync(Guid currentProductId);
+        #endregion
+
+        #region Product Search 
+        Task<List<ProductResultDto>> SearchProductAsync(string productName);
+        #endregion
     }
 }
