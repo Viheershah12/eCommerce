@@ -86,7 +86,6 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         {
             var consoleAndAngularClientRootUrl = configurationSection["eCommerce_App:RootUrl"]?.TrimEnd('/');
             await CreateApplicationAsync(
-                applicationType: OpenIddictConstants.ApplicationTypes.Web,
                 name: consoleAndAngularClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
@@ -114,7 +113,6 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             var swaggerRootUrl = configurationSection["eCommerce_Swagger:RootUrl"]?.TrimEnd('/');
 
             await CreateApplicationAsync(
-                applicationType: OpenIddictConstants.ApplicationTypes.Web,
                 name: swaggerClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
@@ -130,10 +128,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         // Public Web
         var webPublicClientId = configurationSection["eCommerce_Public_App:ClientId"];
         if (!webPublicClientId.IsNullOrWhiteSpace())
+
         {
             var webPublicUrl = configurationSection["eCommerce_Public_App:RootUrl"]?.TrimEnd('/');
             await CreateApplicationAsync(
-                applicationType: OpenIddictConstants.ApplicationTypes.Web,
                 name: webPublicClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
@@ -156,7 +154,6 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
     }
 
     private async Task CreateApplicationAsync(
-        [NotNull] string applicationType,
         [NotNull] string name,
         [NotNull] string type,
         [NotNull] string consentType,
@@ -164,11 +161,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         string? secret,
         List<string> grantTypes,
         List<string> scopes,
+        string? clientUri = null,
         string? redirectUri = null,
         string? postLogoutRedirectUri = null,
-        List<string>? permissions = null,
-        string? clientUri = null,
-        string? logoUri = null)
+        List<string>? permissions = null)
     {
         if (!string.IsNullOrEmpty(secret) && string.Equals(type, OpenIddictConstants.ClientTypes.Public,
                 StringComparison.OrdinalIgnoreCase))
@@ -184,15 +180,14 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
         var client = await _openIddictApplicationRepository.FindByClientIdAsync(name);
 
-        var application = new AbpApplicationDescriptor {
-            ApplicationType = applicationType,
+        var application = new AbpApplicationDescriptor
+        {
             ClientId = name,
             ClientType = type,
             ClientSecret = secret,
             ConsentType = consentType,
             DisplayName = displayName,
             ClientUri = clientUri,
-            LogoUri = logoUri,
         };
 
         Check.NotNullOrEmpty(grantTypes, nameof(grantTypes));
@@ -357,8 +352,8 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
         if (!HasSameRedirectUris(client, application))
         {
-            client.RedirectUris = JsonSerializer.Serialize(application.RedirectUris.Select(q => q.ToString().RemovePostFix("/")));
-            client.PostLogoutRedirectUris = JsonSerializer.Serialize(application.PostLogoutRedirectUris.Select(q => q.ToString().RemovePostFix("/")));
+            client.RedirectUris = JsonSerializer.Serialize(application.RedirectUris.Select(q => q.ToString().TrimEnd('/')));
+            client.PostLogoutRedirectUris = JsonSerializer.Serialize(application.PostLogoutRedirectUris.Select(q => q.ToString().TrimEnd('/')));
 
             await _applicationManager.UpdateAsync(client.ToModel());
         }
@@ -372,7 +367,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
     private bool HasSameRedirectUris(OpenIddictApplication existingClient, AbpApplicationDescriptor application)
     {
-        return existingClient.RedirectUris == JsonSerializer.Serialize(application.RedirectUris.Select(q => q.ToString().RemovePostFix("/")));
+        return existingClient.RedirectUris == JsonSerializer.Serialize(application.RedirectUris.Select(q => q.ToString().TrimEnd('/')));
     }
 
     private bool HasSameScopes(OpenIddictApplication existingClient, AbpApplicationDescriptor application)

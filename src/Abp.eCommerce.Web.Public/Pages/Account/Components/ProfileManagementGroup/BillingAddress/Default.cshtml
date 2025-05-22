@@ -1,0 +1,75 @@
+﻿@using Abp.eCommerce.Localization
+@using Abp.eCommerce.Web.Public.Models.Order
+@using Abp.eCommerce.Web.Public.Models.Profile
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+@using Volo.Abp.Settings
+@using Volo.Abp.Users
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject ICurrentUser CurrentUser
+@inject ISettingProvider SettingManager
+@inject IThemeManager ThemeManager
+@inject IStringLocalizerFactory StringLocalizerFactory
+
+@model UserAddressViewModel
+
+<h4 class="text-primary fw-semibold">
+    <i class="fa fa-user-edit me-2"></i>@L["BillingAddress"]
+</h4>
+<hr class="mb-4" />
+
+<form method="post" id="BillingAddressForm" class="needs-validation" novalidate>
+    <abp-row>
+        <abp-column size-md="_8">
+            @* <div class="form-floating mb-3">
+                <input type="text" class="form-control address-input" id="Billing_Address" asp-for="Address" data-prefix="Billing" />
+                <label asp-for="Address"></label>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div> *@
+
+            <gmp-place-autocomplete class="form-control address-input" name="Address" id="Billing_Address"
+                                    data-prefix="Billing"></gmp-place-autocomplete>
+
+            <div id="billing-map" style="height: 300px;" class="mt-2"></div>
+            <div id="place-autocomplete-card" style="display: none;"></div>
+        </abp-column>
+
+        <div id="addressComponents" class="d-none">
+            <abp-column size-md="_6">
+                <abp-input asp-for="UnitNumber" id="Billing_UnitNumber" floating-label="true" />
+            </abp-column>
+
+            <abp-column size-md="_6">
+                <abp-input asp-for="StreetNumber" id="Billing_StreetNumber" floating-label="true" />
+            </abp-column>
+
+            <abp-column-breaker />
+
+            <abp-column size-md="_6">
+                <abp-input asp-for="BuildingName" id="Billing_BuildingName" floating-label="true" />
+            </abp-column>
+
+            <abp-column size-md="_6">
+                <abp-input asp-for="PostalCode" id="Billing_PostalCode" floating-label="true" />
+            </abp-column>
+
+            <abp-column-breaker />
+
+            <abp-column size-md="_6">
+                <abp-input asp-for="Locality" id="Billing_Locality" floating-label="true" />
+            </abp-column>
+
+            <abp-column size-md="_6">
+                <abp-input asp-for="Country" id="Billing_Country" floating-label="true" />
+            </abp-column>
+
+            <abp-input asp-for="Address" type="hidden" id="Billing_Address" />
+            <abp-input asp-for="Sublocality" id="Billing_Sublocality" type="hidden" />
+            <abp-input asp-for="AdministrativeAreaLevel1" id="Billing_AdministrativeAreaLevel1" type="hidden" />
+            <abp-input asp-for="AdministrativeAreaLevel2" id="Billing_AdministrativeAreaLevel2" type="hidden" />
+            <abp-input asp-for="Longitude" id="Billing_Longitude" type="hidden" />
+            <abp-input asp-for="Latitude" id="Billing_Latitude" type="hidden" />
+        </div>
+    </abp-row>
+</form>

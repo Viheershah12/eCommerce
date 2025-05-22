@@ -1,14 +1,21 @@
 using Abp.eCommerce.Models;
 using Abp.eCommerce.Web.Public.Models.Order;
 using Abp.eCommerce.Web.Public.Models.Store;
+using Abp.eCommerce.Web.Public.Pages.Account.Components.ProfileManagementGroup.PersonalInfo;
 using AngleSharp.Css.Dom;
 using AutoMapper;
+using Customer.Dtos.Customer;
 using Order.Dtos.OrderTransaction;
 using PaymentTransactions.Dtos.MpesaTransaction;
 using PaymentTransactions.Dtos.OrderTransaction;
 using PaymentTransactions.Dtos.PaymentTransaction;
 using Product.Dtos.Product;
+using System.Collections.Generic;
+using Volo.Abp.Account;
 using Volo.Abp.Application.Dtos;
+using static OpenIddict.Abstractions.OpenIddictConstants;
+using Volo.Abp.Data;
+using Volo.Abp.ObjectExtending;
 
 namespace Abp.eCommerce.Web.Public;
 
@@ -16,6 +23,10 @@ public class eCommerceWebPublicAutoMapperProfile : Profile
 {
     public eCommerceWebPublicAutoMapperProfile()
     {
+        // Components
+        CreateMap<ProfileDto, AccountProfilePersonalInfoManagementGroupViewComponent.PersonalInfoModel>()
+            .MapExtraProperties(MappingPropertyDefinitionChecks.None);
+
         // Store
         CreateMap<BasePagedModel<StoreProductDto>, BasePagedModel<ProductItemViewModel>>();
         CreateMap<StoreProductDto, ProductItemViewModel>();

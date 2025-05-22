@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Abp.eCommerce.Enums
+namespace Abp.eCommerce.Helpers
 {
     public class EnumDropDownListModel
     {

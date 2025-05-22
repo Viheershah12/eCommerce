@@ -1,4 +1,4 @@
-﻿using Abp.eCommerce.Enums;
+﻿using Abp.eCommerce.Helpers;
 using AutoMapper;
 using Inventory.Dtos.Inventory;
 using Inventory.Dtos.StockMovement;

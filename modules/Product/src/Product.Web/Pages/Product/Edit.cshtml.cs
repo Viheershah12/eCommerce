@@ -11,13 +11,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Validation;
-using Abp.eCommerce.Enums;
 using Product.Dtos.Product;
 using Volo.Abp.ObjectMapping;
 using Management.Interfaces;
 using Abp.eCommerce.Models;
 using System.IO;
 using Newtonsoft.Json;
+using Abp.eCommerce.Helpers;
 
 namespace Product.Web.Pages.Product
 {

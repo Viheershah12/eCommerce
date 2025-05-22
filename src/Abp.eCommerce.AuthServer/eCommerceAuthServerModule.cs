@@ -141,7 +141,7 @@ public class eCommerceAuthServerModule : AbpModule
             options.KeyPrefix = "eCommerce:";
         });
 
-        var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("GigEconomy");
+        var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("eCommerce");
         if (!hostingEnvironment.IsDevelopment())
         {
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);

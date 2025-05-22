@@ -13,6 +13,8 @@ public class CustomerMongoDbContext : AbpMongoDbContext, ICustomerMongoDbContext
 
     public IMongoCollection<Models.CustomerGroup> CustomerGroup => Collection<Models.CustomerGroup>();
 
+    public IMongoCollection<Models.Customer> AbpUsers => Collection<Models.Customer>();
+
     protected override void CreateModel(IMongoModelBuilder modelBuilder)
     {
         base.CreateModel(modelBuilder);

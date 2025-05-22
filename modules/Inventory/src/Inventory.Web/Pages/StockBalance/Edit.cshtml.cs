@@ -14,9 +14,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Validation;
-using Abp.eCommerce.Enums;
 using Inventory.Dtos.Inventory;
 using Volo.Abp.ObjectMapping;
+using Abp.eCommerce.Helpers;
 
 namespace Inventory.Web.Pages.StockBalance
 {

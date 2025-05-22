@@ -12,4 +12,6 @@ public interface ICustomerMongoDbContext : IAbpMongoDbContext
      */
 
     IMongoCollection<Models.CustomerGroup> CustomerGroup {  get; }
+
+    IMongoCollection<Models.Customer> AbpUsers { get; }
 }

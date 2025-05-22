@@ -62,6 +62,9 @@ using Microsoft.AspNetCore.Http;
 using Volo.Abp.EventBus.RabbitMq;
 using Volo.Abp.RabbitMQ;
 using Volo.Abp.AspNetCore.SignalR;
+using Abp.eCommerce.Web.Public.PageManagement;
+using Volo.Abp.Account.Localization;
+using Abp.eCommerce.Web.Public.Pages.Account;
 
 namespace Abp.eCommerce.Web.Public
 {
@@ -206,16 +209,32 @@ namespace Abp.eCommerce.Web.Public
             ConfigureAutoApiControllers();
             ConfigureSwaggerServices(context.Services);
             ConfigureCustom();
-
-            Configure<PermissionManagementOptions>(options =>
-            {
-                options.IsDynamicPermissionStoreEnabled = true;
-            });
+            ConfigureProfileManagement();
 
             context.Services
                 .GetObject<IdentityBuilder>()
                 .AddDefaultTokenProviders()
                 .AddPasswordlessLoginProvider();
+        }
+
+        private void ConfigureProfileManagement()
+        {
+            Configure<PermissionManagementOptions>(options =>
+            {
+                options.IsDynamicPermissionStoreEnabled = true;
+            });
+
+            Configure<AbpBundlingOptions>(options =>
+            {
+                options.ScriptBundles
+                    .Configure(typeof(ManageModel).FullName,
+                        configuration =>
+                        {
+                            configuration.AddFiles("/client-proxies/account-proxy.js");
+                            configuration.AddFiles("/Pages/Account/Components/ProfileManagementGroup/Password/Default.js");
+                            configuration.AddFiles("/Pages/Account/Components/ProfileManagementGroup/PersonalInfo/Default.js");
+                        });
+            });
         }
 
         private void ConfigureCustom()
@@ -282,6 +301,11 @@ namespace Abp.eCommerce.Web.Public
             Configure<AbpToolbarOptions>(options =>
             {
                 options.Contributors.Add(new eCommerceWebPublicToolbarContributor());
+            });
+
+            Configure<ProfileManagementPageOptions>(options =>
+            {
+                options.Contributors.Add(new AccountProfileManagementPageContributor());
             });
         }
 

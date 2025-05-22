@@ -14,7 +14,7 @@ namespace Customer.Controllers
 {
     [Area(CustomerRemoteServiceConsts.ModuleName)]
     [RemoteService(Name = CustomerRemoteServiceConsts.RemoteServiceName)]
-    [Route("api/customer/customergroup")]
+    [Route("api/customers/customergroup")]
     public class CustomerGroupController : CustomersController, ICustomerGroupAppService
     {
         #region Fields

@@ -13,7 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.ObjectMapping;
 using Volo.Abp.Validation;
-using Abp.eCommerce.Enums;
+using Abp.eCommerce.Helpers;
 
 namespace Product.Web.Pages.Product
 {

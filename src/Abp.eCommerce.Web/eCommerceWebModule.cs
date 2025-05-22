@@ -58,6 +58,7 @@ using Volo.CmsKit.Web;
 using Order.Web;
 using Inventory.Web;
 using PaymentTransactions.Web;
+using Volo.Abp.Http.Client.IdentityModel.Web;
 
 namespace Abp.eCommerce.Web
 {
@@ -67,6 +68,7 @@ namespace Abp.eCommerce.Web
         typeof(eCommerceMongoDbModule),
         typeof(AbpAutofacModule),
         typeof(AbpStudioClientAspNetCoreModule),
+        typeof(AbpHttpClientIdentityModelWebModule),
         typeof(AbpIdentityWebModule),
         typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
         typeof(AbpAccountWebOpenIddictModule),

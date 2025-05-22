@@ -219,7 +219,7 @@ public class eCommerceHttpApiHostModule : AbpModule
         app.UseSwagger();
         app.UseAbpSwaggerUI(options =>
         {
-            options.SwaggerEndpoint("/swagger/v1/swagger.json", "GigEconomy API");
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "eCommerce API");
 
             var configuration = context.GetConfiguration();
             options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);

@@ -14,7 +14,7 @@
 }
 
 .text-white {
-    color: #ffffff;
+    color: #ffffff !important;
 }
 
 /* Make indicators darker */

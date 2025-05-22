@@ -1,0 +1,73 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Abp.eCommerce.Web.Public.Pages.Account
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+
+@inject IThemeManager ThemeManager
+@inject IStringLocalizer<eCommerceResource> L
+@inject IPageLayout PageLayout
+@inject IConfiguration Configuration
+
+@model ManageModel
+
+@{
+
+    PageLayout.Content.Title = L["Menu:Profile"];
+    Layout = ThemeManager.CurrentTheme.GetApplicationLayout();
+
+    var googleApiKey = Configuration["Google:ApiKey"];
+    var googleUrlString = $"https://maps.googleapis.com/maps/api/js?key={googleApiKey}&loading=async&libraries=places&callback=initMap&v=weekly";
+}
+
+@section scripts {
+    <script async src="@googleUrlString"></script>
+    <abp-script-bundle name="@typeof(ManageModel).FullName"/>
+    <abp-script src="/Pages/Account/js/Manage.js" />
+}
+
+@if (!Model.ReturnUrl.IsNullOrWhiteSpace())
+{
+    <abp-row class="mb-4">
+        <abp-column size-md="_12">
+            <a class="btn btn-outline-secondary rounded-pill shadow-sm" href="@Model.ReturnUrl">
+                <i class="fa fa-chevron-left me-2"></i>@L["ReturnToApplication"]
+            </a>
+        </abp-column>
+    </abp-row>
+}
+
+<div id="ProfileManagementWrapper" class="mt-4">
+    <abp-card class="shadow rounded-4 border-0">
+        <abp-card-header class="bg-primary rounded-top-4 p-4">
+            <h3 class="mb-0 text-white">
+                <i class="fa fa-user-circle me-2"></i>@L["Title:ManageYourProfile"]
+            </h3>
+        </abp-card-header>
+
+        <abp-card-body class="p-4 bg-light-subtle">
+            <abp-tabs tab-style="PillVertical"
+                      nav-class="rounded shadow-sm bg-white p-3"
+                      content-class="p-4 bg-white rounded shadow-sm"
+                      vertical-header-size="_3">
+                @foreach (var group in Model.ProfileManagementPageCreationContext.Groups)
+                {
+                    <abp-tab title="@group.DisplayName">
+                        @* <div class="mb-4 border-bottom pb-2">
+                            <h4 class="fw-bold text-primary">@group.DisplayName</h4>
+                        </div> *@
+
+                        @await Component.InvokeAsync(group.ComponentType, new
+                            {
+                                parameter = group.Parameter
+                            })
+                    </abp-tab>
+                }
+            </abp-tabs>
+        </abp-card-body>
+    </abp-card>
+</div>
