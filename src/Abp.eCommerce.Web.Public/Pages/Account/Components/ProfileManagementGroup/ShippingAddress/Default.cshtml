@@ -20,22 +20,25 @@
 <hr class="mb-4" />
 
 <form method="post" id="ShippingAddressForm" class="needs-validation" novalidate>
+    <input name="UserId" id="UserId" value="@CurrentUser.Id" type="hidden" />
+
     <abp-row>
-        <abp-column size-md="_8">
-            @* <div class="form-floating mb-3">
-                <input type="text" class="form-control address-input" id="Shipping_Address" asp-for="Address" data-prefix="Shipping" />
-                <label asp-for="Address"></label>
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div> *@
-
-            <gmp-place-autocomplete class="form-control address-input" name="Address" id="Shipping_Address"
-                                    data-prefix="Shipping"></gmp-place-autocomplete>
-
-            <div id="shipping-map" style="height: 300px;" class="mt-2"></div>
-            <div id="place-autocomplete-card" style="display: none;"></div>
+        <abp-column size-md="_12" class="mb-3">
+            <label for="Shipping_Address" class="form-label">@L["DisplayName:ShippingAddress"]</label>
+            <gmp-place-autocomplete class="form-control address-input shadow-sm"
+                data-prefix="Billing">
+            </gmp-place-autocomplete>
         </abp-column>
 
-        <div id="addressComponents" class="d-none">
+        <abp-column size-md="_12" class="mb-4">
+            <div id="shipping-map" class="rounded shadow-sm border" style="height: 300px;"></div>
+        </abp-column>
+
+        <div id="Shipping_AddressComponent" class="@(string.IsNullOrEmpty(Model.Address) ? "d-none" : "") row px-0 mx-0">
+            <abp-column size-md="_12">
+                <abp-input asp-for="Address" id="Shipping_Address" floating-label="true" />
+            </abp-column>
+
             <abp-column size-md="_6">
                 <abp-input asp-for="UnitNumber" id="Shipping_UnitNumber" floating-label="true" />
             </abp-column>
@@ -64,12 +67,19 @@
                 <abp-input asp-for="Country" id="Shipping_Country" floating-label="true" />
             </abp-column>
 
-            <abp-input asp-for="Address" type="hidden" id="Shipping_Address" />
-            <abp-input asp-for="Sublocality" id="Shipping_Sublocality" type="hidden" />
-            <abp-input asp-for="AdministrativeAreaLevel1" id="Shipping_AdministrativeAreaLevel1" type="hidden" />
-            <abp-input asp-for="AdministrativeAreaLevel2" id="Shipping_AdministrativeAreaLevel2" type="hidden" />
-            <abp-input asp-for="Longitude" id="Shipping_Longitude" type="hidden" />
-            <abp-input asp-for="Latitude" id="Shipping_Latitude" type="hidden" />
+            <input asp-for="Address" type="hidden" id="Shipping_Address" />
+            <input asp-for="Sublocality" id="Shipping_Sublocality" type="hidden" />
+            <input asp-for="AdministrativeAreaLevel1" id="Shipping_AdministrativeAreaLevel1" type="hidden" />
+            <input asp-for="AdministrativeAreaLevel2" id="Shipping_AdministrativeAreaLevel2" type="hidden" />
+            <input asp-for="Longitude" id="Shipping_Longitude" type="hidden" />
+            <input asp-for="Latitude" id="Shipping_Latitude" type="hidden" />
         </div>
     </abp-row>
+
+    <div class="text-end mt-4">
+        <abp-button type="submit"
+                    button-type="Primary"
+                    class="rounded-pill px-4 py-2 shadow"
+                    text="@L["Save"].Value" />
+    </div>
 </form>

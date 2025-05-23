@@ -233,6 +233,8 @@ namespace Abp.eCommerce.Web.Public
                             configuration.AddFiles("/client-proxies/account-proxy.js");
                             configuration.AddFiles("/Pages/Account/Components/ProfileManagementGroup/Password/Default.js");
                             configuration.AddFiles("/Pages/Account/Components/ProfileManagementGroup/PersonalInfo/Default.js");
+                            configuration.AddFiles("/Pages/Account/Components/ProfileManagementGroup/BillingAddress/Default.js");
+                            configuration.AddFiles("/Pages/Account/Components/ProfileManagementGroup/ShippingAddress/Default.js");
                         });
             });
         }

@@ -29,6 +29,10 @@ namespace Abp.eCommerce.Models
         public Guid? TenantId { get; set; }
     }
 
+    public class BaseUserModel
+    {
+        public Guid UserId { get; set; }
+    }
     #endregion
 
     #region Base Nullable Models
@@ -151,7 +155,7 @@ namespace Abp.eCommerce.Models
     }
     #endregion
 
-
+    #region Media 
     public class Media : BaseIdModel
     {
         public string Name { get; set; }
@@ -169,4 +173,5 @@ namespace Abp.eCommerce.Models
 
         public string Extension { get; set; } = string.Empty;
     }
+    #endregion 
 }

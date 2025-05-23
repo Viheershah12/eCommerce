@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Abp.eCommerce.Enums;
 using Abp.eCommerce.Models;
+using Abp.eCommerce.Web.Public.Models.Profile;
 using Customer.Dtos.Customer;
 using Customer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 using Volo.Abp.AspNetCore.Mvc.UI.Widgets;
+using Volo.Abp.Caching;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Identity;
 using Volo.Abp.ObjectExtending;
@@ -22,19 +24,27 @@ namespace Abp.eCommerce.Web.Public.Pages.Account.Components.ProfileManagementGro
 
 public class AccountProfilePersonalInfoManagementGroupViewComponent : AbpViewComponent
 {
-    protected IProfileAppService ProfileAppService { get; }
+    private readonly IDistributedCache<ProfileDto> _cache;
+    private readonly ICurrentUser CurrentUser;
 
-    public AccountProfilePersonalInfoManagementGroupViewComponent(IProfileAppService profileAppService)
+    public AccountProfilePersonalInfoManagementGroupViewComponent(
+        IDistributedCache<ProfileDto> cache,
+        ICurrentUser currentUser
+    )
     {
-        ProfileAppService = profileAppService;
-        ObjectMapperContext = typeof(AbpAccountWebModule);
+        _cache = cache;
+        CurrentUser = currentUser;  
     }
 
     public virtual async Task<IViewComponentResult> InvokeAsync()
     {
-        var user = await ProfileAppService.GetAsync();
-        var model = ObjectMapper.Map<ProfileDto, PersonalInfoModel>(user);
+        var model = new PersonalInfoModel();
+        var user = await _cache.GetAsync(string.Format(eCommerceCacheKeys.Profile, CurrentUser.Id));
 
+        if (user == null)
+            return View("~/Pages/Account/Components/ProfileManagementGroup/PersonalInfo/Default.cshtml", model);
+
+        model = ObjectMapper.Map<ProfileDto, PersonalInfoModel>(user);
         return View("~/Pages/Account/Components/ProfileManagementGroup/PersonalInfo/Default.cshtml", model);
     }
 

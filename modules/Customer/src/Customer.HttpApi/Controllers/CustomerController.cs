@@ -27,6 +27,7 @@ namespace Customer.Controllers
         }
         #endregion
 
+        #region CRUD
         [HttpGet]
         [Route("getList")]
         public async Task<PagedResultDto<CustomerDto>> GetListAsync(GetCustomerListingDto dto)
@@ -61,5 +62,22 @@ namespace Customer.Controllers
         {
             await _customerAppService.DeleteAsync(id);
         }
+        #endregion
+
+        #region Address
+        [HttpPut]
+        [Route("updateBillingAddress")]
+        public async Task UpdateBillingAddressAsync(AddressDto dto)
+        {
+            await _customerAppService.UpdateBillingAddressAsync(dto);
+        }
+
+        [HttpPut]
+        [Route("updateShippingAddress")]
+        public async Task UpdateShippingAddressAsync(AddressDto dto)
+        {
+            await _customerAppService.UpdateShippingAddressAsync(dto);
+        }
+        #endregion 
     }
 }

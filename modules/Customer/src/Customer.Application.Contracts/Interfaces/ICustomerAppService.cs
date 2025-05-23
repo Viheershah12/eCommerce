@@ -11,6 +11,7 @@ namespace Customer.Interfaces
 {
     public interface ICustomerAppService : IApplicationService
     {
+        #region CRUD
         Task<PagedResultDto<CustomerDto>> GetListAsync(GetCustomerListingDto dto);
 
         Task<Guid> CreateAsync(CreateUpdateCustomerDto dto);
@@ -20,5 +21,12 @@ namespace Customer.Interfaces
         Task UpdateAsync(CreateUpdateCustomerDto dto);
 
         Task DeleteAsync(Guid id);
+        #endregion
+
+        #region Address
+        Task UpdateBillingAddressAsync(AddressDto dto);
+
+        Task UpdateShippingAddressAsync(AddressDto dto);
+        #endregion 
     }
 }

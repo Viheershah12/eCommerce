@@ -45,9 +45,10 @@ namespace Customer.Services
             _identityRoleRepository = identityRoleRepository;
             _customerRepository = customerRepository;
             _identityUserManager = identityUserManager;
-        } 
-        #endregion 
+        }
+        #endregion
 
+        #region CRUD
         public async Task<PagedResultDto<CustomerDto>> GetListAsync(GetCustomerListingDto dto)
         {
             try
@@ -103,7 +104,7 @@ namespace Customer.Services
                 throw new BusinessException(ex.Message);
             }
         }
-        
+
         public async Task UpdateAsync(CreateUpdateCustomerDto dto)
         {
             try
@@ -144,5 +145,70 @@ namespace Customer.Services
                 throw new BusinessException(ex.Message);
             }
         }
+        #endregion
+
+        #region Address
+        public async Task UpdateBillingAddressAsync(AddressDto dto)
+        {
+            try
+            {
+                var customer = await _identityUserManager.GetByIdAsync(dto.UserId);
+
+                var address = new Dictionary<string, object>
+                {
+                    { nameof(dto.Address), dto.Address ?? string.Empty },
+                    { nameof(dto.Country), dto.Country ?? string.Empty },
+                    { nameof(dto.Locality), dto.Locality ?? string.Empty },
+                    { nameof(dto.PostalCode), dto.PostalCode ?? string.Empty },
+                    { nameof(dto.Sublocality), dto.Sublocality ?? string.Empty },
+                    { nameof(dto.AdministrativeAreaLevel1), dto.AdministrativeAreaLevel1 ?? string.Empty },
+                    { nameof(dto.AdministrativeAreaLevel2), dto.AdministrativeAreaLevel2 ?? string.Empty },
+                    { nameof(dto.StreetNumber), dto.StreetNumber ?? string.Empty },
+                    { nameof(dto.UnitNumber), dto.UnitNumber ?? string.Empty },
+                    { nameof(dto.BuildingName), dto.BuildingName ?? string.Empty },
+                    { nameof(dto.Latitude), dto.Latitude },
+                    { nameof(dto.Longitude), dto.Longitude },
+                };
+
+                customer.SetProperty("BillingAddress", address);
+                await _identityUserManager.UpdateAsync(customer);
+            }
+            catch (Exception ex) 
+            {
+                throw new BusinessException(ex.Message);            
+            }
+        }
+
+        public async Task UpdateShippingAddressAsync(AddressDto dto)
+        {
+            try
+            {
+                var customer = await _identityUserManager.GetByIdAsync(dto.UserId);
+
+                var address = new Dictionary<string, object>
+                {
+                    { nameof(dto.Address), dto.Address ?? string.Empty },
+                    { nameof(dto.Country), dto.Country ?? string.Empty },
+                    { nameof(dto.Locality), dto.Locality ?? string.Empty },
+                    { nameof(dto.PostalCode), dto.PostalCode ?? string.Empty },
+                    { nameof(dto.Sublocality), dto.Sublocality ?? string.Empty },
+                    { nameof(dto.AdministrativeAreaLevel1), dto.AdministrativeAreaLevel1 ?? string.Empty },
+                    { nameof(dto.AdministrativeAreaLevel2), dto.AdministrativeAreaLevel2 ?? string.Empty },
+                    { nameof(dto.StreetNumber), dto.StreetNumber ?? string.Empty },
+                    { nameof(dto.UnitNumber), dto.UnitNumber ?? string.Empty },
+                    { nameof(dto.BuildingName), dto.BuildingName ?? string.Empty },
+                    { nameof(dto.Latitude), dto.Latitude },
+                    { nameof(dto.Longitude), dto.Longitude },
+                };
+                
+                customer.SetProperty("ShippingAddress", address);
+                await _identityUserManager.UpdateAsync(customer);
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+        #endregion 
     }
 }

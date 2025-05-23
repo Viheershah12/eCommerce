@@ -16,6 +16,7 @@ using Volo.Abp.Application.Dtos;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 using Volo.Abp.Data;
 using Volo.Abp.ObjectExtending;
+using Abp.eCommerce.Web.Public.Models.Profile;
 
 namespace Abp.eCommerce.Web.Public;
 
@@ -26,6 +27,8 @@ public class eCommerceWebPublicAutoMapperProfile : Profile
         // Components
         CreateMap<ProfileDto, AccountProfilePersonalInfoManagementGroupViewComponent.PersonalInfoModel>()
             .MapExtraProperties(MappingPropertyDefinitionChecks.None);
+
+        CreateMap<UserAddress, UserAddressViewModel>();
 
         // Store
         CreateMap<BasePagedModel<StoreProductDto>, BasePagedModel<ProductItemViewModel>>();

@@ -46,5 +46,7 @@ public class CustomerApplicationAutoMapperProfile : Profile
             .ForMember(dest => dest.ShippingAddress, opt => opt.MapFrom(src => src.GetProperty("ShippingAddress", null)))
             .ForMember(dest => dest.IdentificationType, opt => opt.MapFrom(src => src.GetProperty("IdentificationType", null)))
             .ForMember(dest => dest.IdentificationNo, opt => opt.MapFrom(src => src.GetProperty("IdentificationNo", string.Empty)));
+
+        CreateMap<AddressDto, UserAddress>();
     }
 }

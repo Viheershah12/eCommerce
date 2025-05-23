@@ -4,16 +4,17 @@ namespace Abp.eCommerce.Web.Public.Models.Profile
 {
     public class UserAddressViewModel
     {
-        [Required]
-        [Display(Name = "Address")]
+        [Display(Name = "DisplayName:Address")]
         public string Address { get; set; }
 
-        [Required]
+        [Display(Name = "DisplayName:Country")]
         public string Country { get; set; }
 
+        [Display(Name = "DisplayName:Locality")]
         public string? Locality { get; set; }
 
-        public string PostalCode { get; set; }
+        [Display(Name = "DisplayName:PostalCode")]
+        public string? PostalCode { get; set; }
 
         public string? Sublocality { get; set; }
 
@@ -21,14 +22,17 @@ namespace Abp.eCommerce.Web.Public.Models.Profile
 
         public string? AdministrativeAreaLevel2 { get; set; }
 
+        [Display(Name = "DisplayName:StreetNumber")]
         public string? StreetNumber { get; set; }
 
+        [Display(Name = "DisplayName:UnitNumber")]
         public string? UnitNumber { get; set; }
 
+        [Display(Name = "DisplayName:BuildingName")]
         public string? BuildingName { get; set; }
 
-        public decimal Latitude { get; set; }
+        public long Latitude { get; set; }
 
-        public decimal Longitude { get; set; }
+        public long Longitude { get; set; }
     }
 }
