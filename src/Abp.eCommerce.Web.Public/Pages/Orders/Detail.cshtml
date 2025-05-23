@@ -71,7 +71,50 @@
                     <h5 class="mb-0">@L["Title:CustomerInformation"]</h5>
                 </div>
                 <div class="card-body">
-                    <p><strong>@L["CustomerName"]:</strong> @Model.Order.CustomerName</p>
+                    @if (Model.Order.Customer.DeliveryAddress != null)
+                    {
+                        <abp-row>
+                            <abp-column size-md="_6">
+                                <p><strong>@L["CustomerName"]:</strong> @Model.Order.Customer.CustomerName.ToDisplay()</p>
+                            </abp-column>
+
+                            <abp-column-breaker />
+
+                            <abp-column size-md="_6">
+                                <p><strong>@L["PhoneNumer"]:</strong> @Model.Order.Customer.PhoneNumber.ToDisplay()</p>
+                            </abp-column>
+
+                            <abp-column size-md="_6">
+                                <p><strong>@L["Email"]:</strong> @Model.Order.Customer.Email.ToDisplay()</p>
+                            </abp-column>
+
+                            <abp-column-breaker />
+
+                            <abp-column size-md="_6">
+                                <p><strong>@L["DateOfBirth"]:</strong> @Model.Order.Customer.DateOfBirth.ToDisplay()</p>
+                            </abp-column>
+
+                            <abp-column size-md="_6">
+                                <p><strong>@L["Gender"]:</strong> @Model.Order.Customer.Gender?.GetDescription().LocalizedEnum(L)</p>
+                            </abp-column>
+
+                            <abp-column-breaker />
+
+                            <abp-column size-md="_6">
+                                <p><strong>@L["IdentificationType"]:</strong> @Model.Order.Customer.IdentificationType?.GetDescription().LocalizedEnum(L)</p>
+                            </abp-column>
+
+                            <abp-column size-md="_6">
+                                <p><strong>@L["IdentificationNo"]:</strong> @Model.Order.Customer.IdentificationNo.ToDisplay()</p>
+                            </abp-column>
+
+                            <abp-column-breaker />
+
+                            <abp-column>
+                                <p><strong>@L["DeliveryAddress"]:</strong> @Model.Order.Customer.DeliveryAddress.Address.ToDisplay()</p>
+                            </abp-column>
+                        </abp-row>
+                    }
 
                     @if (Model.Order.BillingAddress != null || Model.Order.ShippingAddress != null)
                     {

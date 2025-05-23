@@ -17,15 +17,21 @@ public class OrderApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
 
         // Order
-        CreateMap<Models.Order, OrderDto>();
+        CreateMap<Models.Order, OrderDto>()
+            .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(x => x.Customer.Id))
+            .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(x => x.Customer.CustomerName));
+
         CreateMap<CreateUpdateOrderDto, Models.Order>()
-            .IgnoreDeletionAuditedObjectProperties()
+            .IgnoreFullAuditedObjectProperties()
             .Ignore(x => x.ExtraProperties)
-            .Ignore(x => x.ConcurrencyStamp)
+            .Ignore(x => x.ConcurrencyStamp);
+
+        CreateMap<Models.Order, CreateUpdateOrderDto>()
+            .Ignore(x => x.SelectedAddress)
             .ReverseMap();
 
         CreateMap<Models.Order.OrderItem, CreateUpdateOrderDto.OrderItemDto>().ReverseMap();
-        CreateMap<Models.Order.Address, CreateUpdateOrderDto.AddressDto>().ReverseMap();
+        CreateMap<Models.Order.CustomerDetail, CreateUpdateOrderDto.CustomerDetailDto>().ReverseMap();
 
         // Shopping Cart
         CreateMap<Models.ShoppingCart, ShoppingCartDto>()

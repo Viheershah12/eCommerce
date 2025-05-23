@@ -8,14 +8,28 @@ namespace Abp.eCommerce.Web.Public.Models.Order
 {
     public class OrderDetailViewModel : BaseIdModel
     {
-        public OrderDetailViewModel(string customerName)
+        public CustomerDetailViewModel Customer { get; set; }
+
+        public class CustomerDetailViewModel : BaseIdModel
         {
-            CustomerName = customerName;
+            public string CustomerName { get; set; }
+
+            public UserAddress? DeliveryAddress { get; set; }
+
+            public string Email { get; set; }
+
+            public string PhoneNumber { get; set; }
+
+            public string? HomePhoneNumber { get; set; }
+
+            public Gender? Gender { get; set; }
+
+            public DateTime? DateOfBirth { get; set; }
+
+            public IdentificationType? IdentificationType { get; set; }
+
+            public string? IdentificationNo { get; set; }
         }
-
-        public Guid CustomerId { get; set; }
-
-        public required string CustomerName { get; set; } = string.Empty;
 
         #region Order Items
         public List<OrderItemViewModel> OrderItems { get; set; } = [];

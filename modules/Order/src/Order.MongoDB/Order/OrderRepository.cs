@@ -27,7 +27,7 @@ namespace Order.Order
             return await queryable
                 .WhereIf<Models.Order, IMongoQueryable<Models.Order>>(
                     !string.IsNullOrEmpty(filter),
-                    order => !string.IsNullOrEmpty(order.CustomerName) && order.CustomerName.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
+                    order => !string.IsNullOrEmpty(order.Customer.CustomerName) && order.Customer.CustomerName.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
                 )
                 .WhereIf<Models.Order, IMongoQueryable<Models.Order>>(
                     status.HasValue,

@@ -9,16 +9,32 @@ using Volo.Abp.Application.Dtos;
 
 namespace Order.Dtos.OrderTransaction
 {
-    public class CreateUpdateOrderDto : AuditedEntityDto<Guid>
+    public class CreateUpdateOrderDto : BaseIdModel
     {
-        public CreateUpdateOrderDto(string customerName) 
+        public AddressTypeEnum SelectedAddress { get; set; }
+
+        public CustomerDetailDto Customer { get; set; }
+
+        public class CustomerDetailDto : BaseIdModel
         {
-            CustomerName = customerName;
+            public string CustomerName { get; set; }
+
+            public UserAddress? DeliveryAddress { get; set; }
+
+            public string Email { get; set; }
+
+            public string PhoneNumber { get; set; }
+
+            public string? HomePhoneNumber { get; set; }
+
+            public Gender? Gender { get; set; }
+
+            public DateTime? DateOfBirth { get; set; }
+
+            public IdentificationType? IdentificationType { get; set; }
+
+            public string? IdentificationNo { get; set; }
         }
-
-        public Guid CustomerId { get; set; }
-
-        public required string CustomerName { get; set; } = string.Empty;
 
         #region Order Items
         public List<OrderItemDto> OrderItems { get; set; } = [];
@@ -54,34 +70,5 @@ namespace Order.Dtos.OrderTransaction
         public DateTime? ShippingDate { get; set; }
 
         public string? Notes { get; set; }
-
-        #region Address
-        public AddressDto? BillingAddress { get; set; }
-
-        public AddressDto? ShippingAddress { get; set; }
-
-        public class AddressDto
-        {
-            public required string AddressLine1 { get; set; }
-
-            public string? AddressLine2 { get; set; }
-
-            public string? AddressLine3 { get; set; }
-
-            public string? PostCode { get; set; }
-
-            public string? Town { get; set; }
-
-            public CountryEnum Country { get; set; } = CountryEnum.KE;
-
-            public string? TelephoneNumber { get; set; }
-
-            public string? FaxNumber { get; set; }
-
-            public string? Email { get; set; }
-
-            public string? Website { get; set; }
-        }
-        #endregion 
     }
 }

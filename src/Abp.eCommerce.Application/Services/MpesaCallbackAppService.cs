@@ -153,7 +153,7 @@ namespace Abp.eCommerce.Services
                 await _distributedEventBus.PublishAsync(new MpesaTransactionStatusEto
                 {
                     Status = paymentTransaction.Status,
-                    CustomerId = order.CustomerId,
+                    CustomerId = order.Customer.Id,
                     OrderId = order.Id,
                     Message = message
                 });

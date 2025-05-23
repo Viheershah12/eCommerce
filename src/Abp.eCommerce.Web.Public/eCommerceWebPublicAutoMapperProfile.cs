@@ -42,7 +42,7 @@ public class eCommerceWebPublicAutoMapperProfile : Profile
         CreateMap<OrderDto, OrderItemViewModel>();
 
         CreateMap<CreateUpdateOrderDto, OrderDetailViewModel>();
-        CreateMap<CreateUpdateOrderDto.AddressDto, AddressViewModel>();
+        CreateMap<CreateUpdateOrderDto.CustomerDetailDto, OrderDetailViewModel.CustomerDetailViewModel>();
         CreateMap<CreateUpdateOrderDto.OrderItemDto, OrderDetailViewModel.OrderItemViewModel>();
 
         CreateMap<GetOrderPaymentDetailDto, PaymentDetailViewModel>();

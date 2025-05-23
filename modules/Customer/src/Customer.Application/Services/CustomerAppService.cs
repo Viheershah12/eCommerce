@@ -94,7 +94,7 @@ namespace Customer.Services
         {
             try
             {
-                var customer = await _identityUserManager.GetByIdAsync(id);
+                var customer = await _customerRepository.GetAsync(id);
                 var res = ObjectMapper.Map<IdentityUser, CustomerDto>(customer);
 
                 return res;

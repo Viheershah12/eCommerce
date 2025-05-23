@@ -15,8 +15,6 @@ namespace Customer.Models
 
         public Gender? Gender { get; set; }
 
-        public string? GenderName { get; set; }
-
         public DateTime? DateOfBirth { get; set; }
 
         public UserAddress? BillingAddress { get; set; }

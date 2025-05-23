@@ -38,6 +38,9 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
         [BindProperty]
         public long PhoneNumber { get; set; }
 
+        [BindProperty]
+        public AddressTypeEnum SelectedAddress { get; set; }
+
         private readonly IStringLocalizer<eCommerceResource> _localizer;
         private readonly INotificationAppService _notificationAppService;
         private readonly ICheckoutAppService _checkoutAppService;
@@ -66,10 +69,13 @@ namespace Abp.eCommerce.Web.Public.Pages.ShoppingCart
                 if (!CurrentUser.IsAuthenticated || CurrentUser.Id == null || string.IsNullOrEmpty(CurrentUser.UserName))
                     return Redirect("/Account/Login");
 
-                var order = new CreateUpdateOrderDto(CurrentUser.UserName)
+                var order = new CreateUpdateOrderDto
                 {
-                    CustomerName = CurrentUser.UserName,
-                    CustomerId = CurrentUser.Id.Value,
+                    SelectedAddress = SelectedAddress,
+                    Customer = new CreateUpdateOrderDto.CustomerDetailDto
+                    {
+                        Id = CurrentUser.Id.Value
+                    },
                     OrderItems = CartItems.Select(x => new CreateUpdateOrderDto.OrderItemDto
                     {
                         Id = Guid.NewGuid(),

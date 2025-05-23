@@ -111,4 +111,10 @@ namespace Abp.eCommerce.Enums
         [Description("Reversed")]
         Reversed               // If refund or reversal occurs
     }
+
+    public enum AddressTypeEnum
+    {
+        Shipping,
+        Billing
+    }
 }
