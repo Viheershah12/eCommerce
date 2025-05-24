@@ -26,8 +26,9 @@ namespace Order.Controllers
         {
             _orderTransactionAppService = orderTransactionAppService;
         }
-        #endregion 
+        #endregion
 
+        #region CRUD
         [HttpGet]
         [Route("getList")]
         public async Task<BasePagedModel<OrderDto>> GetListAsync(GetOrderListDto dto)
@@ -62,6 +63,45 @@ namespace Order.Controllers
         {
             await _orderTransactionAppService.DeleteAsync(id);
         }
+        #endregion
+
+        #region Order Note
+        [HttpPost]
+        [Route("createOrderNote")]
+        public async Task CreateOrderNoteAsync(CreateUpdateOrderNoteDto dto)
+        {
+            await _orderTransactionAppService.CreateOrderNoteAsync(dto);
+        }
+
+        [HttpGet]
+        [Route("getOrderNote")]
+        public async Task<CreateUpdateOrderNoteDto> GetOrderNoteAsync(IdOrderIdModel dto)
+        {
+            return await _orderTransactionAppService.GetOrderNoteAsync(dto);
+        }
+
+        [HttpPut]
+        [Route("updateOrderNote")]
+        public async Task UpdateOrderNoteAsync(CreateUpdateOrderNoteDto dto)
+        {
+            await _orderTransactionAppService.UpdateOrderNoteAsync(dto);
+        }
+
+        [HttpDelete]
+        [Route("deleteOrderNote")]
+        public async Task DeleteOrderNoteAsync(IdOrderIdModel dto)
+        {
+            await _orderTransactionAppService.DeleteOrderNoteAsync(dto);
+        }
+        #endregion
+
+        #region Other Methods
+        [HttpGet]
+        [Route("getOrderDetail")]
+        public async Task<OrderDetailDto> GetOrderDetailAsync(Guid id)
+        {
+            return await _orderTransactionAppService.GetOrderDetailAsync(id);
+        }
 
         [HttpPut]
         [Route("cancel")]
@@ -69,5 +109,6 @@ namespace Order.Controllers
         {
             await _orderTransactionAppService.CancelAsync(orderId);
         }
+        #endregion
     }
 }

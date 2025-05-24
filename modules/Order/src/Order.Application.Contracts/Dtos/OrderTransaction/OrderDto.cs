@@ -26,15 +26,17 @@ namespace Order.Dtos.OrderTransaction
     {
         public Guid CustomerId { get; set; }
 
-        public DateTime CreationTime { get; set; }
+        public string CustomerName { get; set; }
 
-        public required string CustomerName { get; set; }
+        public string CreationTime { get; set; }
+
+        public string PhoneNumber { get; set; }
 
         public decimal TotalAmount { get; set; }
 
-        public OrderStatus Status { get; set; } = OrderStatus.Pending;
+        public string Status { get; set; }
 
-        public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.UnPaid;
+        public string PaymentStatus { get; set; }
 
         public PaymentMethodEnum? PaymentMethod { get; set; }
 

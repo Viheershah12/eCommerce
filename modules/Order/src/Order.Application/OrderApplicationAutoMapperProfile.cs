@@ -1,8 +1,11 @@
-﻿using AutoMapper;
+﻿using Abp.eCommerce.Helpers;
+using AutoMapper;
 using Order.Dtos.Common;
 using Order.Dtos.OrderTransaction;
 using Order.Dtos.ShoppingCart;
 using Order.Dtos.WishList;
+using PaymentTransactions.Dtos.MpesaTransaction;
+using PaymentTransactions.Dtos.PaymentTransaction;
 using Product.Dtos.Product;
 using Volo.Abp.AutoMapper;
 
@@ -19,7 +22,11 @@ public class OrderApplicationAutoMapperProfile : Profile
         // Order
         CreateMap<Models.Order, OrderDto>()
             .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(x => x.Customer.Id))
-            .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(x => x.Customer.CustomerName));
+            .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(x => x.Customer.CustomerName))
+            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(x => x.Customer.PhoneNumber))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(x => x.Status.GetDescription()))
+            .ForMember(dest => dest.PaymentStatus, opt => opt.MapFrom(x => x.PaymentStatus.GetDescription()))
+            .ForMember(dest => dest.CreationTime, opt => opt.MapFrom(x => x.CreationTime.ToString("dd/MM/yyyy HH:mm")));
 
         CreateMap<CreateUpdateOrderDto, Models.Order>()
             .IgnoreFullAuditedObjectProperties()
@@ -32,6 +39,24 @@ public class OrderApplicationAutoMapperProfile : Profile
 
         CreateMap<Models.Order.OrderItem, CreateUpdateOrderDto.OrderItemDto>().ReverseMap();
         CreateMap<Models.Order.CustomerDetail, CreateUpdateOrderDto.CustomerDetailDto>().ReverseMap();
+        CreateMap<Models.Order.OrderNote, CreateUpdateOrderDto.OrderNoteDto>().ReverseMap();
+
+        CreateMap<Models.Order, OrderDetailDto>()
+            .Ignore(x => x.PaymentTransaction)
+            .Ignore(x => x.MpesaTransaction);
+
+        CreateMap<Models.Order.OrderItem, OrderDetailDto.OrderItemDto>().ReverseMap();
+        CreateMap<Models.Order.CustomerDetail, OrderDetailDto.CustomerDetailDto>().ReverseMap();
+        CreateMap<Models.Order.OrderNote, OrderDetailDto.OrderNoteDto>().ReverseMap();
+
+        CreateMap<OrderPaymentTransactionDto, OrderDetailDto.PaymentTransactionDto>();
+        CreateMap<OrderPaymentTransactionDto.MpesaTransactionDto, OrderDetailDto.MpesaTransactionDto>().ReverseMap();
+        CreateMap<OrderPaymentTransactionDto.MpesaTransactionDto.CallbackMetadataDto, OrderDetailDto.MpesaTransactionDto.CallbackMetadataDto>().ReverseMap();
+        CreateMap<OrderPaymentTransactionDto.MpesaTransactionDto.CallbackMetadataDto.CallbackItemDto, OrderDetailDto.MpesaTransactionDto.CallbackMetadataDto.CallbackItemDto>().ReverseMap();
+
+        CreateMap<Models.Order.OrderNote, CreateUpdateOrderNoteDto>()
+            .Ignore(x => x.OrderId)
+            .ReverseMap();
 
         // Shopping Cart
         CreateMap<Models.ShoppingCart, ShoppingCartDto>()

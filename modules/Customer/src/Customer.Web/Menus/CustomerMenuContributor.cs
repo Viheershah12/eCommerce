@@ -27,7 +27,7 @@ public class CustomerMenuContributor : IMenuContributor
                 displayName: l["Menu:Customer"], 
                 "~/Customer", 
                 icon: "fa fa-user",
-                1001
+                3
             )
             .RequirePermissions(false, [CustomerPermissions.CustomerList.Default, CustomerPermissions.CustomerGroup.Default])
             .AddItem(

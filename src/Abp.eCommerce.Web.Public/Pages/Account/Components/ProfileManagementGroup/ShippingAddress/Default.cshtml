@@ -20,13 +20,13 @@
 <hr class="mb-4" />
 
 <form method="post" id="ShippingAddressForm" class="needs-validation" novalidate>
-    <input name="UserId" id="UserId" value="@CurrentUser.Id" type="hidden" />
+    <input name="UserId" id="Billing_UserId" value="@CurrentUser.Id" type="hidden" />
 
     <abp-row>
         <abp-column size-md="_12" class="mb-3">
             <label for="Shipping_Address" class="form-label">@L["DisplayName:ShippingAddress"]</label>
             <gmp-place-autocomplete class="form-control address-input shadow-sm"
-                data-prefix="Billing">
+                data-prefix="Shipping">
             </gmp-place-autocomplete>
         </abp-column>
 

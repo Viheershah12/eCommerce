@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Repositories;
 
 namespace Inventory.Services
 {
@@ -33,8 +34,9 @@ namespace Inventory.Services
             _stockMovementManager = stockMovementManager;
             _stockBalanceRepository = stockBalanceRepository;
         }
-        #endregion 
+        #endregion
 
+        #region CRUD
         public async Task<PagedResultDto<StockMovementDto>> GetListAsync(GetStockMovementListDto dto)
         {
             try
@@ -129,5 +131,44 @@ namespace Inventory.Services
                 throw new BusinessException(message: ex.Message);
             }
         }
+        #endregion
+
+        #region Order Transactions
+        public async Task CreateSaleStockMovement(OrderTransactionMovementDto dto)
+        {
+            try
+            {
+                var stockMovementList = new List<Models.StockMovement>();
+                var stockBalanceList = new List<Models.Inventory>();
+
+                foreach (var item in dto.OrderItems)
+                {
+                    var inventory = await _stockBalanceRepository.GetAsync(x => x.ProductId == item.ProductId);
+
+                    var stockMovement = new Models.StockMovement
+                    {
+                        InventoryId = inventory.Id,
+                        ProductName = item.ProductName,
+                        MovementType = StockMovementType.Sale,
+                        QuantityChanged = item.Quantity.To<int>(),
+                        OrderId = dto.OrderId,
+                        QuantityBeforeChange = inventory.StockQuantity ?? 0,
+                        QuantityAfterChange = inventory.StockQuantity - item.Quantity ?? 0
+                    };
+                    stockMovementList.Add(stockMovement);
+
+                    inventory.StockQuantity -= item.Quantity;
+                    stockBalanceList.Add(inventory);
+                }
+
+                await _stockMovementRepository.InsertManyAsync(stockMovementList);
+                await _stockBalanceRepository.UpdateManyAsync(stockBalanceList);
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+        #endregion 
     }
 }

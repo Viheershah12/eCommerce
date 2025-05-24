@@ -39,7 +39,7 @@ public class eCommerceMenuContributor : IMenuContributor
 
         //Administration
         var administration = context.Menu.GetAdministration();
-        administration.Order = 5;
+        administration.Order = 2;
 
         //Administration->Identity
         administration.SetSubItemOrder(IdentityMenuNames.GroupName, 1);

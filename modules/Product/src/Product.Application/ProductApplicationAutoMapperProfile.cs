@@ -25,7 +25,8 @@ public class ProductApplicationAutoMapperProfile : Profile
 
         CreateMap<Models.Product, CreateUpdateProductDto>()
             .Ignore(x => x.Media)
-            .Ignore(x => x.UploadedMedia);
+            .Ignore(x => x.UploadedMedia)
+            .Ignore(x => x.Stock);
 
         CreateMap<CreateUpdateProductDto, Models.Product>()
             .IgnoreFullAuditedObjectProperties()

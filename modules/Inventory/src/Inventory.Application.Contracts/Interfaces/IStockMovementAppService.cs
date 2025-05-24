@@ -21,5 +21,9 @@ namespace Inventory.Interfaces
         Task UpdateAsync(CreateUpdateStockMovementDto dto);
 
         Task DeleteAsync(Guid id);
+
+        #region Order Transaction 
+        Task CreateSaleStockMovement(OrderTransactionMovementDto dto);
+        #endregion
     }
 }

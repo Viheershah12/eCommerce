@@ -25,6 +25,7 @@ public class ProductWebAutoMapperProfile : Profile
             .Ignore(x => x.UploadedMedia)
             .Ignore(x => x.Media)
             .Ignore(x => x.TierPrices)
+            .Ignore(x => x.Stock)
             .ForMember(dest => dest.LimitedToCustomerGroups, opt => opt.MapFrom(x =>
                 x.LimitedToCustomerGroupIds != null
                     ? x.LimitedToCustomerGroupIds.Select(id => new CreateUpdateProductDto.CustomerGroupDto { Id = id.To<Guid>() }).ToList()
@@ -40,6 +41,7 @@ public class ProductWebAutoMapperProfile : Profile
             .Ignore(x => x.UploadedMedia)
             .Ignore(x => x.Media)
             .Ignore(x => x.TierPrices)
+            .Ignore(x => x.Stock)
             .ForMember(dest => dest.LimitedToCustomerGroups, opt => opt.MapFrom(x =>
                 x.LimitedToCustomerGroupIds != null
                     ? x.LimitedToCustomerGroupIds.Select(id => new CreateUpdateProductDto.CustomerGroupDto { Id = id.To<Guid>() }).ToList()

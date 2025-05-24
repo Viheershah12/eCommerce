@@ -24,7 +24,8 @@ public class PaymentTransactionsMenuContributor : IMenuContributor
                 PaymentTransactionsMenus.Prefix, 
                 displayName: l["Menu:PaymentTransaction"], 
                 "~/PaymentTransaction", 
-                icon: "fa fa-globe"
+                icon: "fa fa-cash-register",
+                5
             )
         );
 

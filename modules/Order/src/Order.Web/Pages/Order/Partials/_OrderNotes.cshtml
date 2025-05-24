@@ -1,0 +1,26 @@
+﻿@using Abp.eCommerce.Helpers
+@using Abp.eCommerce.Localization
+@using Microsoft.Extensions.Localization
+@using Order.Web.Models.Order
+
+@inject IStringLocalizer<eCommerceResource> L
+
+@model OrderViewModel
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column>
+                <abp-card-title>@L["Title:OrderNotes"]</abp-card-title>
+            </abp-column>
+
+            <abp-column class="text-end">
+                <abp-button button-type="Primary" id="addOrderNote" icon="plus" text="@L["AddOrderNote"]" />
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+
+    <abp-card-body>
+        <abp-table striped-rows="true" id="orderNoteTable"></abp-table>
+    </abp-card-body>
+</abp-card>

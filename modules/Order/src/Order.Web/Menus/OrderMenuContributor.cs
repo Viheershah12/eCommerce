@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Abp.eCommerce.Localization;
+using System.Threading.Tasks;
 using Volo.Abp.UI.Navigation;
 
 namespace Order.Web.Menus;
@@ -15,8 +16,18 @@ public class OrderMenuContributor : IMenuContributor
 
     private Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
+        var l = context.GetLocalizer<eCommerceResource>();
+
         //Add main menu items.
-        context.Menu.AddItem(new ApplicationMenuItem(OrderMenus.Prefix, displayName: "Order", "~/Order", icon: "fa fa-globe"));
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                OrderMenus.Prefix, 
+                displayName: l["Menu:Order"], 
+                "~/Order", 
+                icon: "fa fa-money-bill",
+                4
+            )
+        );
 
         return Task.CompletedTask;
     }

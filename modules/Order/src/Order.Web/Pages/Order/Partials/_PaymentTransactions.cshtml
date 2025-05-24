@@ -1,0 +1,86 @@
+﻿@using Abp.eCommerce.Enums
+@using Abp.eCommerce.Helpers
+@using Abp.eCommerce.Localization
+@using Microsoft.Extensions.Localization
+@using Order.Web.Models.Order
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Grid
+
+@inject IStringLocalizer<eCommerceResource> L
+
+@model OrderViewModel
+
+<abp-row>
+    <abp-column size-md="@(Model.PaymentTransaction?.PaymentMethod == PaymentMethodEnum.MpesaStk ? ColumnSize._8 : ColumnSize._12)">
+        <abp-card>
+            <abp-card-header>
+                <abp-card-title>@L["Title:PaymentTransaction"]</abp-card-title>
+            </abp-card-header>
+
+            <abp-card-body>
+                <abp-row>
+                    <abp-column size-md="_6">
+                        <div class="mb-3">
+                            <label class="form-label">@L["PaymentMethod"]</label>
+                            <p>@Model.PaymentTransaction?.PaymentMethod.GetDescription().LocalizedEnum(L)</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column size-md="_6">
+                        <div class="mb-3">
+                            <label class="form-label">@L["Status"]</label>
+                            <p>@Model.PaymentTransaction?.Status.GetDescription().LocalizedEnum(L)</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column-breaker />
+
+                    <abp-column size-md="_6">
+                        <div class="mb-3">
+                            <label class="form-label">@L["PaymentDate"]</label>
+                            <p>@Model.PaymentTransaction?.PaymentDate.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column size-md="_6">
+                        <div class="mb-3">
+                            <label class="form-label">@L["Amount"]</label>
+                            <p>@Model.PaymentTransaction?.Amount.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column-breaker />
+
+                    <form method="post" id="PaymentTransactionNote" class="needs-validation" novalidate>
+                        <input asp-for="PaymentTransaction.Id" name="Id" type="hidden" />
+
+                        <abp-column>
+                            <abp-input name="Notes" asp-for="PaymentTransaction.Notes" />
+                        </abp-column>
+
+                        <abp-column class="text-end">
+                            <abp-button button-type="Primary" text="@L["SaveNote"]" type="submit" />
+                        </abp-column>
+                    </form>
+                </abp-row>
+            </abp-card-body>
+        </abp-card>
+    </abp-column>
+
+    @if (Model.PaymentTransaction?.PaymentMethod != PaymentMethodEnum.CashOnDelivery)
+    {
+        <abp-column size-md="_4">
+            <abp-card>
+                <abp-card-header>
+                    <abp-card-title>@L["Title:MpesaTransaction"]</abp-card-title>
+                </abp-card-header>
+
+                <abp-card-body>
+                    <abp-row>
+
+                    </abp-row>
+                </abp-card-body>
+            </abp-card>
+        </abp-column>
+    }
+</abp-row>
+

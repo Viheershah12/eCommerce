@@ -96,6 +96,14 @@
     "Title:OrderProgress": "Order Progress",
     "Title:MpesaTransactionDetails": "Mpesa Transaction Information",
     "Title:ManageYourProfile": "Manage Your Profile",
+    "Title:OrderItems": "Order Items",
+    "Title:PaymentTransaction": "Payment Transaction",
+    "Title:OrderNotes": "Order Notes",
+    "Title:Shipments": "Shipments",
+    "Title:ViewOrder": "View Order",
+    "Title:GeneralInformation": "General Information",
+    "Title:Address": "Delivery Address",
+    "Title:Order": "Order",
 
     //notification
     "SuccessfullyAdded": "Successfully Added!",
@@ -105,6 +113,7 @@
     "AddedToCart": "Product Added To Cart Successfully!",
     "AddedToWishlist": "Product Added To Wishlist Successfully!",
     "YouHaveNoOrders": "You have no orders!",
+    "UpdatedPaymentTransactionNote": "Updated Payment Transaction Note!",
 
     //delete confirmation
     "ContentDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Content!",
@@ -115,6 +124,7 @@
     "ImageDeletionConfirmationMessage": "Are you sure you want to delete Image?",
     "StockMovementDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Stock Movement?",
     "StockBalanceDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Stock Balance? Do Note that the movement(s) will also be deleted!",
+    "OrderNoteDeletionConfirmationMessage": "Are you sure you want to delete '{0}' Order Note?",
 
     //message
     "AddToCartMessage": "Do you want to add to cart?",
@@ -140,6 +150,20 @@
     "CustomerGroup": "Customer Group",
     "MinimumQuantity": "Minimum Quantity",
     "CreateTierPrice": "Create Tier Price",
+
+    // Web Order
+    "HomePhoneNumber": "Home Phone Number",
+    "DateOfBirth": "Date Of Birth",
+    "IdentificationType": "Identification Type",
+    "IdentificationNo": "Identification No",
+    "BuildingName": "Building Name",
+    "PostalCode": "Postal Code",
+    "PaymentMethod": "Payment Method",
+    "SaveNote": "Save Note",
+    "AddOrderNote": "Add Order Note",
+    "OrderNoteType": "Order Note Type",
+    "CreatedOn": "Created On",
+    "CreatorName": "Creator Name",
 
     // Web Public Store
     "ViewDetails": "View Details",

@@ -33,11 +33,8 @@ namespace Abp.eCommerce.Enums
         [Description("UnPaid")]
         UnPaid = 10,
 
-        [Description("PartiallyPaid")]
-        PartiallyPaid = 20,
-
         [Description("Paid")]
-        Paid = 30
+        Paid = 20
     }
 
     public enum ShippingStatus
@@ -116,5 +113,14 @@ namespace Abp.eCommerce.Enums
     {
         Shipping,
         Billing
+    }
+
+    public enum OrderNoteType
+    {
+        [Description("Customer")]
+        Customer,
+
+        [Description("System")]
+        System
     }
 }

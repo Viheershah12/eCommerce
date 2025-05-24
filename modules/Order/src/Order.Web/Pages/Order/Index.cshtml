@@ -1,11 +1,38 @@
 ﻿@page
+@using Abp.eCommerce.Localization
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @using Order.Localization
+@using Order.Web.Menus
 @using Order.Web.Pages.Order
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IPageLayout PageLayout
+@inject IAuthorizationService AuthorizationService
+
 @model Order.Web.Pages.Order.IndexModel
-@inject IStringLocalizer<OrderResource> L
 
 @{
+
+    PageLayout.Content.MenuItemName = OrderMenus.Prefix;
+    PageLayout.Content.Title = @L["Title:Order"];
 }
-<h1>Order</h1>
-<p>@L["SamplePageMessage"]</p>
+
+@section scripts {
+    <abp-script src="/Pages/Order/js/Index.js" />
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Title:Order"]</abp-card-title>
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+
+    <abp-card-body>
+        <abp-table striped-rows="true" id="orderTable"></abp-table>
+    </abp-card-body>
+</abp-card>

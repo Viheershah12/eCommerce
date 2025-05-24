@@ -112,6 +112,9 @@ namespace Product.Services
                         prod.Media = ObjectMapper.Map<List<FileDto>, List<UserFileDto>>(files);
                     }
 
+                    var inventory = await _stockBalanceAppService.GetByProductIdAsync(prod.Id);
+                    prod.Stock = inventory?.StockQuantity ?? 0;
+
                     list.Add(prod);
                 }
 
@@ -260,6 +263,10 @@ namespace Product.Services
                     var files = await _fileAppService.DownloadMultipleFileByIdAsync(product.Media.Select(x => x.Id).ToList());
                     res.UploadedMedia = ObjectMapper.Map<List<FileDto>, List<UserFileDto>>(files);
                 }
+
+                // Get Stock
+                var stockBalance = await _stockBalanceAppService.GetByProductIdAsync(id);
+                res.Stock = stockBalance?.StockQuantity ?? 0;
 
                 return res;
             }

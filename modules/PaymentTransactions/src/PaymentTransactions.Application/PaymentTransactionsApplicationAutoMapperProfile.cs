@@ -35,5 +35,12 @@ public class PaymentTransactionsApplicationAutoMapperProfile : Profile
         // Order Detail
         CreateMap<Models.PaymentTransaction, PaymentTransactionDto>();
         CreateMap<Models.MpesaTransaction, MpesaTransactionDto>();
+
+        CreateMap<Models.PaymentTransaction, OrderPaymentTransactionDto>()
+            .Ignore(x => x.MpesaTransaction);
+
+        CreateMap<Models.MpesaTransaction, OrderPaymentTransactionDto.MpesaTransactionDto>();
+        CreateMap<Models.MpesaTransaction.CallbackMetadata, OrderPaymentTransactionDto.MpesaTransactionDto.CallbackMetadataDto>();
+        CreateMap<Models.MpesaTransaction.CallbackMetadata.CallbackItem, OrderPaymentTransactionDto.MpesaTransactionDto.CallbackMetadataDto.CallbackItemDto>();
     }
 }

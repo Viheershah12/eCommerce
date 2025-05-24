@@ -28,15 +28,9 @@ namespace PaymentTransactions.Controllers
         {
             _paymentTransactionAppService = paymentTransactionAppService;
         }
-        #endregion 
+        #endregion
 
-        [HttpGet]
-        [Route("status")]
-        public async Task<int> GetStatusAsync(Guid transactionId)
-        {
-            return await _paymentTransactionAppService.GetStatusAsync(transactionId);
-        }
-
+        #region CRUD
         [HttpGet]
         [Route("getList")]
         public async Task<PagedResultDto<PaymentTransactionDto>> GetListAsync(GetPaymentTransactionListDto dto)
@@ -71,5 +65,29 @@ namespace PaymentTransactions.Controllers
         {
             await _paymentTransactionAppService.DeleteAsync(id);
         }
+        #endregion
+
+        #region Other Method
+        [HttpGet]
+        [Route("status")]
+        public async Task<int> GetStatusAsync(Guid transactionId)
+        {
+            return await _paymentTransactionAppService.GetStatusAsync(transactionId);
+        }
+
+        [HttpGet]
+        [Route("getOrderPaymentTransaction")]
+        public async Task<OrderPaymentTransactionDto> GetOrderPaymentTransactionAsync(Guid orderId)
+        {
+            return await _paymentTransactionAppService.GetOrderPaymentTransactionAsync(orderId);
+        }
+
+        [HttpPut]
+        [Route("updatePaymentTransactionNote")]
+        public async Task UpdatePaymentTransactionNoteAsync(UpdatePaymentTransactionNoteDto dto)
+        {
+            await _paymentTransactionAppService.UpdatePaymentTransactionNoteAsync(dto);
+        }
+        #endregion
     }
 }

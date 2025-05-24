@@ -1,0 +1,133 @@
+﻿@using Abp.eCommerce.Helpers
+@using Abp.eCommerce.Localization
+@using Microsoft.Extensions.Localization
+@using Order.Web.Models.Order
+
+@inject IStringLocalizer<eCommerceResource> L
+
+@model OrderViewModel
+
+<abp-input asp-for="Customer.DeliveryAddress.Longitude" type="hidden" />
+<abp-input asp-for="Customer.DeliveryAddress.Latitude" type="hidden" />
+
+<abp-row>
+    <abp-column size-md="_8">
+        <abp-card>
+            <abp-card-header>
+                <abp-card-title>@L["Title:GeneralInformation"]</abp-card-title>
+            </abp-card-header>
+
+            <abp-card-body>
+                <abp-row>
+                    <abp-column>
+                        <div class="mb-3">
+                            <label class="form-label">@L["CustomerName"]</label>
+                            <p>@Model.Customer.CustomerName.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column size-md="_6">
+                        <div class="mb-3">
+                            <label class="form-label">@L["Email"]</label>
+                            <p>@Model.Customer.Email.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column-breaker />
+
+                    <abp-column size-md="_6">
+                        <div class="mb-3">
+                            <label class="form-label">@L["PhoneNumber"]</label>
+                            <p>@Model.Customer.PhoneNumber.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column size-md="_6">
+                        <div class="mb-3">
+                            <label class="form-label">@L["HomePhoneNumber"]</label>
+                            <p>@Model.Customer.HomePhoneNumber.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column-breaker />
+
+                    <abp-column size-md="_6">
+                        <div class="mb-3">
+                            <label class="form-label">@L["DateOfBirth"]</label>
+                            <p>@Model.Customer.DateOfBirth.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column size-md="_6">
+                        <div class="mb-3">
+                            <label class="form-label">@L["Gender"]</label>
+                            <p>@Model.Customer.Gender?.GetDescription().LocalizedEnum(L)</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column-breaker />
+                    
+                    <abp-column size-md="_6">
+                        <div class="mb-3">
+                            <label class="form-label">@L["IdentificationType"]</label>
+                            <p>@Model.Customer.IdentificationType?.GetDescription().LocalizedEnum(L)</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column size-md="_6">
+                        <div class="mb-3">
+                            <label class="form-label">@L["IdentificationNo"]</label>
+                            <p>@Model.Customer.IdentificationNo.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+                </abp-row>
+            </abp-card-body>
+        </abp-card>
+    </abp-column>
+
+    <abp-column size-md="_4">
+        <abp-card>
+            <abp-card-header>
+                <abp-card-title>@L["Title:Address"]</abp-card-title>
+            </abp-card-header>
+
+            <abp-card-body>
+                <abp-row>
+                    <abp-column size-md="_12">
+                        <div class="mb-3">
+                            <div id="map" style="height: 200px; width: 100%;"></div>
+                        </div>
+                    </abp-column>
+
+                    <abp-column size-md="_12">
+                        <div class="mb-3">
+                            <label class="form-label">@L["Address"]</label>
+                            <p>@Model.Customer.DeliveryAddress?.Address.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column size-md="_12">
+                        <div class="mb-3">
+                            <label class="form-label">@L["BuildingName"]</label>
+                            <p>@Model.Customer.DeliveryAddress?.BuildingName.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column size-md="_12">
+                        <div class="mb-3">
+                            <label class="form-label">@L["PostalCode"]</label>
+                            <p>@Model.Customer.DeliveryAddress?.PostalCode.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+
+                    <abp-column size-md="_12">
+                        <div class="mb-3">
+                            <label class="form-label">@L["Country"]</label>
+                            <p>@Model.Customer.DeliveryAddress?.Country.ToDisplay()</p>
+                        </div>
+                    </abp-column>
+                </abp-row>
+            </abp-card-body>
+        </abp-card>
+    </abp-column>
+</abp-row>

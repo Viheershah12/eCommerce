@@ -1,0 +1,38 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+
+@inject IStringLocalizer<eCommerceResource> L
+@inject IAuthorizationService AuthorizationService
+
+@model Order.Web.Pages.Order.AddOrderNoteModalModel
+
+@{
+    Layout = null;
+}
+
+<form asp-page="/Order/AddOrderNoteModal">
+    <abp-input asp-for="OrderId" type="hidden" />
+
+    <abp-modal>
+        <abp-modal-header title="@L["Title:CreateOrderNote"].Value"></abp-modal-header>
+
+        <abp-modal-body>
+            <abp-row>
+                <abp-column>
+                    <abp-select asp-for="OrderNote.OrderNoteType" asp-items="Model.OrderNoteTypeDropdown" />
+                </abp-column>
+
+                <abp-column-breaker />
+
+                <abp-column>
+                    <abp-input asp-for="OrderNote.Note" />
+                </abp-column>
+            </abp-row>
+        </abp-modal-body>
+
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>

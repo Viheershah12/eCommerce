@@ -127,7 +127,14 @@
 
             <h4 class="text-primary mb-3">KES @Model.Product.Price</h4>
 
-            <p><span class="badge bg-success">In Stock</span></p>
+            @if (Model.Product.Stock > 0)
+            {
+                <p><span class="badge bg-success">@L["ProductInStock"]</span></p>
+            }
+            else
+            {
+                <p><span class="badge bg-danger">@L["ProductOutOfStock"]</span></p>
+            }
 
             @if (Model.Product.ProductTags != null && Model.Product.ProductTags.Any())
             {
@@ -149,7 +156,7 @@
                     <button class="btn btn-outline-secondary" type="button" id="btnIncrement">+</button>
                 </div>
 
-                <button class="btn btn-primary btn-lg addToCart" data-product-id="@Model.Product.Id">@L["AddToCart"]</button>
+                <button class="btn btn-primary btn-lg addToCart @(Model.Product.Stock == 0 ? "disabled" : "")" data-product-id="@Model.Product.Id">@L["AddToCart"]</button>
                 <button class="btn btn-outline-secondary addToWishlist" data-product-id="@Model.Product.Id">@L["AddToWishlist"]</button>
             </div>
         </div>

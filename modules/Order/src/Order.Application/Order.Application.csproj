@@ -11,6 +11,8 @@
   <ItemGroup>
     <PackageReference Include="Volo.Abp.AutoMapper" Version="9.0.3" />
     <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.0.3" />
+    <ProjectReference Include="..\..\..\Inventory\src\Inventory.Application.Contracts\Inventory.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\PaymentTransactions\src\PaymentTransactions.Application.Contracts\PaymentTransactions.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\..\Product\src\Product.Application.Contracts\Product.Application.Contracts.csproj" />
     <ProjectReference Include="..\Order.Application.Contracts\Order.Application.Contracts.csproj" />
     <ProjectReference Include="..\Order.Domain\Order.Domain.csproj" />

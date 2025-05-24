@@ -50,7 +50,7 @@ namespace Inventory.Controllers
 
         [HttpGet]
         [Route("getByProductId")]
-        public async Task<CreateUpdateStockBalanceDto> GetByProductIdAsync(Guid productId)
+        public async Task<CreateUpdateStockBalanceDto?> GetByProductIdAsync(Guid productId)
         {
             return await _stockBalanceAppService.GetByProductIdAsync(productId);
         }

@@ -28,8 +28,9 @@ namespace Inventory.Controllers
         {
             _stockMovementAppService = stockMovementAppService;
         }
-        #endregion 
+        #endregion
 
+        #region CRUD
         [HttpGet]
         [Route("getList")]
         public async Task<PagedResultDto<StockMovementDto>> GetListAsync(GetStockMovementListDto dto)
@@ -64,5 +65,15 @@ namespace Inventory.Controllers
         {
             await _stockMovementAppService.DeleteAsync(id);
         }
+        #endregion 
+
+        #region Order Transaction 
+        [HttpPut]
+        [Route("createSaleStockMovement")]
+        public async Task CreateSaleStockMovement(OrderTransactionMovementDto dto)
+        {
+            await _stockMovementAppService.CreateSaleStockMovement(dto);
+        }
+        #endregion
     }
 }

@@ -70,5 +70,7 @@ namespace Product.Dtos.Product
         public List<UserFileDto>? Media { get; set; }
 
         public List<UserFileDto>? UploadedMedia { get; set; }
+
+        public decimal Stock { get; set; }
     }
 }

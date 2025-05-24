@@ -27,7 +27,7 @@ public class ProductMenuContributor : IMenuContributor
                 displayName: l["Menu:Catalog"], 
                 "~/Product", 
                 icon: "fa fa-boxes-stacked",
-                1002
+                6
             )
             .RequirePermissions(false, [ProductPermissions.Product.Default, ProductPermissions.ProductCategory.Default, ProductPermissions.ProductTag.Default])
             .AddItem(

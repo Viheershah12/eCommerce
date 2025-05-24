@@ -88,7 +88,7 @@ namespace Inventory.Services
             }
         }
 
-        public async Task<CreateUpdateStockBalanceDto> GetByProductIdAsync(Guid productId)
+        public async Task<CreateUpdateStockBalanceDto?> GetByProductIdAsync(Guid productId)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Inventory.Services
                 var inventory = querable.FirstOrDefault(x => x.ProductId == productId);
 
                 if (inventory == null)
-                    throw new UserFriendlyException("");
+                    return null;
 
                 return ObjectMapper.Map<Models.Inventory, CreateUpdateStockBalanceDto>(inventory);
             }

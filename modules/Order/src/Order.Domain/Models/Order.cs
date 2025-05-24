@@ -66,8 +66,19 @@ namespace Order.Models
 
         public DateTime? PaidDate { get; set; } 
 
-        public DateTime? ShippingDate { get; set; } 
+        public DateTime? ShippingDate { get; set; }
 
-        public string? Notes { get; set; }
+        #region Order Note
+        public List<OrderNote> OrderNotes { get; set; } = [];
+
+        public class OrderNote : CreationAuditedEntity<Guid>
+        {
+            public OrderNoteType OrderNoteType { get; set; }
+
+            public string Note { get; set; }
+
+            public string CreatorName { get; set; }
+        }
+        #endregion 
     }
 }

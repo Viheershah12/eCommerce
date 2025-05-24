@@ -12,6 +12,8 @@ using Volo.Abp;
 using PaymentTransactions.Dtos.PaymentTransaction;
 using Microsoft.Extensions.Logging;
 using Abp.eCommerce.Enums;
+using Volo.Abp.ObjectMapping;
+using Volo.Abp.Domain.Repositories;
 
 namespace PaymentTransactions.Services
 {
@@ -21,35 +23,25 @@ namespace PaymentTransactions.Services
         private readonly IPaymentTransactionRepository _paymentTransactionRepository;
         private readonly PaymentTransactionManager _paymentTransactionManager;
         private readonly ILogger<PaymentTransactionAppService> _logger;
+        private readonly IMpesaTransactionRepository _mpesaTransactionRepository;
         #endregion
 
         #region CTOR
         public PaymentTransactionAppService(
            IPaymentTransactionRepository paymentTransactionRepository,
            PaymentTransactionManager paymentTransactionManager,
-           ILogger<PaymentTransactionAppService> logger
-        ) 
+           ILogger<PaymentTransactionAppService> logger,
+           IMpesaTransactionRepository mpesaTransactionRepository
+        )
         {
             _paymentTransactionManager = paymentTransactionManager;
             _paymentTransactionRepository = paymentTransactionRepository;
             _logger = logger;
+            _mpesaTransactionRepository = mpesaTransactionRepository;
         }
-        #endregion 
+        #endregion
 
-        public async Task<int> GetStatusAsync(Guid transactionId)
-        {
-            try
-            {
-                var paymentTransaction = await _paymentTransactionRepository.GetAsync(transactionId);
-                return (int)paymentTransaction.Status;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message, ex);
-                return (int)PaymentTransactionStatus.Failed;
-            }
-        }
-
+        #region CRUD
         public async Task<PagedResultDto<PaymentTransactionDto>> GetListAsync(GetPaymentTransactionListDto dto)
         {
             try
@@ -124,5 +116,57 @@ namespace PaymentTransactions.Services
                 throw new BusinessException(ex.Message);
             }
         }
+        #endregion
+
+        #region Other Methods
+        public async Task<OrderPaymentTransactionDto> GetOrderPaymentTransactionAsync(Guid orderId)
+        {
+            try
+            {
+                var res = new OrderPaymentTransactionDto();
+
+                var paymentTransaction = await _paymentTransactionRepository.GetAsync(x => x.OrderId == orderId);
+                var mpesaTransaction = await _mpesaTransactionRepository.FirstOrDefaultAsync(x => x.PaymentTransactionId == paymentTransaction.Id);
+
+                res = ObjectMapper.Map<Models.PaymentTransaction, OrderPaymentTransactionDto>(paymentTransaction);
+                res.MpesaTransaction = ObjectMapper.Map<Models.MpesaTransaction?, OrderPaymentTransactionDto.MpesaTransactionDto?>(mpesaTransaction);
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public async Task UpdatePaymentTransactionNoteAsync(UpdatePaymentTransactionNoteDto dto)
+        {
+            try
+            {
+                var paymentTransaction = await _paymentTransactionRepository.GetAsync(dto.Id);
+                paymentTransaction.Notes = dto.Notes;
+
+                await _paymentTransactionRepository.UpdateAsync(paymentTransaction);
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public async Task<int> GetStatusAsync(Guid transactionId)
+        {
+            try
+            {
+                var paymentTransaction = await _paymentTransactionRepository.GetAsync(transactionId);
+                return (int)paymentTransaction.Status;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                return (int)PaymentTransactionStatus.Failed;
+            }
+        }
+        #endregion
     }
 }

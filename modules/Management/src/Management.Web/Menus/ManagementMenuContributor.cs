@@ -27,7 +27,7 @@ public class ManagementMenuContributor : IMenuContributor
                 displayName: l["Menu:Management"], 
                 "~/Management", 
                 icon: "fa fa-gear",
-                1003
+                1000
             )
             .RequirePermissions(false, [ManagementPermissions.ContentManagement.Default])
             .AddItem(

@@ -1,0 +1,45 @@
+﻿@using Abp.eCommerce.Helpers
+@using Abp.eCommerce.Localization
+@using Microsoft.Extensions.Localization
+@using Order.Web.Models.Order
+
+@inject IStringLocalizer<eCommerceResource> L
+
+@model OrderViewModel
+
+<abp-card>
+    <abp-card-header>
+        <abp-card-title>@L["Title:OrderItems"]</abp-card-title>
+    </abp-card-header>
+
+    <abp-card-body>
+        <abp-table hoverable-rows="true" responsive-sm="true">
+            <thead>
+                <tr>
+                    <th>@L["ProductName"]</th>
+                    <th>@L["Quantity"]</th>
+                    <th>@L["Price"]</th>
+                    <th>@L["Total"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orderItem in Model.OrderItems)
+                {
+                    <tr>
+                        <td>@orderItem.ProductName</td>
+                        <td>@orderItem.Quantity</td>
+                        <td>@orderItem.Price</td>
+                        <td>@orderItem.Total</td>
+                    </tr>
+                }
+
+                <tr>
+                    <th></th>
+                    <th>@Model.OrderItems.Sum(x => x.Quantity).ToDisplay()</th>
+                    <th>@Model.OrderItems.Sum(x => x.Price).ToDisplay()</th>
+                    <th>@Model.TotalAmount.ToDisplay()</th>
+                </tr>
+            </tbody>
+        </abp-table>
+    </abp-card-body>
+</abp-card>

@@ -21,6 +21,8 @@ namespace Abp.eCommerce.Web.Public.Models.Store
         public List<UserFileDto>? Media { get; set; }
 
         public Guid Category { get; set; }
+
+        public decimal Stock { get; set; }
     }
 
     public class ProductPaginationModel : BasePaginationModel

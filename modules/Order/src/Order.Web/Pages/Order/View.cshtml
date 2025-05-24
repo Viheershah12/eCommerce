@@ -1,0 +1,83 @@
+﻿@page
+@using Abp.eCommerce.Localization
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Localization
+@using Order.Web.Menus
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+
+@inject IPageLayout PageLayout
+@inject IAuthorizationService AuthorizationService
+@inject IStringLocalizer<eCommerceResource> L
+@inject IConfiguration Configuration
+
+@model Order.Web.Pages.Order.ViewModel
+
+@{
+    PageLayout.Content.MenuItemName = OrderMenus.Prefix;
+    PageLayout.Content.Title = L["Title:ViewOrder"];
+
+    PageLayout.Content.BreadCrumb.Add(L["Menu:Order"], "/Order/");
+
+    var googleApiKey = Configuration["Google:ApiKey"];
+    var googleUrlString = $"https://maps.googleapis.com/maps/api/js?key={googleApiKey}&loading=async&libraries=places&callback=initMap&v=weekly";
+}
+
+@section styles {
+    <style>
+        .tab-content {
+            background: transparent !important;
+        }
+
+        .tab-content .card {
+            background: #ffffff !important;
+        }
+
+        .nav-tabs {
+            margin-bottom: 0.5rem !important;
+        }
+
+        .tab-content {
+            padding: 0.5rem !important;
+        }
+    </style>
+}
+
+@section scripts {
+    <script async src="@googleUrlString"></script>
+    <abp-script src="/Pages/Order/js/ViewOrder.js" />
+}
+
+<input asp-for="OrderNotes" type="hidden" />
+<input asp-for="Order.Id" type="hidden" />
+
+<abp-row class="mb-3">
+    <abp-column>
+        <h4 class="title">@L["Title:ViewOrder"]</h4>
+    </abp-column>
+</abp-row>
+
+<abp-tabs>
+    <abp-tab title="@L["Title:CustomerInformation"]">
+        <partial name="Partials/_CustomerInformation" model="Model.Order" />
+    </abp-tab>
+
+    <abp-tab title="@L["Title:OrderItems"]">
+        <partial name="Partials/_OrderItems" model="Model.Order" />
+    </abp-tab>
+
+    @if (Model.Order.PaymentTransaction != null)
+    {
+        <abp-tab title="@L["Title:PaymentTransaction"]">
+            <partial name="Partials/_PaymentTransactions" model="Model.Order" />
+        </abp-tab>
+    }
+
+    <abp-tab title="@L["Title:OrderNotes"]">
+        <partial name="Partials/_OrderNotes" model="Model.Order" />
+    </abp-tab>
+
+    <abp-tab title="@L["Title:Shipments"]">
+        <partial name="Partials/_Shipments" model="Model.Order" />
+    </abp-tab>
+</abp-tabs>

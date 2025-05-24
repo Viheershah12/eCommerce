@@ -54,6 +54,8 @@ namespace Abp.eCommerce.Web.Public.Models.Store
         public decimal OldPrice { get; set; } 
 
         public List<UserFileDto>? UploadedMedia { get; set; }
+
+        public decimal Stock { get; set; }
     }
 
     public class AddToCartDto
